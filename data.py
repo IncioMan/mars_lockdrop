@@ -23,14 +23,15 @@ cols_claim = {
 }
 
 def claim(claim_hash):
-    df_claim = pd.read_json(
-        f"https://api.flipsidecrypto.com/api/v2/queries/{claim_hash}/data/latest",
-        convert_dates=["BLOCK_TIMESTAMP"],
-    )
-    
+    try:
+        df_claim = pd.read_json(
+            f"https://api.flipsidecrypto.com/api/v2/queries/{claim_hash}/data/latest",
+            convert_dates=["BLOCK_TIMESTAMP"],
+        )
+    except:
+        return pd.DataFrame(columns = cols_claim[claim_hash])
     if(len(df_claim.columns)==0):
         return pd.DataFrame(columns = cols_claim[claim_hash])
-
     return df_claim
 
 
