@@ -87,7 +87,7 @@ wallet_age_df = wallet_age_df.rename(columns=cols_dict)
 df2 = wallet_age_df.head()
 df2
 c = alt.Chart(wallet_age_df).mark_bar(color='#ffde85').encode(
-    x=alt.X(cols_dict['MIN_DATE']+":T", axis=alt.Axis(tickCount=10, labelAngle=0, title=cols_dict['ADDRESS_COUNT'])),
+    x=alt.X(cols_dict['MIN_DATE']+":T", axis=alt.Axis(tickCount=10, labelAngle=0, title=cols_dict['MIN_DATE'])),
     y=cols_dict['ADDRESS_COUNT']+":Q",
     tooltip=[cols_dict['MIN_DATE']+":T",cols_dict['ADDRESS_COUNT']]
 )
