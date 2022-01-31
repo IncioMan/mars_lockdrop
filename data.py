@@ -6,9 +6,9 @@ user_stats = '499224b4-30a6-43d7-80b9-3a019cbb1d3d'
 deposits_bucket = 'b4953cda-a874-43fa-b78d-ceb0c1bfc3cf'
 deposit_balance = '9e2e9587-0850-466a-8a59-4dda2e8337f3'
 hourly_new_users = '65179a1e-fd70-43eb-a9e4-ce14b716c928'
-wallet_age = '87e03aca-34d1-4099-9cfd-04b8249e9fc8'
+wallet_age = '5b7983de-8596-42de-a997-767754746b71'
 hourly_stats = '520fb3b6-a968-4742-bf0a-31cbb67b6b05'
-prev_launches = '0e40c170-544d-4a2f-a291-44c776dc2484'
+prev_launches = '4eac9ed8-be31-4cf4-9bbe-2a0776d224ad'
 
 cols_claim = {
     user_stats : ['DEPOSIT_AMOUNT', 'DEPOSIT_TXS', 'SENDER', 'WITHDRAWN_AMOUNT',
