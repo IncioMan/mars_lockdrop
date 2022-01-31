@@ -85,7 +85,6 @@ tooltip=[cols_dict['SENDER'], cols_dict['AMOUNT'],
 ###
 wallet_age_df = wallet_age_df.rename(columns=cols_dict)
 df2 = wallet_age_df.head()
-df2['fake'] = 100
 df2
 c = alt.Chart(wallet_age_df).mark_bar(color='#ffde85').encode(
     x=alt.X(cols_dict['MIN_DATE']+":T", axis=alt.Axis(tickCount=10, labelAngle=0, title=cols_dict['ADDRESS_COUNT'])),
