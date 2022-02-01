@@ -26,7 +26,7 @@ st.text('')
 col1, col2, col3, col4, col5 = st.columns([1,2,2,2,2])
 
 with col2:
-    st.metric(label="Total UST deposited", value=f"${round((tot_deposits/1000000.0),2)}mm", delta=f"${int((tot_deposits-next_last_ust)/1000)}k")
+    st.metric(label="Total UST deposited", value=f"${round((tot_deposits/1000000.0),2)}M", delta=f"${int((tot_deposits-next_last_ust)/1000)}k")
 
 with col3:
     st.metric(label="Unique users", value=n_users, delta=int(n_users-next_last_users),
