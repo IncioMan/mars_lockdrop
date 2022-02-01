@@ -10,8 +10,7 @@ class ChartProvider:
     def txs_over_time_chart(self, hourly_stats_df):
         txs_over_time_chart = alt.Chart(hourly_stats_df).mark_bar().encode(
             x=alt.X(cols_dict['HR']+':T', \
-                    axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center'),\
-                    scale=alt.Scale(nice=3)),
+                    axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['TOT_TXS']+":Q",
             tooltip=[cols_dict['HR']+':T',cols_dict['TOT_TXS']+":Q"]
         ).configure_mark(
@@ -22,8 +21,7 @@ class ChartProvider:
     def users_over_time_chart(self, hourly_new_users_df):
         users_over_time_chart = alt.Chart(hourly_new_users_df).mark_bar().encode(
         x=alt.X(cols_dict['TIME']+':T',\
-            axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center'),\
-            scale=alt.Scale(nice=3)),
+            axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
         y=cols_dict['cumsum_new_users']+":Q",
         tooltip=[cols_dict['TIME']+':T', cols_dict['cumsum_new_users']+":Q"]
         ).configure_mark(
