@@ -18,6 +18,7 @@ class DataProvider:
 
         self.hourly_new_users_df = self.claim(self.hourly_new_users, self.cols_claim)
         self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.sort_values(by='TIME').NEW_USERS.cumsum()
+        self.hourly_new_users_df['Hour'] = self.hourly_new_users_df['TIME']
         df = self.hourly_new_users_df.sort_values(by='TIME')
         index = df.index
         if(len(index)>1):
@@ -30,9 +31,9 @@ class DataProvider:
 
         self.wallet_age_df = self.wallet_age_df.rename(columns=cols_dict)
 
-
         self.hourly_stats_df['cumsum_ust'] = self.hourly_stats_df.sort_values(by='HR').NET_AMOUNT.cumsum()
         self.hourly_stats_df['cumsum_txs'] = self.hourly_stats_df.sort_values(by='HR').TOT_TXS.cumsum()
+        self.hourly_stats_df['Hour'] = self.hourly_stats_df['HR']
         df = self.hourly_stats_df.sort_values(by='HR')
         index = df.index
         if(len(index)>1):

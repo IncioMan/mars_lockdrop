@@ -12,7 +12,7 @@ class ChartProvider:
             x=alt.X(cols_dict['HR']+':T', \
                     axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['TOT_TXS']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['TOT_TXS']+":Q"]
+            tooltip=['Hour',cols_dict['TOT_TXS']+":Q"]
         ).configure_mark(
             color='#F3BD6A'
         ).configure_view(strokeOpacity=0)
@@ -23,7 +23,7 @@ class ChartProvider:
         x=alt.X(cols_dict['TIME']+':T',\
             axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
         y=cols_dict['cumsum_new_users']+":Q",
-        tooltip=[cols_dict['TIME']+':T', cols_dict['cumsum_new_users']+":Q"]
+        tooltip=['Hour', cols_dict['cumsum_new_users']+":Q"]
         ).configure_mark(
             color='#F1705F'
         ).configure_view(strokeOpacity=0)
@@ -45,7 +45,7 @@ class ChartProvider:
         cum_ust_chart = alt.Chart(hourly_stats_df.rename(columns=cols_dict)).mark_line(point=True).encode(
             x=alt.X(cols_dict['HR']+':T', sort=alt.EncodingSortField(order='ascending')),
             y=cols_dict['cumsum_ust']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['cumsum_ust']+":Q"]
+            tooltip=['Hour',cols_dict['cumsum_ust']+":Q"]
         ).configure_mark(
             color='#F1705F'
         ).properties(width=700).configure_axisX(
