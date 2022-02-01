@@ -1,9 +1,7 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import altair as alt
-from constants import cols_dict
-from charts import *
+from charts import ChartProvider
 import requests
 from PIL import Image
 from data import DataProvider

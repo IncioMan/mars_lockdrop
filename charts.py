@@ -56,7 +56,6 @@ class ChartProvider:
         return cum_ust_chart
 ####
     def n_tx_wallet_chart(self, user_stats_df):
-        print(user_stats_df.columns)
         df = user_stats_df.rename(columns=cols_dict)[cols_dict['N_TXS']]\
             .value_counts().sort_index().reset_index().rename(columns={'index':cols_dict['N_TXS'],cols_dict['N_TXS']:'N° of users'})
         n_tx_wallet_chart = alt.Chart(df).mark_line(point = True, color='#7DDBD3').encode(
