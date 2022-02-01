@@ -5,15 +5,15 @@ import altair as alt
 from constants import cols_dict
 import requests
 from PIL import Image
+from data import DataProvider
 
 st.set_page_config(page_title="Prism Forge - Analytics",\
         page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/xPRISM.png',stream=True).raw),\
         layout='wide')
 
+DataProvider(st)
 
-from data import user_stats_df,hourly_stats_df, wallet_age_df,\
-                 hourly_new_users_df,deposits_bucket_df,\
-                 deposit_balance_df,prev_launches_df,dates_to_mark
+
 
 txs_over_time_chart = alt.Chart(hourly_stats_df).mark_bar().encode(
     x=alt.X(cols_dict['HR']+':T', \
