@@ -14,7 +14,7 @@ st.set_page_config(page_title="Prism Forge - Analytics",\
 
 ###
 
-@st.cache(ttl=1, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=10, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash, cols_claim):
     try:
         df_claim = pd.read_json(
@@ -82,7 +82,7 @@ with col1:
     st.altair_chart(chart_provider.users_dep_distr_chart(data_provider.deposits_bucket_df), use_container_width=True)
 with col2:
     st.subheader('Number of transactions per wallet')
-    st.markdown("""Are people depositing once or multiple times on average? Here, we have the distribution of deposit transactions into the Forge.
+    st.markdown("""Are people performing one or multiple transactions on average? Here, we have the distribution of transactions per wallet into the Forge.
     """)
     st.altair_chart(chart_provider.n_tx_wallet_chart(data_provider.user_stats_df), use_container_width=True)
 ####

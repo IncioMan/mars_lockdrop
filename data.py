@@ -12,6 +12,7 @@ class DataProvider:
         self.prev_launches_df = self.claim(self.prev_launches, self.cols_claim)
 
         self.user_stats_df['DEPOSIT_NET'] = self.user_stats_df.DEPOSIT_AMOUNT - self.user_stats_df.WITHDRAWN_AMOUNT
+        self.user_stats_df['N_TXS'] = self.user_stats_df.DEPOSIT_TXS + self.user_stats_df.WITHDRAW_TXS
         self.top_depositors = self.user_stats_df.sort_values(by='DEPOSIT_NET', ascending=False).head(5)[['SENDER','DEPOSIT_NET']]\
                     .set_index('SENDER').rename(columns=cols_dict)
 
