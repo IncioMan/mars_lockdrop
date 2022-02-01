@@ -1,5 +1,6 @@
 import pandas as pd
 from constants import cols_dict
+import streamlit as st
 
 
 user_stats = '499224b4-30a6-43d7-80b9-3a019cbb1d3d'
