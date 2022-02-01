@@ -106,10 +106,20 @@ st.text('')
 st.markdown("This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/). You can participate in Prism Forge [here](https://forge.prismprotocol.app/).")
 st.markdown("""
 <style>
+    @media (min-width:640px) {
+        .block-container {
+            padding-left: 5rem;
+            padding-right: 5rem;
+        }
+    }
+    @media (min-width:800px) {
+        .block-container {
+            padding-left: 15rem;
+            padding-right: 15rem;
+        }
+    }
     .block-container
     {
-        padding-left: 10rem;
-        padding-right: 10rem;
         padding-bottom: 1rem;
     }
 </style>
