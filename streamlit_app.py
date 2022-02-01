@@ -165,7 +165,7 @@ x=alt.X(cols_dict['TYPE']+":N", axis=alt.Axis(labelAngle=0, tickBand = 'center')
 y=cols_dict['PARTICIPANTS']+":Q",
 color=alt.Color(cols_dict['PARTICIPATE_TYPE'],
     scale=alt.Scale(domain=list(prev_launches_df[cols_dict['PARTICIPATE_TYPE']].unique()),
-                    range=['#992e00','#ffbb9e']),
+                    range=['#F1705F','#F3BD6A']),
     legend=alt.Legend(
     orient='none',
     padding=10,
@@ -228,7 +228,9 @@ st.text('')
 col1, col2, col3, col4, col5 = st.columns([1,2,2,2,2])
 
 with col2:
-    st.metric(label="Total UST deposited", value=f"${round((tot_deposits/1000000.0),2)}M", delta=f"${int((tot_deposits-next_last_ust)/1000)}k")
+    st.metric(label="Total UST deposited",\
+              value=f"${round((tot_deposits/1000000.0),3)}M",\
+              delta=f"{int((tot_deposits-next_last_ust)/1000)}k")
 
 with col3:
     st.metric(label="Unique users", value=n_users, delta=int(n_users-next_last_users),
