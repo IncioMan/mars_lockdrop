@@ -106,7 +106,7 @@ dates_to_mark = pd.DataFrame([
 ['2021-03-04', '2021-03-11',15,'Anchor launch'],
 ['2021-09-24', '2021-10-01',15,'Columbus 5'],
 ['2021-12-12', '2021-12-19',15,'Astroport launch'], 
-['2022-01-17', '2022-01-24',15,'Prism launch']], 
+['2022-01-24', '2022-02-01',15,'Prism launch']], 
 columns=['text_date','date','height','text']
 )
 ###
