@@ -285,7 +285,7 @@ You can interact with the graph by zooming in and out to explore specific ranges
 st.altair_chart(dep_dist_balance_chart, use_container_width=True)
 ###
 st.text('')
-st.markdown("Built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/)")
+st.markdown("This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/). You can participate in Prism Forge [here](https://forge.prismprotocol.app/).")
 st.markdown("""
 <style>
     .block-container
