@@ -1,7 +1,12 @@
 import pandas as pd
 from constants import cols_dict
 import streamlit as st
+import requests
+from PIL import Image
 
+st.set_page_config(page_title="Prism Forge - Analytics",\
+        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/xPRISM.png',stream=True).raw),\
+        layout='wide')
 
 user_stats = '499224b4-30a6-43d7-80b9-3a019cbb1d3d'
 deposits_bucket = 'b4953cda-a874-43fa-b78d-ceb0c1bfc3cf'
@@ -24,6 +29,7 @@ cols_claim = {
     hourly_new_users: ['NEW_USERS', 'TIME']
 }
 
+@st.cache(ttl=1, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash):
     try:
         df_claim = pd.read_json(
@@ -94,6 +100,6 @@ dates_to_mark = pd.DataFrame([
 ['2021-03-04', '2021-03-11',15,'Anchor launch'],
 ['2021-09-24', '2021-10-01',15,'Columbus 5'],
 ['2021-12-12', '2021-12-19',15,'Astroport launch'], 
-['2022-01-17', '2022-01-24',15,'Prism launch']], 
+['2022-01-24', '2022-02-01',15,'Prism launch']], 
 columns=['text_date','date','height','text']
 )
