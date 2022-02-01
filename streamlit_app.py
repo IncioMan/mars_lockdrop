@@ -104,10 +104,10 @@ deposits_bucket_df['bucket_name']=deposits_bucket_df.BUCKET.map({0:'-$0',1:'$0-$
 deposits_bucket_df.sort_values(by='BUCKET')
 
 dates_to_mark = pd.DataFrame([
-['2021-03-04', '2021-03-11',120,'Anchor launch'],
-['2021-09-24', '2021-10-01',120,'Columbus 5'],
-['2021-12-12', '2021-12-19',120,'Astroport launch'], 
-['2022-01-17', '2022-01-24',120,'Prism launch']], 
+['2021-03-04', '2021-03-11',15,'Anchor launch'],
+['2021-09-24', '2021-10-01',15,'Columbus 5'],
+['2021-12-12', '2021-12-19',15,'Astroport launch'], 
+['2022-01-17', '2022-01-24',15,'Prism launch']], 
 columns=['text_date','date','height','text']
 )
 ###
