@@ -1,12 +1,6 @@
 import pandas as pd
 from constants import cols_dict
 import streamlit as st
-import requests
-from PIL import Image
-
-st.set_page_config(page_title="Prism Forge - Analytics",\
-        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/xPRISM.png',stream=True).raw),\
-        layout='wide')
 
 user_stats = '499224b4-30a6-43d7-80b9-3a019cbb1d3d'
 deposits_bucket = 'b4953cda-a874-43fa-b78d-ceb0c1bfc3cf'
