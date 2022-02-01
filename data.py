@@ -9,6 +9,7 @@ hourly_new_users = '65179a1e-fd70-43eb-a9e4-ce14b716c928'
 wallet_age = '5b7983de-8596-42de-a997-767754746b71'
 hourly_stats = '520fb3b6-a968-4742-bf0a-31cbb67b6b05'
 prev_launches = '4eac9ed8-be31-4cf4-9bbe-2a0776d224ad'
+ciao = ''
 
 cols_claim = {
     user_stats : ['DEPOSIT_AMOUNT', 'DEPOSIT_TXS', 'SENDER', 'WITHDRAWN_AMOUNT',
