@@ -35,7 +35,7 @@ cols_claim = {
     hourly_new_users: ['NEW_USERS', 'TIME']
 }
 
-@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=1, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash):
     try:
         df_claim = pd.read_json(
