@@ -41,11 +41,11 @@ st.text('')
 st.text('')
 st.text('')
 
-col1, col2, col3, col4, col5 = st.columns([1,2,2,2,2])
+col1, col2, col3, col4, col5, col6 = st.columns([5,50,50,50,50,50])
 
 with col2:
     st.metric(label="Total UST deposited",\
-              value=f"${round((data_provider.tot_deposits/1000000.0),3)}M",\
+              value=f"${round((data_provider.tot_deposits/1000000.0),2)}M",\
               delta=f"{int((data_provider.tot_deposits-data_provider.next_last_ust)/1000)}k")
 
 with col3:
@@ -57,7 +57,15 @@ with col4:
      delta_color="off")
 
 with col5:
-    st.metric(label="Estimated price", value=f"${round(data_provider.tot_deposits/70000000,2)}", delta=round(((data_provider.tot_deposits-data_provider.next_last_ust))/70000000,2),delta_color="off")
+    price = data_provider.tot_deposits/70000000
+    price_delta = (data_provider.tot_deposits-data_provider.next_last_ust)/70000000
+    st.metric(label="Estimated price", value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
+
+with col6:
+    fdv = price*1000000000
+    delta = (price_delta*70000000)/1000000000
+    st.metric(label="Fully Diluited Value", value=f"${round(fdv/1000000,2)}M",\
+              delta=round(delta/1000000,2),delta_color="off")
 ####
 st.subheader('UST deposited over time')
 st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
