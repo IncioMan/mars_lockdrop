@@ -20,7 +20,6 @@ class DataProvider:
         self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.sort_values(by='TIME').NEW_USERS.cumsum()
         self.hourly_new_users_df['Hour'] = self.hourly_new_users_df['TIME']
         df = self.hourly_new_users_df.sort_values(by='TIME')
-        print(df)
         index = df.index
         if(len(index)>1):
             self.n_users = df.loc[index[-1]].cumsum_new_users
@@ -29,7 +28,6 @@ class DataProvider:
         else:
             self.n_users = 0
             self.next_last_users = 0
-        print(self.next_last_users)
         self.hourly_new_users_df = self.hourly_new_users_df.rename(columns=cols_dict)
 
 
