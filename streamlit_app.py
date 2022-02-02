@@ -7,7 +7,7 @@ from PIL import Image
 from data import DataProvider
 
 st.set_page_config(page_title="Prism Forge - Analytics",\
-        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/xPRISM.png',stream=True).raw),\
+        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/xPRISM.png',stream=True).raw),\
         layout='wide')
 
 ###
@@ -37,7 +37,7 @@ col1, col2 = st.columns([1,12])
 with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
-    st.image('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/prism_white_small.png')
+    st.image('https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png')
 st.text('')
 st.text('')
 st.text('')
@@ -111,11 +111,7 @@ st.markdown("""This graph depicts the distribution of UST deposited against the 
 You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers.""")
 st.altair_chart(chart_provider.dep_dist_balance_chart(data_provider.deposit_balance_df), use_container_width=True)
 ###
-st.text('')
-st.markdown("""
-This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/).
-
-You can participate in Prism Forge [here](https://forge.prismprotocol.app/).""")
+st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
 st.markdown("""
 <style>
     @media (min-width:640px) {
@@ -138,7 +134,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 hide_streamlit_style = """
                         <style>
+                        #MainMenu {visibility: hidden;}
                         footer {visibility: hidden;}
                         </style>
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+col1, col2= st.columns([7,2])
+with col1:
+    st.text("In collaboration with:")
+    st.markdown('[<img margin-left="80px" src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prismwhite.svg">](http://prismprotocol.app/)', unsafe_allow_html=True)
+with col2:
+    st.text("Sponsored by:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/flipsidewhite.png" width=\"160px\">](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
