@@ -33,11 +33,11 @@ chart_provider = ChartProvider()
 ###
 
 original_title = '<p style="font-size: 60px;">Prism Forge - Phase 1</p>'
-col1, col2 = st.columns([1,12])
+col1, col2 = st.columns([2,12])
 with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
-    st.image('https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png')
+    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png" width=\"100px\">', unsafe_allow_html=True)
 st.text('')
 st.text('')
 st.text('')
