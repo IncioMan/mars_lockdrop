@@ -3,7 +3,7 @@ from constants import cols_dict
 
 class DataProvider:
     
-    def load_data(self):
+    def load_data_p1(self):
         self.user_stats_df = self.claim(self.user_stats, self.cols_claim)
         self.deposit_balance_df = self.claim(self.deposit_balance, self.cols_claim)
         self.deposits_bucket_df = self.claim(self.deposits_bucket, self.cols_claim)
@@ -70,6 +70,7 @@ class DataProvider:
     
     def load_data_phase2(self):
         self.p2_users_df = self.claim(self.p2_users, self.cols_claim)
+        self.p2_hourly_df = self.claim(self.p2_hourly, self.cols_claim)
 
     def __init__(self, claim):
         self.claim = claim
@@ -83,6 +84,7 @@ class DataProvider:
         self.prev_launches = '4eac9ed8-be31-4cf4-9bbe-2a0776d224ad'
         ###
         self.p2_users = '07f87a6f-5bc6-49f3-a1bb-8e7d545ba95a'
+        self.p2_hourly = '3848ea08-7692-4eb6-9ec6-63ab96ff4c8c'
 
         self.cols_claim = {
             self.user_stats : ['DEPOSIT_AMOUNT', 'DEPOSIT_TXS', 'SENDER', 'WITHDRAWN_AMOUNT',
@@ -94,6 +96,6 @@ class DataProvider:
             self.wallet_age : ['ADDRESS_COUNT', 'MIN_DATE'],
             self.deposit_balance: ['AMOUNT', 'AVG_BALANCE_USD', 'MAX_BALANCE_USD', 'N_TXS', 'SENDER'],
             self.hourly_new_users: ['NEW_USERS', 'TIME'],
-            self.p2_users: ["DEPOSIT_AMOUNT","HR","NET_DEPOSITED_AMOUNT","SENDER","WITHDRAWN_AMOUNT","WITHDRAWN_AMOUNT_PHASE2"]
+            self.p2_users: ["DEPOSIT_AMOUNT","HR","NET_DEPOSITED_AMOUNT","SENDER","WITHDRAWN_AMOUNT","WITHDRAWN_AMOUNT_PHASE2"],
+            self.p2_hourly: ['HR', 'WITH_AMOUNT', 'WITH_TX', 'WITH_USERS']
         }
-        self.load_data()

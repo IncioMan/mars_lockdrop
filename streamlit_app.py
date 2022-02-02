@@ -26,6 +26,7 @@ def claim(claim_hash, cols_claim):
     return df_claim
 
 data_provider = DataProvider(claim)
+data_provider.load_data_p1()
 chart_provider = ChartProvider()
 
 ###
