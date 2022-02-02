@@ -64,7 +64,7 @@ with col5:
 with col6:
     fdv = price*1000000000
     delta = (price_delta*70000000)/1000000000
-    st.metric(label="Fully Diluited Value", value=f"${round(fdv/1000000,2)}M",\
+    st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M",\
               delta=round(delta/1000000,2),delta_color="off")
 ####
 st.subheader('UST deposited over time')
