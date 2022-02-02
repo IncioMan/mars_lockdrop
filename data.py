@@ -84,7 +84,7 @@ class DataProvider:
         self.prev_launches = '4eac9ed8-be31-4cf4-9bbe-2a0776d224ad'
         ###
         self.p2_users = '07f87a6f-5bc6-49f3-a1bb-8e7d545ba95a'
-        self.p2_hourly = '3848ea08-7692-4eb6-9ec6-63ab96ff4c8c'
+        self.p2_hourly = 'de5232e1-5d57-4232-900d-1d09d2c9438e'
 
         self.cols_claim = {
             self.user_stats : ['DEPOSIT_AMOUNT', 'DEPOSIT_TXS', 'SENDER', 'WITHDRAWN_AMOUNT',
