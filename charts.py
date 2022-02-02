@@ -14,7 +14,7 @@ class ChartProvider:
             y=cols_dict['TOT_TXS']+":Q",
             tooltip=['Hour',cols_dict['TOT_TXS']+":Q"]
         ).configure_mark(
-            color='#F3BD6A'
+            color='#ffde85'
         ).configure_view(strokeOpacity=0)
         return txs_over_time_chart
 ####
@@ -25,7 +25,7 @@ class ChartProvider:
         y=cols_dict['cumsum_new_users']+":Q",
         tooltip=['Hour', cols_dict['cumsum_new_users']+":Q"]
         ).configure_mark(
-            color='#F1705F'
+            color='#fab0ba'
         ).configure_view(strokeOpacity=0)
         return users_over_time_chart
 ####
@@ -35,7 +35,7 @@ class ChartProvider:
             x=cols_dict['N_USERS']+":Q",
             tooltip=[cols_dict['bucket_name']+":N",cols_dict['N_USERS']+":Q"]
         ).configure_mark(
-            color='#F1705F'
+            color='#fab0ba'
         ).properties(height=300).configure_axisX(
             labelAngle=0
         ).configure_view(strokeOpacity=0)
@@ -47,7 +47,7 @@ class ChartProvider:
             y=cols_dict['cumsum_ust']+":Q",
             tooltip=['Hour',cols_dict['cumsum_ust']+":Q"]
         ).configure_mark(
-            color='#F1705F'
+            color='#fab0ba'
         ).properties(width=700).configure_axisX(
             labelAngle=0
         ).configure_view(strokeOpacity=0)
@@ -68,8 +68,7 @@ class ChartProvider:
         x=alt.X(cols_dict['TYPE']+":N", axis=alt.Axis(labelAngle=0, tickBand = 'center')),
         y=cols_dict['PARTICIPANTS']+":Q",
         color=alt.Color(cols_dict['PARTICIPATE_TYPE'],
-            scale=alt.Scale(domain=list(prev_launches_df[cols_dict['PARTICIPATE_TYPE']].unique()),
-                            range=['#F1705F','#F3BD6A']),
+            scale=alt.Scale(scheme='pastel1'),
             legend=alt.Legend(
             orient='none',
             padding=10,
@@ -90,7 +89,7 @@ class ChartProvider:
         y=alt.Y(cols_dict['AMOUNT']+":Q",scale=alt.Scale(domain=(0, 100000))),
         x=alt.X(cols_dict['AVG_BALANCE_USD']+":Q",scale=alt.Scale(domain=(0, 1000000))),
         color=alt.Color(cols_dict['N_TXS'],
-            scale=alt.Scale(scheme='reds')),
+            scale=alt.Scale(scheme='redpurple')),
         tooltip=[cols_dict['SENDER'], cols_dict['AMOUNT'],
             cols_dict['AVG_BALANCE_USD'],
             cols_dict['N_TXS']]
@@ -100,18 +99,18 @@ class ChartProvider:
     def wallet_age_chart(self, wallet_age_df, dates_to_mark):
         wallet_age_df = wallet_age_df.rename(columns=cols_dict)
         df2 = wallet_age_df.head()
-        c = alt.Chart(wallet_age_df).mark_bar(color='#F3BD6A').encode(
+        c = alt.Chart(wallet_age_df).mark_bar(color='#ffde85').encode(
             x=alt.X(cols_dict['MIN_DATE']+":T", axis=alt.Axis(tickCount=10, labelAngle=0, title=cols_dict['MIN_DATE'])),
             y=cols_dict['ADDRESS_COUNT']+":Q",
             tooltip=[cols_dict['MIN_DATE']+":T",cols_dict['ADDRESS_COUNT']]
         )
 
-        c2 = alt.Chart(dates_to_mark).mark_rule(color='#F1705F').encode(
+        c2 = alt.Chart(dates_to_mark).mark_rule(color='#fab0ba').encode(
             x=alt.X('date'+':T',axis=alt.Axis(labels=False,title=''))
         )
 
         c3 = alt.Chart(dates_to_mark).mark_text(
-            color='#F1705F',
+            color='#fab0ba',
             angle=270
         ).encode(
             x=alt.X('text_date'+':T',axis=alt.Axis(labels=False,title='')),
