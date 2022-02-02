@@ -103,7 +103,10 @@ You can interact with the graph by zooming in and out to explore specific ranges
 st.altair_chart(chart_provider.dep_dist_balance_chart(data_provider.deposit_balance_df), use_container_width=True)
 ###
 st.text('')
-st.markdown("This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/). You can participate in Prism Forge [here](https://forge.prismprotocol.app/).")
+st.markdown("""
+This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/).
+
+You can participate in Prism Forge [here](https://forge.prismprotocol.app/).""")
 st.markdown("""
 <style>
     @media (min-width:640px) {
