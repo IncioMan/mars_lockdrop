@@ -67,6 +67,9 @@ class DataProvider:
             ['2022-01-24', '2022-02-01',15,'Prism launch']], 
             columns=['text_date','date','height','text']
         )
+    
+    def load_data_phase2(self):
+        self.p2_users_df = self.claim(self.p2_users, self.cols_claim)
 
     def __init__(self, claim):
         self.claim = claim
@@ -78,6 +81,8 @@ class DataProvider:
         self.wallet_age = '5b7983de-8596-42de-a997-767754746b71'
         self.hourly_stats = '520fb3b6-a968-4742-bf0a-31cbb67b6b05'
         self.prev_launches = '4eac9ed8-be31-4cf4-9bbe-2a0776d224ad'
+        ###
+        self.p2_users = '07f87a6f-5bc6-49f3-a1bb-8e7d545ba95a'
 
         self.cols_claim = {
             self.user_stats : ['DEPOSIT_AMOUNT', 'DEPOSIT_TXS', 'SENDER', 'WITHDRAWN_AMOUNT',
@@ -88,6 +93,7 @@ class DataProvider:
             'TOT_TXS', 'TOT_USERS', 'WITH_AMOUNT', 'WITH_TX', 'WITH_USERS'],
             self.wallet_age : ['ADDRESS_COUNT', 'MIN_DATE'],
             self.deposit_balance: ['AMOUNT', 'AVG_BALANCE_USD', 'MAX_BALANCE_USD', 'N_TXS', 'SENDER'],
-            self.hourly_new_users: ['NEW_USERS', 'TIME']
+            self.hourly_new_users: ['NEW_USERS', 'TIME'],
+            self.p2_users: ["DEPOSIT_AMOUNT","HR","NET_DEPOSITED_AMOUNT","SENDER","WITHDRAWN_AMOUNT","WITHDRAWN_AMOUNT_PHASE2"]
         }
         self.load_data()
