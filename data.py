@@ -20,13 +20,18 @@ class DataProvider:
         self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.sort_values(by='TIME').NEW_USERS.cumsum()
         self.hourly_new_users_df['Hour'] = self.hourly_new_users_df['TIME']
         df = self.hourly_new_users_df.sort_values(by='TIME')
+        print(df)
         index = df.index
         if(len(index)>1):
+            self.n_users = df.loc[index[-1]].cumsum_new_users
             i = -2
             self.next_last_users = df.loc[index[i]].cumsum_new_users
         else:
+            self.n_users = 0
             self.next_last_users = 0
+        print(self.next_last_users)
         self.hourly_new_users_df = self.hourly_new_users_df.rename(columns=cols_dict)
+
 
 
         self.wallet_age_df = self.wallet_age_df.rename(columns=cols_dict)
@@ -37,22 +42,18 @@ class DataProvider:
         df = self.hourly_stats_df.sort_values(by='HR')
         index = df.index
         if(len(index)>1):
+            self.n_txs = df.loc[index[-1]].cumsum_txs
             i = -2
             self.next_last_ust = df.loc[index[i]].cumsum_ust
             self.next_last_txs = df.loc[index[i]].cumsum_txs
         else:
+            self.n_txs = 0
             i = 0
             self.next_last_ust = 0
             self.next_last_txs = 0
         self.hourly_stats_df = self.hourly_stats_df.rename(columns=cols_dict)
 
-
-
-        self.n_txs = self.user_stats_df.DEPOSIT_TXS.sum() + self.user_stats_df.WITHDRAW_TXS.sum()
-        self.n_users = self.user_stats_df.SENDER.nunique()
         self.tot_deposits = int(self.user_stats_df.DEPOSIT_AMOUNT.sum() - self.user_stats_df.WITHDRAWN_AMOUNT.sum())
-
-
         self.prev_launches_df = self.prev_launches_df.rename(columns=cols_dict)
 
         self.deposit_balance_df = self.deposit_balance_df.rename(columns=cols_dict)
