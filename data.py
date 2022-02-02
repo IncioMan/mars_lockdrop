@@ -41,17 +41,18 @@ class DataProvider:
         index = df.index
         if(len(index)>1):
             self.n_txs = df.loc[index[-1]].cumsum_txs
+            self.tot_deposits = df.loc[index[-1]].cumsum_ust
             i = -2
             self.next_last_ust = df.loc[index[i]].cumsum_ust
             self.next_last_txs = df.loc[index[i]].cumsum_txs
         else:
             self.n_txs = 0
+            self.tot_deposits = 0
             i = 0
             self.next_last_ust = 0
             self.next_last_txs = 0
         self.hourly_stats_df = self.hourly_stats_df.rename(columns=cols_dict)
 
-        self.tot_deposits = int(self.user_stats_df.DEPOSIT_AMOUNT.sum() - self.user_stats_df.WITHDRAWN_AMOUNT.sum())
         self.prev_launches_df = self.prev_launches_df.rename(columns=cols_dict)
 
         self.deposit_balance_df = self.deposit_balance_df.rename(columns=cols_dict)
