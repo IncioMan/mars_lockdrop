@@ -38,7 +38,10 @@ with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png" width=\"100px\">', unsafe_allow_html=True)
-st.markdown('<div>Status: Terminated <span class="terminated"></span></div>',unsafe_allow_html=True)
+
+col1, col2, col3, col4, col5, col6 = st.columns([5,50,50,50,50,50])
+with col6:
+    st.markdown('<div>Status: Idle <span class="idle"></span></div>',unsafe_allow_html=True)
 st.text('')
 
 col1, col2, col3 = st.columns([0.5,0.5,1])
@@ -125,6 +128,17 @@ with col2:
         display: inline-block;
         border: 1px solid red;
         background-color: red;
+        border-radius: 100%;
+        opacity: 0.8;
+    }
+
+    .idle {
+        margin-left: 10px;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border: 1px solid grey;
+        background-color: grey;
         border-radius: 100%;
         opacity: 0.8;
     }
