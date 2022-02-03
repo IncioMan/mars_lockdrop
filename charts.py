@@ -174,7 +174,7 @@ class ChartProvider:
             y=cols_dict['WITH_AMOUNT']+":Q",
             tooltip=[cols_dict['HR']+':T',cols_dict['WITH_AMOUNT']+":Q"]
         ).configure_mark(
-            color='#fab0ba'
+            color='#B8E9E4'
         ).properties(width=700).configure_axisX(
             labelAngle=30
         ).configure_view(strokeOpacity=0)
@@ -182,7 +182,7 @@ class ChartProvider:
 
     def pie_ust_chart(self, ust_df):
         ust_df = ust_df.sort_values(by='Type')
-        pie_ust_chart = alt.Chart(ust_df).mark_arc().encode(
+        pie_ust_chart = alt.Chart(ust_df).mark_arc(innerRadius=50).encode(
             theta=alt.Theta(field="UST", type="quantitative"),
             color=alt.Color(field="Type", type="nominal",
                     sort=['Withdrawn','Still deposited'],
