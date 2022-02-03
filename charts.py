@@ -81,6 +81,7 @@ class ChartProvider:
         return user_part_prev_launches_chart
 ####
     def dep_dist_balance_chart(self, deposit_balance_df):
+        deposit_balance_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+deposit_balance_df[cols_dict['SENDER']]
         if(len(deposit_balance_df)>5000):
             df = deposit_balance_df.sample(n=5000, random_state=1)
         else:
@@ -88,6 +89,7 @@ class ChartProvider:
         dep_dist_balance_chart =alt.Chart(df).mark_point(opacity=1, filled=True).encode(
         y=alt.Y(cols_dict['AMOUNT']+":Q",scale=alt.Scale(domain=(0, 100000))),
         x=alt.X(cols_dict['AVG_BALANCE_USD']+":Q",scale=alt.Scale(domain=(0, 1000000))),
+        href='url:N',
         color=alt.Color(cols_dict['N_TXS'],
             scale=alt.Scale(scheme='redpurple')),
         tooltip=[cols_dict['SENDER'], cols_dict['AMOUNT'],
@@ -143,7 +145,7 @@ class ChartProvider:
         ).properties(width=700).configure_axisX(
         ).configure_view(strokeOpacity=0)
         return tot_ust_left_chart
-        
+
     def with_perc_buckets_chart(self,with_perc_buckets):
         with_perc_buckets_chart = alt.Chart(with_perc_buckets.sort_values(by='PERC_WITHDRAWN').rename(columns=cols_dict)).mark_bar().encode(
             y=alt.X(cols_dict['PERC_WITHDRAWN']+":N", sort=alt.EncodingSortField(order='ascending')),
@@ -185,6 +187,7 @@ class ChartProvider:
         pie_ust_chart = alt.Chart(ust_df).mark_arc().encode(
             theta=alt.Theta(field="UST", type="quantitative"),
             color=alt.Color(field="Type", type="nominal",
+                    sort=['Withdrawn','Still deposited'],
                     scale=alt.Scale(scheme='pastel1'),
                     legend=alt.Legend(
                     orient='none',

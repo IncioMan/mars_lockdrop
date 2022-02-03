@@ -109,8 +109,8 @@ look these addresses up on [ET Finder](https://finder.extraterrestrial.money/)."
 st.table(data_provider.top_depositors)
 ####
 st.subheader('Deposit distribution per balance')
-st.markdown("""This graph depicts the distribution of UST deposited against the average balance of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?
-You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers.""")
+st.markdown("""This graph depicts the distribution of UST deposited against the average balance of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
+st.markdown("""You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers or click on one of the dots to open its [ET Finder](https://finder.extraterrestrial.money/) page.""")
 st.altair_chart(chart_provider.dep_dist_balance_chart(data_provider.deposit_balance_df), use_container_width=True)
 ###
 st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
