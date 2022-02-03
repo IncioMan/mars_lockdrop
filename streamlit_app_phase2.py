@@ -73,35 +73,35 @@ with col2:
             delta=round(delta/1000000,2),delta_color="off")
 
 with col3:
-    st.subheader('UST deposited over time')
-    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+    st.subheader('UST distribution')
+    st.markdown("""This graph shows the distribution of net deposited UST from Phase 1""")
     st.altair_chart(chart_provider.pie_ust_chart(data_provider.ust_df), use_container_width=True)
 
-st.subheader('UST deposited over time')
-st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+st.subheader('UST left in the Forge')
+st.markdown("""This graph shows the net UST left deposited into the Prism Forge over time""")
 st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
 
-st.subheader('UST deposited over time')
-st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+st.subheader('Number of withdrawal transactions over time')
+st.markdown("""This graph shows the withdrawals transactions in Phase 2""")
 st.altair_chart(chart_provider.with_txs_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader('UST deposited over time')
+    st.subheader('Users percentage withdrawn distribution')
     st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
     st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
 
 with col2:
-    st.subheader('UST deposited over time')
-    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+    st.subheader('Withdrawing users')
+    st.markdown("""This graph shows the withdrawing users over time""")
     st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
 
 
-st.subheader('UST deposited over time')
-st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
+st.subheader('Withdrawals distribution across deposits and percentage')
+st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
 st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
 ###
 st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
@@ -128,7 +128,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 hide_streamlit_style = """
                         <style>
-                        #MainMenu {visibility: hidden;}
+                        
                         footer {visibility: hidden;}
                         </style>
                         """

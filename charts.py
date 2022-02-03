@@ -124,7 +124,6 @@ class ChartProvider:
         return wallet_age_chart
 
     def heatmap_withdrawing_chart(self, heatmap_data_df):
-        print(heatmap_data_df.head())
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
             x=alt.X(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='ascending')),
             y=alt.Y(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='ascending')),
@@ -135,7 +134,6 @@ class ChartProvider:
         return heatmap_withdrawing_chart
 
     def tot_ust_left_chart(self,p2_hourly_df):
-        print(p2_hourly_df.columns)
         tot_ust_left_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_line(point=True).encode(
             x=alt.X(cols_dict['HR']+':T', sort=alt.EncodingSortField(order='ascending')),
             y=cols_dict['net_ust']+":Q",
