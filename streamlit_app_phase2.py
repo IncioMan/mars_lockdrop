@@ -88,8 +88,8 @@ st.altair_chart(chart_provider.with_txs_hourly_chart(data_provider.p2_hourly_df)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader('Users percentage withdrawn distribution')
-    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
 
 with col2:
@@ -178,6 +178,12 @@ with col2:
         @keyframes blinker {
         50% {
             opacity: 0;
+        }
+    }
+
+    @media (min-width:800px) {
+        .css-12w0qpk {
+            padding-left: 30px;
         }
     }
     </style>

@@ -109,7 +109,7 @@ class DataProvider:
         df3 = df3.SENDER.fillna(0).reset_index()
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','SENDER':'TOT_USERS'})
 
-        import random
+        import numpy as np
         with_users_df['DEP_CAT'] = (with_users_df['NET_DEPOSITED_AMOUNT']/1000).apply(int)
         df = with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).SENDER.count()
         df = df.reset_index()
@@ -123,7 +123,7 @@ class DataProvider:
         heatmap_val = df2.merge(df1, how='cross')
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
-        df['SENDER'] = df['SENDER'].apply(lambda v: int(random.random() * 1000))
+        df['SENDER'] = df['SENDER'].apply(lambda v: int(np.random.normal(10, 2.5)))
         df = df.rename(columns={'SENDER':'N_USERS'})
         self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[True,False])
 
