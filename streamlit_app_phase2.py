@@ -26,7 +26,7 @@ def claim(claim_hash, cols_claim):
     return df_claim
 
 data_provider = DataProvider(claim)
-data_provider.load_data_p1()
+data_provider.load_data_p2()
 chart_provider = ChartProvider()
 
 ###
@@ -73,46 +73,12 @@ with col2:
 with col3:
     st.subheader('UST deposited over time')
     st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
-    st.altair_chart(chart_provider.cum_ust_chart(data_provider.hourly_stats_df), use_container_width=True)
-####
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader('Transactions over time')
-    st.markdown("""This graph represents the number of deposits and withdrawals performed every hour in the Prism Forge.         """)
-    st.altair_chart(chart_provider.txs_over_time_chart(data_provider.hourly_stats_df), use_container_width=True)
-with col2:
-    st.subheader('Users over time')
-    st.markdown("""How does the total number of users who have interacted with the Prism Forge since launch look over time?""")
-    st.altair_chart(chart_provider.users_over_time_chart(data_provider.hourly_new_users_df), use_container_width=True)
-####
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader('User deposits distribution')
-    st.markdown("""How much UST are people depositing into the Forge each time? Well, this graph shows the distribution of deposits based on several ranges.""")
-    st.altair_chart(chart_provider.users_dep_distr_chart(data_provider.deposits_bucket_df), use_container_width=True)
-with col2:
-    st.subheader('Number of transactions per wallet')
-    st.markdown("""Are people performing one or multiple transactions on average? Here, we have the distribution of transactions per wallet into the Forge.
-    """)
-    st.altair_chart(chart_provider.n_tx_wallet_chart(data_provider.user_stats_df), use_container_width=True)
-####
-st.subheader('Participants from previous bootstrapping or community farming events')
-st.markdown("""For those who have participated in these previous launch events, how many of them have participated in the Prism Forge so far?""")
-st.altair_chart(chart_provider.user_part_prev_launches_chart(data_provider.prev_launches_df), use_container_width=True)
-####
-st.subheader('Participants\' wallet age')
-st.markdown("""Are the participants mainly Terra OGs? This graph shows the number of wallets participating in the Prism Forge based on the date their wallets are created.""")
-st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df, data_provider.dates_to_mark), use_container_width=True)
-###
-st.subheader('Top depositors')
-st.markdown("""Let's now see the top 5 addresses which have deposited the most UST. If you are curious, you can 
-look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
-st.table(data_provider.top_depositors)
-####
-st.subheader('Deposit distribution per balance')
-st.markdown("""This graph depicts the distribution of UST deposited against the average balance of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?
-You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers.""")
-st.altair_chart(chart_provider.dep_dist_balance_chart(data_provider.deposit_balance_df), use_container_width=True)
+    st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+
+st.subheader('UST deposited over time')
+st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
+st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
 ###
 st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
 st.markdown("""

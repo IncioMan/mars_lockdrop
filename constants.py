@@ -24,5 +24,13 @@ cols_dict = {
     'ADDRESS_COUNT':'Number of wallets',
     'TYPE':'Protocol launch',
     'PARTICIPATE_TYPE':'User participation',
-    'PARTICIPANTS':'Number of participants'
+    'PARTICIPANTS':'Number of participants',
+    'PERC_WITHDRAWN':'% withdrawn of the deposited amount',
+    'net_ust': 'Amount UST',
+    'perc_withdrawn_cat':'Percentage withdrawn UST bucket_',
+    'DEP_CAT':'Deposited UST range_',
+    'perc_withdrawn_cat_label':'Percentage UST withdrawn',
+    'DEP_CAT_label':'UST deposited range'
 }
+
+
