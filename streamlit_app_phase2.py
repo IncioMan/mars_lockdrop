@@ -75,7 +75,29 @@ with col2:
 with col3:
     st.subheader('UST deposited over time')
     st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
-    st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
+    st.altair_chart(chart_provider.pie_ust_chart(data_provider.ust_df), use_container_width=True)
+
+st.subheader('UST deposited over time')
+st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+st.subheader('UST deposited over time')
+st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+st.altair_chart(chart_provider.with_txs_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader('UST deposited over time')
+    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+
+with col2:
+    st.subheader('UST deposited over time')
+    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
+    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+
 
 
 st.subheader('UST deposited over time')

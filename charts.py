@@ -126,9 +126,9 @@ class ChartProvider:
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
             x=alt.X(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='ascending')),
             y=alt.Y(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='ascending')),
-            color=alt.Color(cols_dict['SENDER']+':Q',
+            color=alt.Color(cols_dict['N_USERS']+':Q',
                     scale=alt.Scale(scheme='redpurple')),
-            tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N']
+            tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['N_USERS']+':Q']
         )
         return heatmap_withdrawing_chart
 
@@ -139,7 +139,57 @@ class ChartProvider:
             y=cols_dict['net_ust']+":Q",
             tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'), alt.Tooltip(cols_dict['net_ust']+":Q")]
         ).configure_mark(
-            color='#F1705F'
+            color='#fab0ba'
         ).properties(width=700).configure_axisX(
         ).configure_view(strokeOpacity=0)
         return tot_ust_left_chart
+        
+    def with_perc_buckets_chart(self,with_perc_buckets):
+        with_perc_buckets_chart = alt.Chart(with_perc_buckets.sort_values(by='PERC_WITHDRAWN').rename(columns=cols_dict)).mark_bar().encode(
+            y=alt.X(cols_dict['PERC_WITHDRAWN']+":N", sort=alt.EncodingSortField(order='ascending')),
+            x=cols_dict['TOT_USERS']+":Q",
+            tooltip=[cols_dict['PERC_WITHDRAWN']+":N",cols_dict['TOT_USERS']+":Q"]
+        ).configure_mark(
+            color='#ffde85'
+        ).properties(height=300).configure_axisX(
+            labelAngle=0
+        ).configure_view(strokeOpacity=0)
+        return with_perc_buckets_chart
+
+    def with_users_hourly_chart(self,p2_hourly_df):
+        with_users_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
+            x=cols_dict['HR']+':T',
+            y=cols_dict['WITH_USERS']+":Q",
+            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_USERS']+":Q"]
+        ).configure_mark(
+            color='#fab0ba'
+        ).properties(width=700).configure_axisX(
+            labelAngle=30
+        ).configure_view(strokeOpacity=0)
+        return with_users_hourly_chart
+
+    def with_txs_hourly_chart(self,p2_hourly_df):
+        with_txs_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
+            x=cols_dict['HR']+':T',
+            y=cols_dict['WITH_AMOUNT']+":Q",
+            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_AMOUNT']+":Q"]
+        ).configure_mark(
+            color='#fab0ba'
+        ).properties(width=700).configure_axisX(
+            labelAngle=30
+        ).configure_view(strokeOpacity=0)
+        return with_txs_hourly_chart
+
+    def pie_ust_chart(self, ust_df):
+        ust_df = ust_df.sort_values(by='Type')
+        pie_ust_chart = alt.Chart(ust_df).mark_arc().encode(
+            theta=alt.Theta(field="UST", type="quantitative"),
+            color=alt.Color(field="Type", type="nominal",
+                    scale=alt.Scale(scheme='pastel1'),
+                    legend=alt.Legend(
+                    orient='none',
+                    padding=10,
+                    legendY=-10,
+                    direction='vertical'))
+        ).configure_view(strokeOpacity=0)
+        return pie_ust_chart

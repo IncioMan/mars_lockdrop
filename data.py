@@ -88,6 +88,9 @@ class DataProvider:
         self.p2_users_df['max_with_hour'] = '2022-02-03 10:00:00.000'
         self.possible_with = self.p2_users_df[self.p2_users_df['WITHDRAWN_AMOUNT_PHASE2'].isna()]['NET_DEPOSITED_AMOUNT']
 
+        self.ust_df = pd.DataFrame([[self.tot_with_ust,self.tot_ust_p1-self.tot_with_ust],['Withdrawn','Still deposited']]).T
+        self.ust_df.columns = ['UST','Type']
+
         df = self.p2_users_df[self.p2_users_df['HR'].notna()]
         delta = pd.to_datetime(df['max_with_hour']) - pd.to_datetime(df['HR'])
         df['hours_til_end_p2'] = delta.dt.days * 24 + delta.dt.seconds/3600
@@ -120,7 +123,8 @@ class DataProvider:
         heatmap_val = df2.merge(df1, how='cross')
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
-        df['SENDER'] = df['SENDER'].apply(lambda v: random.random() * 1000)
+        df['SENDER'] = df['SENDER'].apply(lambda v: int(random.random() * 1000))
+        df = df.rename(columns={'SENDER':'N_USERS'})
         self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[True,False])
 
 
