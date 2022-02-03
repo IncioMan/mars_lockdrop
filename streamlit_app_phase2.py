@@ -38,8 +38,7 @@ with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png" width=\"100px\">', unsafe_allow_html=True)
-st.text('')
-st.text('')
+st.markdown('<div>Status: Terminated <span class="terminated"></span></div>',unsafe_allow_html=True)
 st.text('')
 
 col1, col2, col3 = st.columns([0.5,0.5,1])
@@ -72,7 +71,7 @@ with col2:
 
 with col3:
     st.subheader('UST deposited over time')
-    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
+    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge.""")
     st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
@@ -98,6 +97,7 @@ st.markdown("""
     .block-container
     {
         padding-bottom: 1rem;
+        padding-top: 3rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -116,3 +116,33 @@ with col1:
 with col2:
     st.text("Sponsored by:")
     st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/flipsidewhite.png" width=\"160px\">](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    .terminated {
+        margin-left: 10px;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border: 1px solid red;
+        background-color: red;
+        border-radius: 100%;
+        opacity: 0.8;
+    }
+
+    .blink_me {
+        margin-left: 10px;
+        animation: blinker 2s linear infinite;
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border: 1px solid green;
+        background-color: green;
+        border-radius: 100%;
+        }
+        @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)

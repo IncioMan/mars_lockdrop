@@ -27,8 +27,8 @@ cols_dict = {
     'PARTICIPANTS':'Number of participants',
     'PERC_WITHDRAWN':'% withdrawn of the deposited amount',
     'net_ust': 'Amount UST',
-    'perc_withdrawn_cat':'Percentage withdrawn UST bucket_',
-    'DEP_CAT':'Deposited UST range_',
+    'perc_withdrawn_cat':'Percentage withdrawn UST bucket',
+    'DEP_CAT':'Deposited UST range',
     'perc_withdrawn_cat_label':'Percentage UST withdrawn',
     'DEP_CAT_label':'UST deposited range'
 }
