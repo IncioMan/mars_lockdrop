@@ -7,7 +7,7 @@ from PIL import Image
 from data import DataProvider
 
 st.set_page_config(page_title="Prism Forge - Analytics",\
-        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/xPRISM.png',stream=True).raw),\
+        page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/xPRISM.png',stream=True).raw),\
         layout='wide')
 
 ###
@@ -33,44 +33,47 @@ chart_provider = ChartProvider()
 ###
 
 original_title = '<p style="font-size: 60px;">Prism Forge - Phase 2</p>'
-col1, col2 = st.columns([1,12])
+col1, col2 = st.columns([2,12])
 with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
-    st.image('https://raw.githubusercontent.com/IncioMan/on-chain-data-analysis/prism_launch/prism_launch/images/prism_white_small.png')
+    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png" width=\"100px\">', unsafe_allow_html=True)
 st.text('')
 st.text('')
 st.text('')
 
-col1, col2, col3, col4, col5, col6 = st.columns([5,50,50,50,50,50])
+col1, col2, col3 = st.columns([0.5,0.5,1])
+
+with col1:
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.metric(label="Total UST deposited",\
+            value=f"${round((data_provider.tot_deposits/1000000.0),2)}M",\
+            delta=f"{int((data_provider.tot_deposits-data_provider.next_last_ust)/1000)}k")
+    st.metric(label="UST Withdrawn %", value=f"32.3%", delta=3,
+    delta_color="off")
+    st.metric(label="% Withdrawing Users", value=f"15.4%", delta=1.5, delta_color="off")
 
 with col2:
-    st.metric(label="Total UST deposited",\
-              value=f"${round((data_provider.tot_deposits/1000000.0),2)}M",\
-              delta=f"{int((data_provider.tot_deposits-data_provider.next_last_ust)/1000)}k")
-
-with col3:
-    st.metric(label="Unique users", value=data_provider.n_users, delta=int(data_provider.n_users-data_provider.next_last_users),
-     delta_color="off")
-    
-with col4:
-    st.metric(label="Transactions", value=data_provider.n_txs, delta=int(data_provider.n_txs-data_provider.next_last_txs),
-     delta_color="off")
-
-with col5:
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
     price = data_provider.tot_deposits/70000000
     price_delta = (data_provider.tot_deposits-data_provider.next_last_ust)/70000000
-    st.metric(label="Estimated price", value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
-
-with col6:
+    st.metric(label="Current Price",  value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
+    st.metric(label="Floor price", value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
     fdv = price*1000000000
     delta = (price_delta*70000000)/1000000000
     st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M",\
-              delta=round(delta/1000000,2),delta_color="off")
-####
-st.subheader('UST deposited over time')
-st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
-st.altair_chart(chart_provider.cum_ust_chart(data_provider.hourly_stats_df), use_container_width=True)
+            delta=round(delta/1000000,2),delta_color="off")
+
+with col3:
+    st.subheader('UST deposited over time')
+    st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge. 70 million PRISM tokens are allocated to the Prism Forge and will be distributed to depositors based on their net UST contributed during this phase.""")
+    st.altair_chart(chart_provider.cum_ust_chart(data_provider.hourly_stats_df), use_container_width=True)
 ####
 col1, col2 = st.columns(2)
 with col1:
@@ -111,11 +114,7 @@ st.markdown("""This graph depicts the distribution of UST deposited against the 
 You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers.""")
 st.altair_chart(chart_provider.dep_dist_balance_chart(data_provider.deposit_balance_df), use_container_width=True)
 ###
-st.text('')
-st.markdown("""
-This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sam](https://twitter.com/sem1d5) - with the support of [flipsidecrypto](https://flipsidecrypto.xyz/).
-
-You can participate in Prism Forge [here](https://forge.prismprotocol.app/).""")
+st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
 st.markdown("""
 <style>
     @media (min-width:640px) {
@@ -138,7 +137,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 hide_streamlit_style = """
                         <style>
+                        #MainMenu {visibility: hidden;}
                         footer {visibility: hidden;}
                         </style>
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+col1, col2= st.columns([7,2])
+with col1:
+    st.text("In collaboration with:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prismwhite.svg" style="margin-left:80px">](http://prismprotocol.app/)', unsafe_allow_html=True)
+with col2:
+    st.text("Sponsored by:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/flipsidewhite.png" width=\"160px\">](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
