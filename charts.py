@@ -41,7 +41,14 @@ class ChartProvider:
         ).configure_view(strokeOpacity=0)
         return users_dep_distr_chart
 ####
-    def cum_ust_chart(self, hourly_stats_df):
+    def cum_ust_chart(self, hourly_stats_df, tot_deposit):
+        ###Add live total
+        import time
+        print(hourly_stats_df.columns)
+        df = pd.DataFrame([time.strftime('%m/%d %H:00'),time.strftime('%m/%d %H:00'), tot_deposit]).T
+        df.columns = ['Hour',cols_dict['HR'],cols_dict['cumsum_ust']]
+        hourly_stats_df = pd.concat([hourly_stats_df[['Hour',cols_dict['HR'],cols_dict['cumsum_ust']]],df])
+        ###
         cum_ust_chart = alt.Chart(hourly_stats_df.rename(columns=cols_dict)).mark_line(point=True).encode(
             x=alt.X(cols_dict['HR']+':T', sort=alt.EncodingSortField(order='ascending')),
             y=cols_dict['cumsum_ust']+":Q",

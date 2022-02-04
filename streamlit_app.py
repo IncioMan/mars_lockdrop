@@ -72,7 +72,7 @@ with col6:
 ####
 st.subheader('UST deposited over time')
 st.markdown("""This graph shows the cumulative net UST deposits into the Prism Forge""")
-st.altair_chart(chart_provider.cum_ust_chart(data_provider.hourly_stats_df), use_container_width=True)
+st.altair_chart(chart_provider.cum_ust_chart(data_provider.hourly_stats_df, data_provider.tot_deposits), use_container_width=True)
 ####
 col1, col2 = st.columns(2)
 with col1:

@@ -1,5 +1,6 @@
 import pandas as pd
 from constants import cols_dict
+import requests
 
 class DataProvider:
     
@@ -38,16 +39,16 @@ class DataProvider:
         self.hourly_stats_df['cumsum_txs'] = self.hourly_stats_df.sort_values(by='HR').TOT_TXS.cumsum()
         self.hourly_stats_df['Hour'] = self.hourly_stats_df['HR']
         df = self.hourly_stats_df.sort_values(by='HR')
+        d = requests.get("http://fcd.terra.dev/v1/bank/terra1angxk38zehp0k09m0wqrrxf0r3ces6qjj432l8").json()
+        self.tot_deposits = int(d['balance'][0]['available'])/1000000
         index = df.index
         if(len(index)>1):
             self.n_txs = df.loc[index[-1]].cumsum_txs
-            self.tot_deposits = df.loc[index[-1]].cumsum_ust
             i = -2
             self.next_last_ust = df.loc[index[i]].cumsum_ust
             self.next_last_txs = df.loc[index[i]].cumsum_txs
         else:
             self.n_txs = 0
-            self.tot_deposits = 0
             i = 0
             self.next_last_ust = 0
             self.next_last_txs = 0
