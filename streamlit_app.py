@@ -130,7 +130,7 @@ st.markdown("""
     }
     .block-container
     {
-        padding-top: 2rem;
+        padding-top: 5rem;
         padding-bottom: 1rem;
     }
 </style>
