@@ -12,7 +12,7 @@ st.set_page_config(page_title="Prism Forge - Analytics",\
 
 ###
 
-@st.cache(ttl=10, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash, cols_claim):
     try:
         df_claim = pd.read_json(
