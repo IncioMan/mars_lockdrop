@@ -125,10 +125,12 @@ class ChartProvider:
         return wallet_age_chart
 
     def heatmap_withdrawing_chart(self, heatmap_data_df):
+        dep_cat_label_order = heatmap_data_df.sort_values(by='DEP_CAT').DEP_CAT_label.unique()
+        perc_withdrawn_cat_label_order = heatmap_data_df.sort_values(by='perc_withdrawn_cat_label').DEP_CAT_label.unique()
         heatmap_data_df[cols_dict['N_USERS']]=heatmap_data_df.sender
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
-            y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
-            x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
+            y=alt.Y(cols_dict['perc_withdrawn_cat_label']+':O', sort=dep_cat_label_order),
+            x=alt.X(cols_dict['DEP_CAT_label']+':O', sort=perc_withdrawn_cat_label_order),
             color=alt.Color(cols_dict['N_USERS']+':Q',
                     scale=alt.Scale(scheme='greenblue'),
                     legend=alt.Legend(title='N° users')),
@@ -137,13 +139,20 @@ class ChartProvider:
         return heatmap_withdrawing_chart
 
     def heatmap_withdrawing_perc_users_chart(self, heatmap_data_df):
+        dep_cat_label_order = heatmap_data_df.sort_values(by='DEP_CAT').DEP_CAT_label.unique()
+        perc_withdrawn_cat_label_order = heatmap_data_df.sort_values(by='perc_withdrawn_cat_label').DEP_CAT_label.unique()
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
-            y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
-            x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
+            y=alt.Y(cols_dict['perc_withdrawn_cat_label']+':O', 
+                        sort=perc_withdrawn_cat_label_order
+                        ),
+            x=alt.X(cols_dict['DEP_CAT_label']+':O', sort=dep_cat_label_order),
             color=alt.Color(cols_dict['perc_sender']+':Q',
                     scale=alt.Scale(scheme='blues'),
                     legend=alt.Legend(title='% users')),
-            tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['perc_sender']+':Q']
+            tooltip=[cols_dict['DEP_CAT_label']+':N',
+            cols_dict['perc_withdrawn_cat_label']+':N',
+            cols_dict['perc_sender']+':Q',
+            cols_dict['N_USERS']+':Q']
         ).properties(height=350).interactive()
         return heatmap_withdrawing_chart
 
