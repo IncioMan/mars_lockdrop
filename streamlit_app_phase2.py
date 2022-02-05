@@ -25,7 +25,13 @@ def claim(claim_hash, cols_claim):
         return pd.DataFrame(columns = cols_claim[claim_hash])
     return df_claim
 
-data_provider = DataProvider(claim)
+
+@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
+def get_url(url):
+    return pd.read_csv(url, index_col=0)
+    
+
+data_provider = DataProvider(claim, get_url)
 data_provider.load_data_p2()
 chart_provider = ChartProvider()
 
