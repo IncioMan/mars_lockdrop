@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 streamlit = "*"
-terra-sdk = "*"
 
 [dev-packages]
 
