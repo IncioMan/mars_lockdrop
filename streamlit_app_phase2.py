@@ -66,7 +66,6 @@ with col2:
     st.text('')
     st.text('')
     price = data_provider.tot_net_ust/70000000
-    print(data_provider.tot_net_ust)
     st.metric(label="Current Price",  value=f"${round(price,2)}")
     st.metric(label="Floor price", value=f"${round(price,2)}")
     fdv = price*1000000000
