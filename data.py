@@ -121,7 +121,7 @@ class DataProvider:
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
         
         self.with_users_df['perc_withdrawn_cat_old'] = self.with_users_df['perc_withdrawn_cat']
-        self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x*10/5)))
+        self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x*10/5)+2))
         self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/20000).apply(int)
         df = self.with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).sender.count()
         df = df.reset_index()
