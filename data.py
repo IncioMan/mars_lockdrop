@@ -114,31 +114,30 @@ class DataProvider:
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
         df3 = df3.sender.fillna(0).reset_index()
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
-        
+    
         self.with_users_df['perc_withdrawn_cat_old'] = self.with_users_df['perc_withdrawn_cat']
         self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x*10/5)+2))
-        self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/20000).apply(int)
+        self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/1000).apply(int)
         df = self.with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).sender.count()
         df = df.reset_index()
 
+
+        dep_cat_label = []
+        for i in range(1,502):
+            dep_cat_label.append(f'{i-1}-{i}k')
+        dep_cat_label
         df1 = pd.DataFrame([list(range(1,21)),
                             ["0%-5%",	"5%-10%",	"10%-15%",	"15%-20%",	"20%-25%",	"25%-30%",	"30%-35%",	
         "35%-40%",	"40%-45%",	"45%-50%",	"50%-55%",	"55%-60%",	"60%-65%",	
         "65%-70%",	"70%-75%",	"75%-80%",	"80%-85%",	"85%-90%",	"90%-95%",	"95%-100%"]]).T
-        df2 = pd.DataFrame([list(range(0,29)),
-                            ["0-20k", "20-40k", "40-60k", "60-80k", "80-100k", "100-120k", "120-140k", "140-160k", 
-                            "160-180k", "180-200k","200-220k", "220-240k", "240-260k", "260-280k", "280-300k", "300-320k",
-                            "320-340k",
-                            "340-360k", 
-                            "360-380k", "380-400k", "400-420k", "420-440k", "440-460k", "460-480k", "480-500k", "500-520k","520-540k",
-                            "540-560k","560-580k"]]).T
+        df2 = pd.DataFrame([list(range(0,501)),dep_cat_label]).T
         df2['fake'] = 0
         df1['fake'] = 0
         heatmap_val = df2.merge(df1,on='fake').drop('fake',1)
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
         self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[False,True])
-        self.user_stats_df['DEP_CAT'] = (self.user_stats_df['deposit_amount']/20000).apply(int)
+        self.user_stats_df['DEP_CAT'] = (self.user_stats_df['deposit_amount']/1000).apply(int)
         n_users_dep_cat = self.user_stats_df.groupby(by='DEP_CAT').sender.count().rename('n_users').reset_index()
         self.heatmap_data_df=self.heatmap_data_df.merge(n_users_dep_cat, on='DEP_CAT')
         self.heatmap_data_df['perc_sender'] = self.heatmap_data_df['sender']/self.heatmap_data_df['n_users']*100

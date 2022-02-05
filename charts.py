@@ -144,7 +144,7 @@ class ChartProvider:
                     scale=alt.Scale(scheme='blues'),
                     legend=alt.Legend(title='% users')),
             tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['perc_sender']+':Q']
-        ).properties(height=350)
+        ).properties(height=350).interactive()
         return heatmap_withdrawing_chart
 
     def tot_ust_left_chart(self,p2_hourly_df):
