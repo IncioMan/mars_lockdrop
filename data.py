@@ -78,11 +78,9 @@ class DataProvider:
         self.p2_hourly_df = self.claim(self.p2_hourly, self.cols_claim)
         self.p2_hourly_df = self.p2_hourly_df.sort_values(by='HR')
         self.p2_hourly_df['cumsum_with'] = self.p2_hourly_df.sort_values(by='HR').WITH_AMOUNT.cumsum()
-        print(self.p2_hourly_df)
         
 
         self.with_phase1=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/p22/data/with_phase1.csv')
-        print(len(self.with_phase1))
         self.users_with = self.p2_users_df.merge(self.with_phase1,on='sender')[['sender','net_deposited_amount','deposit','withdrawable_amount']]
         self.users_with= self.users_with.rename(columns={'net_deposited_amount':'deposited_p1'})
         self.users_with['WITHDRAWN_AMOUNT_PHASE2'] = self.users_with.deposited_p1-self.users_with.deposit
@@ -103,10 +101,8 @@ class DataProvider:
         self.ust_df.columns = ['UST','Type']
 
         self.left_to_with = self.users_with.withdrawable_amount.sum()
-        print(self.tot_net_ust, self.left_to_with)
         self.floor_price = (self.tot_net_ust - self.left_to_with)/70000000
-        print(self.left_to_with)
-
+        
 
         self.with_users_df = self.users_with[self.users_with.has_withdrawn_p2&self.users_with['deposited_p1']>0]
         self.with_users_df['perc_withdrawn'] = round(self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/self.with_users_df['deposited_p1']*10
@@ -115,7 +111,6 @@ class DataProvider:
         perc_cat = list(range(0,10))
         cat = pd.DataFrame([0]*10,perc_cat)
         df3 = cat.join(df2,how='outer')
-        print(self.with_users_df)
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
         df3 = df3.sender.fillna(0).reset_index()
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})

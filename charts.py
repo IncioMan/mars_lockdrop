@@ -166,7 +166,6 @@ class ChartProvider:
 
     def with_users_hourly_chart(self,p2_hourly_df):
         p2_hourly_df['HR'] = '2022/'+p2_hourly_df['HR']
-        print(p2_hourly_df['HR'])
         with_users_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
             x=alt.X(cols_dict['HR']+':T',
                 axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
