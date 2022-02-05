@@ -35,7 +35,8 @@ cols_dict = {
     'sender':'User address',
     'deposited_p1':'Total deposited in Phase 1',
     'WITHDRAWN_AMOUNT_PHASE2':'Amount withdrawn in Withdrawal Only part of Phase 1',
-    'perc_withdrawn_precise':'Percentage withdrawn out of total deposited'
+    'perc_withdrawn_precise':'Percentage withdrawn out of total deposited (%)',
+    'perc_sender':'Percentage of users who withdrew from this bucket (%)'
 }
 
 

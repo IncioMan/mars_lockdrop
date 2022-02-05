@@ -138,6 +138,10 @@ class DataProvider:
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
         self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[False,True])
+        self.user_stats_df['DEP_CAT'] = (self.user_stats_df['deposit_amount']/20000).apply(int)
+        n_users_dep_cat = self.user_stats_df.groupby(by='DEP_CAT').sender.count().rename('n_users').reset_index()
+        self.heatmap_data_df=self.heatmap_data_df.merge(n_users_dep_cat, on='DEP_CAT')
+        self.heatmap_data_df['perc_sender'] = self.heatmap_data_df['sender']/self.heatmap_data_df['n_users']*100
 
     def __init__(self, claim, get_url=None):
         self.claim = claim

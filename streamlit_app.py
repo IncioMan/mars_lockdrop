@@ -110,6 +110,10 @@ st.subheader('Distribution across deposit and withdrawals percentage buckets')
 st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
 st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
 ###
+st.subheader('Percentage of users who withdrew out of all users in that bucket')
+st.markdown("""What combination of amount deposited and percentage withdrawn has the highest number of withdrawing users?""")
+st.altair_chart(chart_provider.heatmap_withdrawing_perc_users_chart(data_provider.heatmap_data_df), use_container_width=True)
+###
 st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
 st.markdown("""
 <style>
