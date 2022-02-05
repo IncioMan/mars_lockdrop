@@ -102,8 +102,8 @@ with col2:
     st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
-st.subheader('Distribution across deposit and withdrawals percentage buckets')
-st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
+st.subheader('Overview of users who have withdrawn')
+st.markdown("""This graph shows the single users who have withdrawn, placed and colored according to the amount they had deposited and the amount and percentage withdrawn""")
 st.altair_chart(chart_provider.with_perc_user_chart(data_provider.with_users_df), use_container_width=True)
 ###
 st.subheader('Distribution across deposit and withdrawals percentage buckets')
