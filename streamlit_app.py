@@ -47,7 +47,7 @@ with col1:
 col1, col2, col6 = st.columns([5,200,50])
 with col2:
     #st.markdown('Only withdrawls are allowed in this stage', unsafe_allow_html=True)
-    st.markdown('Analytics from the previous stage can be seen [here](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
+    st.markdown('Analytics from the previous stage can be seen [here](https://share.streamlit.io/incioman/prism_forge/streamlit_app_phase1_deposit.py)', unsafe_allow_html=True)
 with col6:
     st.markdown('<div>Status: Active <span class="blink_me"></span></div>',unsafe_allow_html=True)
 
