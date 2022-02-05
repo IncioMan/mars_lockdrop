@@ -129,8 +129,8 @@ class ChartProvider:
         perc_withdrawn_cat_label_order = heatmap_data_df.sort_values(by='perc_withdrawn_cat_label').DEP_CAT_label.unique()
         heatmap_data_df[cols_dict['N_USERS']]=heatmap_data_df.sender
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
-            y=alt.Y(cols_dict['perc_withdrawn_cat_label']+':O', sort=dep_cat_label_order),
-            x=alt.X(cols_dict['DEP_CAT_label']+':O', sort=perc_withdrawn_cat_label_order),
+            y=alt.Y(cols_dict['perc_withdrawn_cat_label']+':O', sort=perc_withdrawn_cat_label_order),
+            x=alt.X(cols_dict['DEP_CAT_label']+':O', sort=dep_cat_label_order),
             color=alt.Color(cols_dict['N_USERS']+':Q',
                     scale=alt.Scale(scheme='greenblue'),
                     legend=alt.Legend(title='N° users')),
