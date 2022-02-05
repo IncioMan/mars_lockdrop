@@ -31,7 +31,11 @@ cols_dict = {
     'perc_withdrawn_cat':'Percentage withdrawn UST bucket',
     'DEP_CAT':'Deposited UST range',
     'perc_withdrawn_cat_label':'Percentage UST withdrawn',
-    'DEP_CAT_label':'UST deposited range'
+    'DEP_CAT_label':'UST deposited range',
+    'sender':'User address',
+    'deposited_p1':'Total deposited in Phase 1',
+    'WITHDRAWN_AMOUNT_PHASE2':'Amount withdrawn in Withdrawal Only part of Phase 1',
+    'perc_withdrawn_precise':'Percentage withdrawn out of total deposited'
 }
 
 

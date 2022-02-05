@@ -102,8 +102,10 @@ with col2:
     st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
-
-
+st.subheader('Distribution across deposit and withdrawals percentage buckets')
+st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
+st.altair_chart(chart_provider.with_perc_user_chart(data_provider.with_users_df), use_container_width=True)
+###
 st.subheader('Distribution across deposit and withdrawals percentage buckets')
 st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
 st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)

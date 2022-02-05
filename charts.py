@@ -130,9 +130,9 @@ class ChartProvider:
             y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
             x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
             color=alt.Color(cols_dict['N_USERS']+':Q',
-                    scale=alt.Scale(scheme='redpurple')),
+                    scale=alt.Scale(scheme='greenblue')),
             tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['N_USERS']+':Q']
-        )
+        ).properties(height=350)
         return heatmap_withdrawing_chart
 
     def tot_ust_left_chart(self,p2_hourly_df):
@@ -199,3 +199,18 @@ class ChartProvider:
                     direction='vertical'))
         ).configure_view(strokeOpacity=0)
         return pie_ust_chart
+
+    def with_perc_user_chart(self, with_users_df):
+        with_users_df['perc_withdrawn_precise'] = round(with_users_df[with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/with_users_df['deposited_p1']
+        with_users_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+with_users_df['sender']
+        with_perc_user_chart =alt.Chart(with_users_df.rename(columns=cols_dict)).mark_point(opacity=1, filled=True).encode(
+                y=alt.Y(cols_dict['deposited_p1']+":Q",scale=alt.Scale(domain=(0, 5500))),
+                x=alt.X(cols_dict['WITHDRAWN_AMOUNT_PHASE2']+":Q",scale=alt.Scale(domain=(0, 5000))),
+                href='url:N',
+                color=alt.Color(cols_dict['perc_withdrawn_precise']+':Q',
+                    scale=alt.Scale(scheme='redpurple'),
+                    legend=alt.Legend(title='% With')),
+                tooltip=[cols_dict['sender']+':N',cols_dict['deposited_p1']+':N',
+                        cols_dict['WITHDRAWN_AMOUNT_PHASE2']+':N',cols_dict['perc_withdrawn_precise']+':N']
+                ).configure_view(strokeOpacity=0).interactive()
+        return with_perc_user_chart
