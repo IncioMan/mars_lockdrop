@@ -131,7 +131,6 @@ class ChartProvider:
         return wallet_age_chart
 
     def heatmap_withdrawing_chart(self, heatmap_data_df):
-        heatmap_data_df[cols_dict['N_USERS']]=heatmap_data_df.sender
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
             y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
             x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
@@ -144,8 +143,8 @@ class ChartProvider:
     def tot_ust_left_chart(self,p2_hourly_df):
         tot_ust_left_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_line(point=True).encode(
             x=alt.X(cols_dict['HR']+':T', sort=alt.EncodingSortField(order='ascending')),
-            y=cols_dict['ust_left']+":Q",
-            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'), alt.Tooltip(cols_dict['ust_left']+":Q")]
+            y=cols_dict['net_ust']+":Q",
+            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'), alt.Tooltip(cols_dict['net_ust']+":Q")]
         ).configure_mark(
             color='#fab0ba'
         ).properties(width=700).configure_axisX(
