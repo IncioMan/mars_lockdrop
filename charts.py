@@ -172,7 +172,7 @@ class ChartProvider:
         ).configure_view(strokeOpacity=0)
         return with_users_hourly_chart
 
-    def with_txs_hourly_chart(self,p2_hourly_df):
+    def with_amount_hourly_chart(self,p2_hourly_df):
         with_txs_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
             x=alt.X(cols_dict['HR']+':T',
                 axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),

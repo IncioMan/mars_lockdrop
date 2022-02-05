@@ -85,9 +85,9 @@ with col1:
     st.markdown("""The net UST left deposited into the Prism Forge over time""")
     st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
 with col2:
-    st.subheader('Number of withdrawal')
-    st.markdown("""This graph shows the withdrawals transactions in Phase 2""")
-    st.altair_chart(chart_provider.with_txs_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
+    st.subheader('Amount withdrawn')
+    st.markdown("""This graph shows the amount withdrawn in Phase 2""")
+    st.altair_chart(chart_provider.with_amount_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
 col1, col2 = st.columns(2)
