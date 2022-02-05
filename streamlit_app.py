@@ -37,7 +37,7 @@ chart_provider = ChartProvider()
 ###
 ###
 
-original_title = '<p style="font-size: 60px;">Prism Forge - Phase 1 - Withdrawals Only</p>'
+original_title = '<p style="font-size: 59px;">Prism Forge - Withdrawals Only</p>'
 col1, col2 = st.columns([2,12])
 with col2:
     st.markdown(original_title, unsafe_allow_html=True)
