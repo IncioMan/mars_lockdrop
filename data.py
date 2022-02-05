@@ -109,12 +109,13 @@ class DataProvider:
 
 
         self.with_users_df = self.users_with[self.users_with.has_withdrawn_p2&self.users_with['deposited_p1']>0]
-        self.with_users_df['perc_withdrawn'] = round(self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/self.with_users_df['deposited_p1']*100
-        self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']/10).apply(lambda x: int(x))
+        self.with_users_df['perc_withdrawn'] = round(self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/self.with_users_df['deposited_p1']*10
+        self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']).apply(lambda x: int(x) if int(x) < 10 else 9)
         df2 = self.with_users_df.groupby('perc_withdrawn_cat').sender.count()
-        perc_cat = list(range(1,11))
+        perc_cat = list(range(0,10))
         cat = pd.DataFrame([0]*10,perc_cat)
         df3 = cat.join(df2,how='outer')
+        print(self.with_users_df)
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
         df3 = df3.sender.fillna(0).reset_index()
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
