@@ -41,7 +41,7 @@ class DataProvider:
         self.hourly_stats_df['Hour'] = self.hourly_stats_df['HR']
         df = self.hourly_stats_df.sort_values(by='HR')
         d = requests.get("http://fcd.terra.dev/v1/bank/terra1angxk38zehp0k09m0wqrrxf0r3ces6qjj432l8").json()
-        self.tot_deposits = int(d['balance'][0]['available'])/1000000
+        self.tot_deposits = 25220000
         index = df.index
         if(len(index)>1):
             self.n_txs = df.loc[index[-1]].cumsum_txs
