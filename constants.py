@@ -1,5 +1,4 @@
 cols_dict = {
-    "ust_left":"UST left deposited",
     "DEPOSIT_AMOUNT":"Amount deposited",
     "DEPOSIT_NET":"Deposited amount (UST)",
     "DEPOSIT_TXS":"N° of deposit txs",
