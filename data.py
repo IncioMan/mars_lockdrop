@@ -80,7 +80,7 @@ class DataProvider:
         self.p2_hourly_df['cumsum_with'] = self.p2_hourly_df.sort_values(by='HR').WITH_AMOUNT.cumsum()
         
 
-        self.with_phase1.deposit=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/master/data/with_phase1.csv')
+        self.with_phase1=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/p22/data/with_phase1.csv')
         self.users_with = self.p2_users_df.merge(self.with_phase1,on='sender')[['sender','net_deposited_amount','deposit','withdrawable_amount']]
         self.users_with= self.users_with.rename(columns={'net_deposited_amount':'deposited_p1'})
         self.users_with['WITHDRAWN_AMOUNT_PHASE2'] = self.users_with.deposited_p1-self.users_with.deposit
