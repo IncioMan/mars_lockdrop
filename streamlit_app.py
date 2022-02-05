@@ -86,7 +86,7 @@ with col1:
     st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
 with col2:
     st.subheader('Amount withdrawn')
-    st.markdown("""This graph shows the amount withdrawn in Phase 2""")
+    st.markdown("""This graph shows the amount withdrawn in Stage 2""")
     st.altair_chart(chart_provider.with_amount_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
 
 
