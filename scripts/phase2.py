@@ -16,7 +16,7 @@ terra = LCDClient(url="https://lcd.terra.dev", chain_id="columbus-5")
 deposit_info = []
 
 # list of wallet addresses
-for _, item in df_claim.head()['SENDER'].iteritems():
+for _, item in df_claim['SENDER'].iteritems():
 
   msg = {"deposit_info": {"address": item}}
 
@@ -31,10 +31,6 @@ for _, item in df_claim.head()['SENDER'].iteritems():
 
 # list to df
 df = pd.DataFrame(deposit_info)
-df.deposit=df.deposit.apply(int)/1000000
-df.total_deposit=df.total_deposit.apply(int)/1000000
-df.withdrawable_amount=df.withdrawable_amount.apply(int)/1000000
-df.tokens_to_claim=df.tokens_to_claim.apply(int)/1000000
 
 # dump to csv
 df.to_csv('data/with_phase1.csv')

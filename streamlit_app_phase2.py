@@ -12,7 +12,7 @@ st.set_page_config(page_title="Prism Forge - Analytics",\
 
 ###
 
-@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=10, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash, cols_claim):
     try:
         df_claim = pd.read_json(
@@ -25,11 +25,7 @@ def claim(claim_hash, cols_claim):
         return pd.DataFrame(columns = cols_claim[claim_hash])
     return df_claim
 
-@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
-def get_url(url):
-    return pd.read_csv(url, index_col=0)
-
-data_provider = DataProvider(claim, get_url)
+data_provider = DataProvider(claim)
 data_provider.load_data_p2()
 chart_provider = ChartProvider()
 
@@ -56,21 +52,25 @@ with col1:
     st.text('')
     st.text('')
     st.metric(label="Total UST deposited",\
-            value=f"${round((data_provider.tot_net_ust/1000000.0),2)}M")
-    st.metric(label="UST Withdrawn %", value=f"{round(data_provider.perc_with_p2,2)}%")
-    st.metric(label="% Withdrawing Users", value=f"{round(data_provider.p_users_with_p2,2)}%")
+            value=f"${round((data_provider.tot_deposits/1000000.0),2)}M",\
+            delta=f"{int((data_provider.tot_deposits-data_provider.next_last_ust)/1000)}k")
+    st.metric(label="UST Withdrawn %", value=f"32.3%", delta=3,
+    delta_color="off")
+    st.metric(label="% Withdrawing Users", value=f"15.4%", delta=1.5, delta_color="off")
 
 with col2:
     st.text('')
     st.text('')
     st.text('')
     st.text('')
-    price = data_provider.tot_net_ust/70000000
-    print(data_provider.tot_net_ust)
-    st.metric(label="Current Price",  value=f"${round(price,2)}")
-    st.metric(label="Floor price", value=f"${round(price,2)}")
+    price = data_provider.tot_deposits/70000000
+    price_delta = (data_provider.tot_deposits-data_provider.next_last_ust)/70000000
+    st.metric(label="Current Price",  value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
+    st.metric(label="Floor price", value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
     fdv = price*1000000000
-    st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M")
+    delta = (price_delta*70000000)/1000000000
+    st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M",\
+            delta=round(delta/1000000,2),delta_color="off")
 
 with col3:
     st.subheader('UST distribution')
@@ -136,14 +136,11 @@ hide_streamlit_style = """
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-col1, col2, col3= st.columns([3,3,2])
+col1, col2= st.columns([7,2])
 with col1:
     st.text("In collaboration with:")
     st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prismwhite.svg" style="margin-left:80px">](http://prismprotocol.app/)', unsafe_allow_html=True)
 with col2:
-    st.text("With the support of:")
-    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/ExtraterrestrialWhite.png"  width=\"160px\">](finder.extraterrestrial.money)', unsafe_allow_html=True)
-with col3:
     st.text("Sponsored by:")
     st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/flipsidewhite.png" width=\"160px\">](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
     st.markdown("""

@@ -1,7 +1,6 @@
 import pandas as pd
 from constants import cols_dict
 import requests
-import random
 
 class DataProvider:
     
@@ -71,76 +70,68 @@ class DataProvider:
         )
     
     def load_data_p2(self):
-        self.user_stats_df = self.claim(self.user_stats, self.cols_claim)
-        self.user_stats_df.columns = [c.lower() for c in self.user_stats_df.columns]
+        self.tot_deposits = 1000000
+        self.next_last_ust = 1000000
+        self.next_last_ust = 1000000
         self.p2_users_df = self.claim(self.p2_users, self.cols_claim)
-        self.p2_users_df.columns = [c.lower() for c in self.p2_users_df.columns]
         self.p2_hourly_df = self.claim(self.p2_hourly, self.cols_claim)
+        self.p2_hourly_df['HR'] = '2022/' + self.p2_hourly_df['HR'] + ':00'
         self.p2_hourly_df = self.p2_hourly_df.sort_values(by='HR')
         self.p2_hourly_df['cumsum_with'] = self.p2_hourly_df.sort_values(by='HR').WITH_AMOUNT.cumsum()
         
-
-        self.with_phase1.deposit=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/master/data/with_phase1.csv')
-        self.users_with = self.p2_users_df.merge(self.with_phase1,on='sender')[['sender','net_deposited_amount','deposit','withdrawable_amount']]
-        self.users_with= self.users_with.rename(columns={'net_deposited_amount':'deposited_p1'})
-        self.users_with['WITHDRAWN_AMOUNT_PHASE2'] = self.users_with.deposited_p1-self.users_with.deposit
-        self.users_with['has_withdrawn_p2'] = self.users_with.deposit < self.users_with.deposited_p1
-
-
-        self.tot_with_ust = self.users_with['WITHDRAWN_AMOUNT_PHASE2'].sum()
-        self.tot_ust_p1 = self.users_with['deposited_p1'].sum()
-        self.p2_hourly_df['ust_left'] = self.tot_ust_p1 - self.p2_hourly_df['cumsum_with']
-        self.tot_net_ust = self.users_with.deposit.sum()
+        self.tot_with_ust = self.p2_users_df['WITHDRAWN_AMOUNT_PHASE2'].sum()
+        self.tot_ust_p1 = self.p2_users_df['NET_DEPOSITED_AMOUNT'].sum()
+        self.p2_hourly_df['net_ust'] = self.tot_ust_p1 - self.p2_hourly_df['cumsum_with']
+        self.tot_net_ust = self.tot_ust_p1 - self.tot_with_ust
         self.perc_with_p2 = self.tot_with_ust/self.tot_ust_p1 * 100
         self.curr_price = self.tot_net_ust/70000000
-        self.p_users_with_p2 = (self.users_with.has_withdrawn_p2.sum()/len(self.p2_users_df))*100
+        self.p_users_with_p2 = (1-self.p2_users_df['WITHDRAWN_AMOUNT_PHASE2'].isna().sum()/len(self.p2_users_df))*100
         self.p2_users_df['max_with_hour'] = '2022-02-03 10:00:00.000'
-        
+        self.possible_with = self.p2_users_df[self.p2_users_df['WITHDRAWN_AMOUNT_PHASE2'].isna()]['NET_DEPOSITED_AMOUNT']
+
         self.ust_df = pd.DataFrame([[self.tot_with_ust,self.tot_ust_p1-self.tot_with_ust],['Withdrawn','Still deposited']]).T
         self.ust_df.columns = ['UST','Type']
 
-        df = self.p2_users_df[self.p2_users_df['hr'].notna()]
-        delta = pd.to_datetime(df['max_with_hour']) - pd.to_datetime(df['hr'])
+        df = self.p2_users_df[self.p2_users_df['HR'].notna()]
+        delta = pd.to_datetime(df['max_with_hour']) - pd.to_datetime(df['HR'])
         df['hours_til_end_p2'] = delta.dt.days * 24 + delta.dt.seconds/3600
-        df['left_to_with'] = 24/df['hours_til_end_p2'] * df['net_deposited_amount']
+        df['left_to_with'] = 24/df['hours_til_end_p2'] * df['NET_DEPOSITED_AMOUNT']
         self.left_to_with = df['left_to_with'].sum()
         self.floor_price = (self.tot_net_ust - self.left_to_with)/70000000
 
-
-        self.with_users_df = self.users_with[self.users_with.has_withdrawn_p2&self.users_with['deposited_p1']>0]
-        self.with_users_df['perc_withdrawn'] = self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2']/self.with_users_df['deposited_p1']*100
-        self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']/100).apply(lambda x: int(x))
-        df2 = self.with_users_df.groupby('perc_withdrawn_cat').sender.count()
+        with_users_df = self.p2_users_df[self.p2_users_df['HR'].notna()&self.p2_users_df['NET_DEPOSITED_AMOUNT']>0]
+        with_users_df['perc_withdrawn'] = with_users_df[with_users_df['HR'].notna()]['WITHDRAWN_AMOUNT']/with_users_df['NET_DEPOSITED_AMOUNT']*100
+        with_users_df['perc_withdrawn_cat'] = (with_users_df['perc_withdrawn']/100).apply(lambda x: int(x))
+        df2 = with_users_df.groupby('perc_withdrawn_cat').SENDER.count()
         perc_cat = list(range(10))
         cat = pd.DataFrame([0]*10,perc_cat)
         df3 = cat.join(df2,how='outer')
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
-        df3 = df3.sender.fillna(0).reset_index()
-        self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
+        df3 = df3.SENDER.fillna(0).reset_index()
+        self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','SENDER':'TOT_USERS'})
 
-        self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/1000).apply(int)
-        df = self.with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).sender.count()
+        import numpy as np
+        with_users_df['DEP_CAT'] = (with_users_df['NET_DEPOSITED_AMOUNT']/1000).apply(int)
+        df = with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).SENDER.count()
         df = df.reset_index()
-
         df1 = pd.DataFrame([list(range(0,100,5)),
-                            ["0%-5%",	"5%-10%",	"10%-15%",	"15%-20%",	"20%-25%",	"25%-30%",	"30%-35%",	
+                    ["0%-5%",	"5%-10%",	"10%-15%",	"15%-20%",	"20%-25%",	"25%-30%",	"30%-35%",	
         "35%-40%",	"40%-45%",	"45%-50%",	"50%-55%",	"55%-60%",	"60%-65%",	
         "65%-70%",	"70%-75%",	"75%-80%",	"80%-85%",	"85%-90%",	"90%-95%",	"95%-100%"]]).T
         df2 = pd.DataFrame([list(range(0,651,50)),
                             ["0-50k", "50k-100k",	"100k-150k","150k-200k",	"200k-250k",	"250k-300k",	"300k-350k",
             "350k-400k",	"400k-450k",	"450k-500k",	"500k-550k",	"550k-600k",	"600k-650k", 	"650k-700k"]]).T
-        df2['fake'] = 0
-        df1['fake'] = 0
-        heatmap_val = df2.merge(df1,on='fake').drop('fake',1)
+        heatmap_val = df2.merge(df1, how='cross')
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
-        print(df.columns)
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
+        df['SENDER'] = df['SENDER'].apply(lambda v: int(np.random.normal(10, 2.5)))
+        df = df.rename(columns={'SENDER':'N_USERS'})
         self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[True,False])
 
 
-    def __init__(self, claim, get_url=None):
+
+    def __init__(self, claim):
         self.claim = claim
-        self.get_url = get_url
 
         self.user_stats = '499224b4-30a6-43d7-80b9-3a019cbb1d3d'
         self.deposits_bucket = 'b4953cda-a874-43fa-b78d-ceb0c1bfc3cf'
