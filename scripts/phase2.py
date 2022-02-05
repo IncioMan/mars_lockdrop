@@ -15,7 +15,9 @@ terra = LCDClient(url="https://lcd.terra.dev", chain_id="columbus-5")
 
 deposit_info = []
 
+print(len(df_claim))
 # list of wallet addresses
+i = 0
 for _, item in df_claim['SENDER'].iteritems():
 
   msg = {"deposit_info": {"address": item}}
@@ -25,9 +27,12 @@ for _, item in df_claim['SENDER'].iteritems():
   # turn on sleep here
   # time.sleep(2)
 
-  print(results)
+  #print(results)
 
   deposit_info.append({'sender': item, **results})
+  i+=1
+  if(i%500==0):
+    print(i)
 
 # list to df
 df = pd.DataFrame(deposit_info)

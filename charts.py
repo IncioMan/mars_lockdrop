@@ -165,10 +165,13 @@ class ChartProvider:
         return with_perc_buckets_chart
 
     def with_users_hourly_chart(self,p2_hourly_df):
+        p2_hourly_df['HR'] = '2022/'+p2_hourly_df['HR']
+        print(p2_hourly_df['HR'])
         with_users_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
-            x=cols_dict['HR']+':T',
+            x=alt.X(cols_dict['HR']+':T',
+                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['WITH_USERS']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_USERS']+":Q"]
+            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'),alt.Tooltip(cols_dict['WITH_USERS']+":Q")]
         ).configure_mark(
             color='#fab0ba'
         ).properties(width=700).configure_axisX(
@@ -178,9 +181,10 @@ class ChartProvider:
 
     def with_txs_hourly_chart(self,p2_hourly_df):
         with_txs_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
-            x=cols_dict['HR']+':T',
+            x=alt.X(cols_dict['HR']+':T',
+                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['WITH_AMOUNT']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_AMOUNT']+":Q"]
+            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'),alt.Tooltip(cols_dict['WITH_AMOUNT']+":Q")]
         ).configure_mark(
             color='#B8E9E4'
         ).properties(width=700).configure_axisX(

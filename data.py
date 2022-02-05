@@ -78,6 +78,7 @@ class DataProvider:
         self.p2_hourly_df = self.claim(self.p2_hourly, self.cols_claim)
         self.p2_hourly_df = self.p2_hourly_df.sort_values(by='HR')
         self.p2_hourly_df['cumsum_with'] = self.p2_hourly_df.sort_values(by='HR').WITH_AMOUNT.cumsum()
+        print(self.p2_hourly_df)
         
 
         self.with_phase1=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/p22/data/with_phase1.csv')
@@ -102,15 +103,16 @@ class DataProvider:
         self.ust_df.columns = ['UST','Type']
 
         self.left_to_with = self.users_with.withdrawable_amount.sum()
+        print(self.tot_net_ust, self.left_to_with)
         self.floor_price = (self.tot_net_ust - self.left_to_with)/70000000
         print(self.left_to_with)
 
 
         self.with_users_df = self.users_with[self.users_with.has_withdrawn_p2&self.users_with['deposited_p1']>0]
         self.with_users_df['perc_withdrawn'] = round(self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/self.with_users_df['deposited_p1']*100
-        self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']/100).apply(lambda x: int(x))
+        self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']/10).apply(lambda x: int(x))
         df2 = self.with_users_df.groupby('perc_withdrawn_cat').sender.count()
-        perc_cat = list(range(10))
+        perc_cat = list(range(1,11))
         cat = pd.DataFrame([0]*10,perc_cat)
         df3 = cat.join(df2,how='outer')
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
@@ -118,12 +120,12 @@ class DataProvider:
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
         
         self.with_users_df['perc_withdrawn_cat_old'] = self.with_users_df['perc_withdrawn_cat']
-        self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x/5)/5))
+        self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x*10/5)))
         self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/20000).apply(int)
         df = self.with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).sender.count()
         df = df.reset_index()
 
-        df1 = pd.DataFrame([list(range(0,100,5)),
+        df1 = pd.DataFrame([list(range(1,21)),
                             ["0%-5%",	"5%-10%",	"10%-15%",	"15%-20%",	"20%-25%",	"25%-30%",	"30%-35%",	
         "35%-40%",	"40%-45%",	"45%-50%",	"50%-55%",	"55%-60%",	"60%-65%",	
         "65%-70%",	"70%-75%",	"75%-80%",	"80%-85%",	"85%-90%",	"90%-95%",	"95%-100%"]]).T

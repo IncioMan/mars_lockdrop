@@ -69,7 +69,7 @@ with col2:
     st.text('')
     price = data_provider.tot_net_ust/70000000
     st.metric(label="Current Price",  value=f"${round(price,2)}")
-    st.metric(label="Floor price", value=f"${round(data_provider.floor_price,2)}")
+    st.metric(label="Floor price", value=f"${round(data_provider.floor_price,3)}")
     fdv = price*1000000000
     st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M")
 
@@ -103,7 +103,7 @@ with col2:
 
 
 
-st.subheader('Withdrawals distribution across deposits and percentage')
+st.subheader('Distribution across deposit and withdrawals percentage buckets')
 st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
 st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
 ###
