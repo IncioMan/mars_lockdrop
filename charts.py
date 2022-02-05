@@ -133,8 +133,8 @@ class ChartProvider:
     def heatmap_withdrawing_chart(self, heatmap_data_df):
         heatmap_data_df[cols_dict['N_USERS']]=heatmap_data_df.sender
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
-            x=alt.X(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='ascending')),
-            y=alt.Y(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='ascending')),
+            y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
+            x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
             color=alt.Color(cols_dict['N_USERS']+':Q',
                     scale=alt.Scale(scheme='redpurple')),
             tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['N_USERS']+':Q']
@@ -190,7 +190,7 @@ class ChartProvider:
 
     def pie_ust_chart(self, ust_df):
         ust_df = ust_df.sort_values(by='Type')
-        pie_ust_chart = alt.Chart(ust_df).mark_arc(innerRadius=50).encode(
+        pie_ust_chart = alt.Chart(ust_df).mark_arc(innerRadius=60).encode(
             theta=alt.Theta(field="UST", type="quantitative"),
             color=alt.Color(field="Type", type="nominal",
                     sort=['Withdrawn','Still deposited'],

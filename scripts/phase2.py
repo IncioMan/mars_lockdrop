@@ -6,7 +6,7 @@ from terra_sdk.client.lcd import LCDClient
 
 # list of deposit wallets
 df_claim = pd.read_json(
-            "https://api.flipsidecrypto.com/api/v2/queries/07f87a6f-5bc6-49f3-a1bb-8e7d545ba95a/data/latest",
+            "https://api.flipsidecrypto.com/api/v2/queries/499224b4-30a6-43d7-80b9-3a019cbb1d3d/data/latest",
             convert_dates=["BLOCK_TIMESTAMP"],
         )
 
@@ -16,7 +16,7 @@ terra = LCDClient(url="https://lcd.terra.dev", chain_id="columbus-5")
 deposit_info = []
 
 # list of wallet addresses
-for _, item in df_claim.head()['SENDER'].iteritems():
+for _, item in df_claim['SENDER'].iteritems():
 
   msg = {"deposit_info": {"address": item}}
 

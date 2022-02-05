@@ -81,10 +81,12 @@ class DataProvider:
         
 
         self.with_phase1=self.get_url('https://raw.githubusercontent.com/IncioMan/prism_forge/p22/data/with_phase1.csv')
+        print(len(self.with_phase1))
         self.users_with = self.p2_users_df.merge(self.with_phase1,on='sender')[['sender','net_deposited_amount','deposit','withdrawable_amount']]
         self.users_with= self.users_with.rename(columns={'net_deposited_amount':'deposited_p1'})
         self.users_with['WITHDRAWN_AMOUNT_PHASE2'] = self.users_with.deposited_p1-self.users_with.deposit
-        self.users_with['has_withdrawn_p2'] = self.users_with.deposit < self.users_with.deposited_p1
+        self.users_with['WITHDRAWN_AMOUNT_PHASE2'] = self.users_with['WITHDRAWN_AMOUNT_PHASE2'].apply(lambda x: x if x >0 else 0)
+        self.users_with['has_withdrawn_p2'] = (self.users_with['WITHDRAWN_AMOUNT_PHASE2'])>1
 
 
         self.tot_with_ust = self.users_with['WITHDRAWN_AMOUNT_PHASE2'].sum()
@@ -99,16 +101,13 @@ class DataProvider:
         self.ust_df = pd.DataFrame([[self.tot_with_ust,self.tot_ust_p1-self.tot_with_ust],['Withdrawn','Still deposited']]).T
         self.ust_df.columns = ['UST','Type']
 
-        df = self.p2_users_df[self.p2_users_df['hr'].notna()]
-        delta = pd.to_datetime(df['max_with_hour']) - pd.to_datetime(df['hr'])
-        df['hours_til_end_p2'] = delta.dt.days * 24 + delta.dt.seconds/3600
-        df['left_to_with'] = 24/df['hours_til_end_p2'] * df['net_deposited_amount']
-        self.left_to_with = df['left_to_with'].sum()
+        self.left_to_with = self.users_with.withdrawable_amount.sum()
         self.floor_price = (self.tot_net_ust - self.left_to_with)/70000000
+        print(self.left_to_with)
 
 
         self.with_users_df = self.users_with[self.users_with.has_withdrawn_p2&self.users_with['deposited_p1']>0]
-        self.with_users_df['perc_withdrawn'] = self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2']/self.with_users_df['deposited_p1']*100
+        self.with_users_df['perc_withdrawn'] = round(self.with_users_df[self.with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/self.with_users_df['deposited_p1']*100
         self.with_users_df['perc_withdrawn_cat'] = (self.with_users_df['perc_withdrawn']/100).apply(lambda x: int(x))
         df2 = self.with_users_df.groupby('perc_withdrawn_cat').sender.count()
         perc_cat = list(range(10))
@@ -117,8 +116,10 @@ class DataProvider:
         df3.index =  ['0%-10%','10%-20%','20%-30%','30%-40%','40%-50%','50%-60%','60%-70%','70%-80%','80%-90%','90%-100%']
         df3 = df3.sender.fillna(0).reset_index()
         self.with_perc_buckets=df3.rename(columns={'index':'PERC_WITHDRAWN','sender':'TOT_USERS'})
-
-        self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/1000).apply(int)
+        
+        self.with_users_df['perc_withdrawn_cat_old'] = self.with_users_df['perc_withdrawn_cat']
+        self.with_users_df['perc_withdrawn_cat'] = self.with_users_df['perc_withdrawn_cat'].apply(lambda x: int(int(x/5)/5))
+        self.with_users_df['DEP_CAT'] = (self.with_users_df['deposited_p1']/20000).apply(int)
         df = self.with_users_df.groupby(['DEP_CAT','perc_withdrawn_cat']).sender.count()
         df = df.reset_index()
 
@@ -126,17 +127,19 @@ class DataProvider:
                             ["0%-5%",	"5%-10%",	"10%-15%",	"15%-20%",	"20%-25%",	"25%-30%",	"30%-35%",	
         "35%-40%",	"40%-45%",	"45%-50%",	"50%-55%",	"55%-60%",	"60%-65%",	
         "65%-70%",	"70%-75%",	"75%-80%",	"80%-85%",	"85%-90%",	"90%-95%",	"95%-100%"]]).T
-        df2 = pd.DataFrame([list(range(0,651,50)),
-                            ["0-50k", "50k-100k",	"100k-150k","150k-200k",	"200k-250k",	"250k-300k",	"300k-350k",
-            "350k-400k",	"400k-450k",	"450k-500k",	"500k-550k",	"550k-600k",	"600k-650k", 	"650k-700k"]]).T
+        df2 = pd.DataFrame([list(range(0,561,20)),
+                            ["0-20k", "20-40k", "40-60k", "60-80k", "80-100k", "100-120k", "120-140k", "140-160k", 
+                            "160-180k", "180-200k","200-220k", "220-240k", "240-260k", "260-280k", "280-300k", "300-320k",
+                            "320-340k",
+                            "340-360k", 
+                            "360-380k", "380-400k", "400-420k", "420-440k", "440-460k", "460-480k", "480-500k", "500-520k","520-540k",
+                            "540-560k","560-580k"]]).T
         df2['fake'] = 0
         df1['fake'] = 0
         heatmap_val = df2.merge(df1,on='fake').drop('fake',1)
         heatmap_val.columns = ['DEP_CAT','DEP_CAT_label','perc_withdrawn_cat','perc_withdrawn_cat_label']
-        print(df.columns)
         df = heatmap_val.merge(df, on=['perc_withdrawn_cat', 'DEP_CAT'], how='left').fillna(0)
-        self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[True,False])
-
+        self.heatmap_data_df = df.sort_values(by=['perc_withdrawn_cat', 'DEP_CAT'], ascending=[False,True])
 
     def __init__(self, claim, get_url=None):
         self.claim = claim
