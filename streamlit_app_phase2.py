@@ -28,6 +28,7 @@ def claim(claim_hash, cols_claim):
 @st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
 def get_url(url):
     return pd.read_csv(url, index_col=0)
+    
 
 data_provider = DataProvider(claim, get_url)
 data_provider.load_data_p2()
