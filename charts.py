@@ -222,7 +222,7 @@ class ChartProvider:
         return pie_ust_chart
 
     def with_perc_user_chart(self, with_users_df):
-        with_users_df['perc_withdrawn_precise'] = round(with_users_df[with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/with_users_df['deposited_p1']
+        with_users_df['perc_withdrawn_precise'] = round(with_users_df[with_users_df.has_withdrawn_p2]['WITHDRAWN_AMOUNT_PHASE2'],3)/with_users_df['deposited_p1']*100
         with_users_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+with_users_df['sender']
         with_perc_user_chart =alt.Chart(with_users_df.rename(columns=cols_dict)).mark_point(opacity=1, filled=True).encode(
                 y=alt.Y(cols_dict['deposited_p1']+":Q",scale=alt.Scale(domain=(0, 5500))),
