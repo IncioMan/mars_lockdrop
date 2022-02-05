@@ -132,8 +132,8 @@ class ChartProvider:
 
     def heatmap_withdrawing_chart(self, heatmap_data_df):
         heatmap_withdrawing_chart = alt.Chart(heatmap_data_df.rename(columns=cols_dict)).mark_rect().encode(
-            x=alt.X(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='ascending')),
-            y=alt.Y(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='ascending')),
+            y=alt.Y(cols_dict['perc_withdrawn_cat']+':O', sort=alt.EncodingSortField(order='descending')),
+            x=alt.X(cols_dict['DEP_CAT']+':O', sort=alt.EncodingSortField(order='descending')),
             color=alt.Color(cols_dict['N_USERS']+':Q',
                     scale=alt.Scale(scheme='redpurple')),
             tooltip=[cols_dict['DEP_CAT_label']+':N',cols_dict['perc_withdrawn_cat_label']+':N',cols_dict['N_USERS']+':Q']
@@ -164,10 +164,12 @@ class ChartProvider:
         return with_perc_buckets_chart
 
     def with_users_hourly_chart(self,p2_hourly_df):
+        p2_hourly_df['HR'] = '2022/'+p2_hourly_df['HR']
         with_users_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
-            x=cols_dict['HR']+':T',
+            x=alt.X(cols_dict['HR']+':T',
+                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['WITH_USERS']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_USERS']+":Q"]
+            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'),alt.Tooltip(cols_dict['WITH_USERS']+":Q")]
         ).configure_mark(
             color='#fab0ba'
         ).properties(width=700).configure_axisX(
@@ -177,9 +179,10 @@ class ChartProvider:
 
     def with_txs_hourly_chart(self,p2_hourly_df):
         with_txs_hourly_chart = alt.Chart(p2_hourly_df.rename(columns=cols_dict)).mark_bar().encode(
-            x=cols_dict['HR']+':T',
+            x=alt.X(cols_dict['HR']+':T',
+                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
             y=cols_dict['WITH_AMOUNT']+":Q",
-            tooltip=[cols_dict['HR']+':T',cols_dict['WITH_AMOUNT']+":Q"]
+            tooltip=[alt.Tooltip(cols_dict['HR']+':T', format='%Y-%m-%d %H:%M'),alt.Tooltip(cols_dict['WITH_AMOUNT']+":Q")]
         ).configure_mark(
             color='#B8E9E4'
         ).properties(width=700).configure_axisX(
@@ -189,7 +192,7 @@ class ChartProvider:
 
     def pie_ust_chart(self, ust_df):
         ust_df = ust_df.sort_values(by='Type')
-        pie_ust_chart = alt.Chart(ust_df).mark_arc(innerRadius=50).encode(
+        pie_ust_chart = alt.Chart(ust_df).mark_arc(innerRadius=60).encode(
             theta=alt.Theta(field="UST", type="quantitative"),
             color=alt.Color(field="Type", type="nominal",
                     sort=['Withdrawn','Still deposited'],

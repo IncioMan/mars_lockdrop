@@ -32,17 +32,19 @@ chart_provider = ChartProvider()
 ###
 ###
 
-original_title = '<p style="font-size: 60px;">Prism Forge - Phase 2</p>'
+original_title = '<p style="font-size: 60px;">Prism Forge - Phase 1</p>'
 col1, col2 = st.columns([2,12])
 with col2:
     st.markdown(original_title, unsafe_allow_html=True)
 with col1:
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prism_white_small.png" width=\"100px\">', unsafe_allow_html=True)
 
-col1, col2, col3, col4, col5, col6 = st.columns([5,50,50,50,50,50])
+col1, col2, col6 = st.columns([5,200,50])
+with col2:
+    #st.markdown('Only withdrawls are allowed in this stage', unsafe_allow_html=True)
+    st.markdown('Analytics from the previous stage can be seen [here](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
 with col6:
-    st.markdown('<div>Status: Idle <span class="idle"></span></div>',unsafe_allow_html=True)
-st.text('')
+    st.markdown('<div>Status: Active <span class="blink_me"></span></div>',unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns([0.5,0.5,1])
 
@@ -63,10 +65,11 @@ with col2:
     st.text('')
     st.text('')
     st.text('')
-    price = data_provider.tot_deposits/70000000
-    price_delta = (data_provider.tot_deposits-data_provider.next_last_ust)/70000000
-    st.metric(label="Current Price",  value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
-    st.metric(label="Floor price", value=f"${round(price,2)}", delta=round(price_delta,2),delta_color="off")
+
+    price = data_provider.tot_net_ust/70000000
+    st.metric(label="Current Price",  value=f"${round(price,2)}")
+    st.metric(label="Floor price", value=f"${round(data_provider.floor_price,3)}")
+
     fdv = price*1000000000
     delta = (price_delta*70000000)/1000000000
     st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M",\
@@ -102,7 +105,7 @@ with col2:
 
 
 
-st.subheader('Withdrawals distribution across deposits and percentage')
+st.subheader('Distribution across deposit and withdrawals percentage buckets')
 st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
 st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
 ###
@@ -135,8 +138,9 @@ hide_streamlit_style = """
                         </style>
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+    
+col1, col2, col3= st.columns([3,3,2])
 
-col1, col2= st.columns([7,2])
 with col1:
     st.text("In collaboration with:")
     st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prismwhite.svg" style="margin-left:80px">](http://prismprotocol.app/)', unsafe_allow_html=True)
