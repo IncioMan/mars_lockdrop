@@ -46,6 +46,7 @@ st.markdown("""
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/R.png" style=\"margin-left: 6px;\" width=\"100px\">
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/S.png" width=\"100px\">
     </a>
+    <div style=\"width: 100px;margin-bottom: 10px;\"><span class="blink_me"></span>Active</div>
     <div style=\"border-top: 3px solid #ffffff;width: 100px;margin-top: 15px;padding-bottom: 20px;\"></div>
     <div style=\"width: 100px; margin-left: 10px;\">
         <a href="https://flipsidecrypto.xyz"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/fc.png" width=\"30px\"></a>
@@ -54,21 +55,21 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col1, col2, col3, col4 = st.columns([1,1,5,5])
+col1, col2, col3 = st.columns([1.2,4,4])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
 with col3:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-with col4:
     st.subheader('Withdrawing users')
     st.markdown("""This graph shows the withdrawing users over time""")
     st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
@@ -116,7 +117,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.markdown("""
     <style>
     .terminated {
-        margin-left: 10px;
+        margin-right: 10px;
         width: 10px;
         height: 10px;
         display: inline-block;
@@ -127,7 +128,7 @@ st.markdown("""
     }
 
     .idle {
-        margin-left: 10px;
+        margin-right: 10px;
         width: 10px;
         height: 10px;
         display: inline-block;
@@ -138,13 +139,14 @@ st.markdown("""
     }
 
     .blink_me {
-        margin-left: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
         animation: blinker 2s linear infinite;
         width: 10px;
         height: 10px;
         display: inline-block;
-        border: 1px solid green;
-        background-color: green;
+        border: 1px solid #FFFFFF;
+        background-color: #FFFFFF;
         border-radius: 100%;
         }
         @keyframes blinker {
