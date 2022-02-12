@@ -37,13 +37,22 @@ chart_provider = ChartProvider()
 
 ###
 ###
-col1, col2, col3, col4 = st.columns([1,1,5,5])
-with col1:
-    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/mars_logo_hd.png" style=\"margin-left: 5px;\" width=\"100px\">', unsafe_allow_html=True)
-    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/M.png" width=\"100px\">', unsafe_allow_html=True)
-    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/A.png" width=\"100px\">', unsafe_allow_html=True)
-    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/R.png" style=\"margin-left: 6px;\" width=\"100px\">', unsafe_allow_html=True)
-    st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/S.png" width=\"100px\">', unsafe_allow_html=True)
+st.markdown("""
+<div style=\"max-width: 50px;position: fixed;float: left;z-index: 1\">
+    <a href="https://marsprotocol.io/">
+        <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/mars_logo_hd.png" style=\"margin-left: 5px;\" width=\"100px\">
+        <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/M.png" width=\"100px\">
+        <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/A.png" width=\"100px\">
+        <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/R.png" style=\"margin-left: 6px;\" width=\"100px\">
+        <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/S.png" width=\"100px\">
+    </a>
+    <div style=\"border-top: 3px solid #ffffff;width: 100px;margin-top: 15px;padding-bottom: 20px;\"></div>
+    <div style=\"width: 100px; margin-left: 10px;\">
+        <a href="https://flipsidecrypto.xyz"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/fc.png" width=\"30px\"></a>
+        <a href="https://twitter.com/mars_protocol"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/twitter.png" width=\"50px\"></a>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3, col4 = st.columns([1,1,5,5])
 with col3:
@@ -81,13 +90,13 @@ st.markdown("""
     @media (min-width:640px) {
         .block-container {
             padding-left: 1rem;
-            padding-right: 5rem;
+            padding-right: 1rem;
         }
     }
     @media (min-width:800px) {
         .block-container {
             padding-left: 1rem;
-            padding-right: 15rem;
+            padding-right: 1rem;
         }
     }
     .block-container
