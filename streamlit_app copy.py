@@ -7,7 +7,7 @@ from PIL import Image
 from data import DataProvider
 import base64
 
-st.set_page_config(page_title="Mars Lockdrop - Analytics",\
+st.set_page_config(page_title="Prism Forge - Analytics",\
         page_icon=Image.open(requests.get('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/mars_logo_hd.png',stream=True).raw),\
         layout='wide')
 
@@ -44,38 +44,83 @@ with col1:
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/A.png" width=\"100px\">', unsafe_allow_html=True)
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/R.png" style=\"margin-left: 6px;\" width=\"100px\">', unsafe_allow_html=True)
     st.markdown('<img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/S.png" width=\"100px\">', unsafe_allow_html=True)
-
-col1, col2, col3, col4 = st.columns([1,1,5,5])
 with col3:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-with col4:
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-   
 
+
+col1, col2, col6 = st.columns([5,200,50])
+with col2:
+    #st.markdown('Only withdrawls are allowed in this stage', unsafe_allow_html=True)
+    st.markdown('Analytics from the previous stage can be seen [here](https://share.streamlit.io/incioman/prism_forge/streamlit_app_phase1_deposit.py)', unsafe_allow_html=True)
+with col6:
+    st.markdown('<div>Status: Terminated<span class="terminated"></span></div>',unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns([0.5,0.5,1])
+
+with col1:
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    st.metric(label="Total UST deposited",\
+            value=f"${round((data_provider.tot_net_ust/1000000.0),2)}M")
+    st.metric(label="UST Withdrawn %", value=f"{round(data_provider.perc_with_p2,2)}%")
+    st.metric(label="% Withdrawing Users", value=f"{round(data_provider.p_users_with_p2,2)}%")
+
+with col2:
+    st.text('')
+    st.text('')
+    st.text('')
+    st.text('')
+    price = data_provider.tot_net_ust/70000000
+    st.metric(label="Current Price",  value=f"${round(price,2)}")
+    st.metric(label="Floor price", value=f"${round(data_provider.floor_price,3)}")
+    fdv = price*1000000000
+    st.metric(label="Fully Diluted Value", value=f"${round(fdv/1000000,2)}M")
+
+with col3:
+    st.subheader('UST distribution')
+    st.markdown("""This graph shows the distribution of net deposited UST from Phase 1""")
+    st.altair_chart(chart_provider.pie_ust_chart(data_provider.ust_df), use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader('UST left in the Forge')
+    st.markdown("""The net UST left deposited into the Prism Forge over time""")
+    st.altair_chart(chart_provider.tot_ust_left_chart(data_provider.p2_hourly_df), use_container_width=True)
+with col2:
+    st.subheader('Amount withdrawn')
+    st.markdown("""This graph shows the amount withdrawn in Stage 2""")
+    st.altair_chart(chart_provider.with_amount_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+
+with col2:
+    st.subheader('Withdrawing users')
+    st.markdown("""This graph shows the withdrawing users over time""")
+    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
+
+
+st.subheader('Overview of users who have withdrawn')
+st.markdown("""This graph shows the single users who have withdrawn, placed and colored according to the amount they had deposited and the amount and percentage withdrawn""")
+st.altair_chart(chart_provider.with_perc_user_chart(data_provider.with_users_df), use_container_width=True)
 ###
-#st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
+st.subheader('Distribution across deposit and withdrawals percentage buckets')
+st.markdown("""This graph shows the number of users which had deposited a specific amount and withdrawn a specific percentage""")
+st.altair_chart(chart_provider.heatmap_withdrawing_chart(data_provider.heatmap_data_df), use_container_width=True)
+###
+st.subheader('Percentage of users who withdrew out of all users in that bucket')
+st.markdown("""What combination of amount deposited and percentage withdrawn has the highest number of withdrawing users?""")
+st.altair_chart(chart_provider.heatmap_withdrawing_perc_users_chart(data_provider.heatmap_data_df), use_container_width=True)
+###
+st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
 st.markdown("""
 <style>
     @media (min-width:640px) {
@@ -104,7 +149,18 @@ hide_streamlit_style = """
                         </style>
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-st.markdown("""
+    
+col1, col2, col3= st.columns([3,3,2])
+with col1:
+    st.text("In collaboration with:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/prismwhite.svg" style="margin-left:80px">](http://prismprotocol.app/)', unsafe_allow_html=True)
+with col2:
+    st.text("With the support of:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/ExtraterrestrialWhite.png"  width=\"160px\">](https://finder.extraterrestrial.money)', unsafe_allow_html=True)
+with col3:
+    st.text("Sponsored by:")
+    st.markdown('[<img src="https://raw.githubusercontent.com/IncioMan/prism_forge/master/images/flipsidewhite.png" width=\"160px\">](http://flipsidecrypto.xyz/)', unsafe_allow_html=True)
+    st.markdown("""
     <style>
     .terminated {
         margin-left: 10px;
