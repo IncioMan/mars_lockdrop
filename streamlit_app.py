@@ -46,7 +46,7 @@ st.markdown("""
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/R.png" style=\"margin-left: 6px;\" width=\"100px\">
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/S.png" width=\"100px\">
     </a>
-    <div style=\"width: 100px;margin-bottom: 10px;\"><span class="blink_me"></span>Active</div>
+    <div style=\"width: 100px;margin-top: 5px;margin-bottom: 10px;\"><span class="blink_me"></span>Active</div>
     <div style=\"border-top: 3px solid #ffffff;width: 100px;margin-top: 15px;padding-bottom: 20px;\"></div>
     <div style=\"width: 100px; margin-left: 10px;\">
         <a href="https://flipsidecrypto.xyz"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/fc.png" width=\"30px\"></a>
@@ -54,6 +54,27 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+st.text("")
+st.text("")
+st.text("")
+st.text("")
+st.text("")
+col1, col2, col3, col4,col5 = st.columns([2,4.5,1.5,1.5,1.5])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.pie_ust_chart(data_provider.last_duration_amount), use_container_width=True)
+with col3:
+    st.metric(label="Total UST deposited",\
+            value=f"${round((15000000/1000000.0),2)}M")
+    st.metric(label="UST Withdrawn %", value=f"{round(100,2)}%")
+    st.metric(label="% Withdrawing Users", value=f"{round(145,2)}%")
+with col4:
+    st.metric(label="Total UST deposited",\
+            value=f"${round((15000000/1000000.0),2)}M")
+    st.metric(label="UST Withdrawn %", value=f"{round(100,2)}%")
+    st.metric(label="% Withdrawing Users", value=f"{round(145,2)}%")
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
@@ -120,8 +141,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 hide_streamlit_style = """
                         <style>
-                        
-                        footer {visibility: hidden;}
+                        #MainMenu {visibility: hidden;}
+                        #footer {visibility: hidden;}
                         </style>
                         """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -167,8 +188,8 @@ st.markdown("""
     }
 
     @media (min-width:800px) {
-        .css-12w0qpk {
-            padding-left: 30px;
+        .css-yksnv9 {
+            margin-top: 72px;
         }
     }
     </style>
