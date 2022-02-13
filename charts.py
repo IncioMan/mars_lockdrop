@@ -23,7 +23,7 @@ class ChartProvider:
                                     legendY=0,
                                     direction='horizontal')),
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
-        ).properties(height=400)
+        ).properties(height=400).configure_view(strokeOpacity=0)
         return time_duration_chart
 
     def n_duration_wallet_chart(self,count_durations_users):
@@ -116,23 +116,27 @@ class ChartProvider:
         return wallet_age_chart
 
     def wallet_balance(self, users_balance_df):
-        users_balance_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+users_balance_df['sender']
+        users_balance_df = users_balance_df.rename(columns={'amnt_sum':'Total UST deposited',
+                                                            'balance':'Address balance ($)',
+                                                            'weighted_avg_dur':'Weighted average lockup period',
+                                                            'sender':'User address'})
+        users_balance_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+users_balance_df['User address']
         print(users_balance_df.columns)
         if(len(users_balance_df)>5000):
             df = users_balance_df.sample(n=5000, random_state=1)
         else:
             df = users_balance_df
         dep_dist_balance_chart =alt.Chart(df).mark_point(opacity=1, filled=True).encode(
-                                    y=alt.Y("amnt_sum:Q",scale=alt.Scale(domain=(0, 200))),
-                                    x=alt.X("balance:Q",scale=alt.Scale(domain=(0, 200))),
+                                    y=alt.Y("Total UST deposited:Q",scale=alt.Scale(domain=(0, 200))),
+                                    x=alt.X("Address balance ($):Q",scale=alt.Scale(domain=(0, 200))),
                                     href='url:N',
-                                    color=alt.Color('weighted_avg_dur',
+                                    color=alt.Color('Weighted average lockup period',
                                         scale=alt.Scale(scheme='lightorange'),
                                         legend=alt.Legend(
                                                     orient='none',
                                                     padding=5,
                                                     legendY=0,
                                                     direction='horizontal')),
-                                    tooltip=['sender', 'amnt_sum','balance','weighted_avg_dur']
+                                    tooltip=['User address', 'Total UST deposited','Address balance ($)','Weighted average lockup period']
                                     ).configure_view(strokeOpacity=0).interactive()
         return dep_dist_balance_chart
