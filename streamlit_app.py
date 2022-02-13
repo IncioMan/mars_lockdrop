@@ -88,6 +88,12 @@ with col2:
     st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df,data_provider.dates_to_mark), use_container_width=True)
 
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.wallet_balance(data_provider.users_balance_df), use_container_width=True)
+
 
 ###
 #st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")

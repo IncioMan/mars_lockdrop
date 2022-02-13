@@ -72,6 +72,17 @@ class DataProvider:
             columns=['text_date','date','height','text']
         )
 
+        ##Balance
+        self.users_balance_df = self.claim(self.users_balance,self.cols_claim,self.data_claim)
+        self.users_balance_df.columns = [c.lower() for c in self.users_balance_df.columns]
+        self.user_stats_df['dur_amount']=self.user_stats_df.duration * self.user_stats_df.amount
+        df = self.user_stats_df.groupby('sender').agg(mean_duration=('duration', 'mean'),
+                                              dur_sum=('dur_amount', 'sum'),
+                                              amnt_sum=('amount', 'sum'))
+        df['weighted_avg_dur'] = df.dur_sum/df.amnt_sum
+        self.users_balance_df = df.reset_index().merge(self.users_balance_df, on='sender')
+
+
     def __init__(self, claim, get_url=None):
         self.claim = claim
         self.get_url = get_url
@@ -93,7 +104,7 @@ class DataProvider:
             ],
             self.wallet_age : ['MIN_DATE','ADDRESS_COUNT'],
             self.hourly_new_users: ['TIME','NEW_USERS'],
-            self.users_balance: ['SENDER','BALANCE  '],
+            self.users_balance: ['SENDER','BALANCE'],
         }
 
         self.data_claim = {
@@ -132,5 +143,11 @@ class DataProvider:
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],
                                     ['2021-09-21T09:00:00Z',200]],
-            self.users_balance: ['SENDER','BALANCE  '],
+            self.users_balance: [['user1',100],
+                            ['user1_2',20],
+                            ['user1_3',50],
+                            ['user1_4',70],
+                            ['user1_5',80],
+                            ['user2',70],
+                            ['user3',80]]
     }

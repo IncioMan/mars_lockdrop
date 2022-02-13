@@ -93,24 +93,46 @@ class ChartProvider:
         dates_to_mark.height = wallet_age_df.address_count.max() - 30
         wallet_age_df = wallet_age_df.rename(columns={'min_date':'Date of wallet creation',
                                                      'address_count':'Number of wallets'})
-        c = alt.Chart(wallet_age_df).mark_bar(color='#ffde85').encode(
+        c = alt.Chart(wallet_age_df).mark_bar(color='#fab98d').encode(
             x=alt.X("Date of wallet creation:T", axis=alt.Axis(tickCount=10, labelAngle=0, title='Date of wallet creation')),
-            y="Number of wallets:Q",
+            y=alt.Y('Number of wallets:Q',axis=alt.Axis(labels=False,title='Number of wallets')),
             tooltip=["Date of wallet creation:T","Number of wallets:Q"]
         )
 
-        c2 = alt.Chart(dates_to_mark).mark_rule(color='#fab0ba').encode(
+        c2 = alt.Chart(dates_to_mark).mark_rule(color='#e1565b').encode(
             x=alt.X('date'+':T',axis=alt.Axis(labels=False,title=''))
         )
 
         c3 = alt.Chart(dates_to_mark).mark_text(
-            color='#fab0ba',
+            color='#e1565b',
             angle=270
         ).encode(
             x=alt.X('text_date'+':T',axis=alt.Axis(labels=False,title='')),
-            y='height',
+            y=alt.Y('height',axis=alt.Axis(labels=False,title='')),
             text='text'
         )
 
         wallet_age_chart = (c + c2 + c3).configure_view(strokeOpacity=0).properties(width=600)
         return wallet_age_chart
+
+    def wallet_balance(self, users_balance_df):
+        users_balance_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+users_balance_df['sender']
+        print(users_balance_df.columns)
+        if(len(users_balance_df)>5000):
+            df = users_balance_df.sample(n=5000, random_state=1)
+        else:
+            df = users_balance_df
+        dep_dist_balance_chart =alt.Chart(df).mark_point(opacity=1, filled=True).encode(
+                                    y=alt.Y("amnt_sum:Q",scale=alt.Scale(domain=(0, 200))),
+                                    x=alt.X("balance:Q",scale=alt.Scale(domain=(0, 200))),
+                                    href='url:N',
+                                    color=alt.Color('weighted_avg_dur',
+                                        scale=alt.Scale(scheme='lightorange'),
+                                        legend=alt.Legend(
+                                                    orient='none',
+                                                    padding=5,
+                                                    legendY=0,
+                                                    direction='horizontal')),
+                                    tooltip=['sender', 'amnt_sum','balance','weighted_avg_dur']
+                                    ).configure_view(strokeOpacity=0).interactive()
+        return dep_dist_balance_chart
