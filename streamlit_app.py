@@ -14,16 +14,16 @@ st.set_page_config(page_title="Mars Lockdrop - Analytics",\
 ###
 
 @st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
-def claim(claim_hash, cols_claim):
+def claim(claim_hash, cols_claim, data_claim):
     try:
         df_claim = pd.read_json(
             f"https://api.flipsidecrypto.com/api/v2/queries/{claim_hash}/data/latest",
             convert_dates=["BLOCK_TIMESTAMP"],
         )
     except:
-        return pd.DataFrame(columns = cols_claim[claim_hash])
+        return pd.DataFrame(data_claim[claim_hash],columns=cols_claim[claim_hash])
     if(len(df_claim.columns)==0):
-        return pd.DataFrame(columns = cols_claim[claim_hash])
+        return pd.DataFrame(data_claim[claim_hash],columns=cols_claim[claim_hash])
     return df_claim
 
 @st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
@@ -32,7 +32,7 @@ def get_url(url):
     
 
 data_provider = DataProvider(claim, get_url)
-data_provider.load_data_p2()
+data_provider.load_data()
 chart_provider = ChartProvider()
 
 ###
@@ -55,34 +55,23 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+col1, col2 = st.columns([1.2,8])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.time_duration_chart(data_provider.time_duration_df), use_container_width=True)
+    
+
 col1, col2, col3 = st.columns([1.2,4,4])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.with_perc_buckets_chart(data_provider.with_perc_buckets), use_container_width=True)
+    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
 with col3:
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-    st.subheader('Withdrawing users')
-    st.markdown("""This graph shows the withdrawing users over time""")
-    st.altair_chart(chart_provider.with_users_hourly_chart(data_provider.p2_hourly_df), use_container_width=True)
-   
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
+    
 
 ###
 #st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
