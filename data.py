@@ -16,16 +16,23 @@ class DataProvider:
                  .rename(columns={
                             'duration':'Number of lockup durations',
                             'sender':'Number of users'})
-        
+        ##Hourly new users
+        self.hourly_new_users_df = self.claim(self.hourly_new_users,self.cols_claim,self.data_claim)
+        self.hourly_new_users_df.columns = [c.lower() for c in self.hourly_new_users_df.columns]
+        self.hourly_new_users_df=self.hourly_new_users_df.sort_values(by='time',ascending=True)
+        self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.new_users.cumsum()
+
         ##Hourly stats
         self.hourly_stats_df = self.claim(self.hourly_stats,self.cols_claim,self.data_claim)
         self.hourly_stats_df.columns = [c.lower() for c in self.hourly_stats_df.columns]
-        self.hourly_stats_df['net_deposit_3'] = self.hourly_stats_df.dep_amount_3-self.hourly_stats_df.with_amount_3
-        self.hourly_stats_df['net_deposit_6'] = self.hourly_stats_df.dep_amount_6-self.hourly_stats_df.with_amount_6
-        self.hourly_stats_df['net_deposit_9'] = self.hourly_stats_df.dep_amount_9-self.hourly_stats_df.with_amount_9
-        self.hourly_stats_df['net_deposit_12'] = self.hourly_stats_df.dep_amount_12-self.hourly_stats_df.with_amount_12
-        self.hourly_stats_df['net_deposit_15'] = self.hourly_stats_df.dep_amount_15-self.hourly_stats_df.with_amount_15
-        self.hourly_stats_df['net_deposit_18'] = self.hourly_stats_df.dep_amount_18-self.hourly_stats_df.with_amount_18
+        self.hourly_stats_df = self.hourly_stats_df.sort_values(by='hr',ascending=True)
+        self.hourly_stats_df['net_deposit_3'] = (self.hourly_stats_df.dep_amount_3-self.hourly_stats_df.with_amount_3).cumsum()
+        self.hourly_stats_df['net_deposit_6'] = (self.hourly_stats_df.dep_amount_6-self.hourly_stats_df.with_amount_6).cumsum()
+        self.hourly_stats_df['net_deposit_9'] = (self.hourly_stats_df.dep_amount_9-self.hourly_stats_df.with_amount_9).cumsum()
+        self.hourly_stats_df['net_deposit_12'] = (self.hourly_stats_df.dep_amount_12-self.hourly_stats_df.with_amount_12).cumsum()
+        self.hourly_stats_df['net_deposit_15'] = (self.hourly_stats_df.dep_amount_15-self.hourly_stats_df.with_amount_15).cumsum()
+        self.hourly_stats_df['net_deposit_18'] = (self.hourly_stats_df.dep_amount_18-self.hourly_stats_df.with_amount_18).cumsum()
+        self.hourly_stats_df['tot_txs'] = self.hourly_stats_df.with_tx + self.hourly_stats_df.deposit_tx
 
         self.time_duration_df = self.hourly_stats_df[['hr','net_deposit_3','net_deposit_6','net_deposit_9','net_deposit_12','net_deposit_15','net_deposit_18']]
         self.time_duration_df = self.time_duration_df.rename(columns={
@@ -39,6 +46,21 @@ class DataProvider:
         self.time_duration_df = self.time_duration_df.melt(id_vars=["hr"], 
                 var_name="Lockup period", 
                 value_name="UST deposited")
+
+        self.last_duration_amount = self.hourly_stats_df[self.hourly_stats_df.hr==self.hourly_stats_df.hr.max()]
+        self.last_duration_amount= self.last_duration_amount[['net_deposit_3','net_deposit_6','net_deposit_9',
+                            'net_deposit_12','net_deposit_15','net_deposit_18']]
+        self.last_duration_amount = self.last_duration_amount.rename(columns={
+                    'net_deposit_3':'3 months',
+                    'net_deposit_6':'6 months',
+                    'net_deposit_9':'9 months',
+                    'net_deposit_12':'12 months',
+                    'net_deposit_15':'15 months',
+                    'net_deposit_18':'18 months'
+                })
+        self.last_duration_amount = self.last_duration_amount.T.reset_index()
+        self.last_duration_amount.columns = ['Lockup period','UST deposited']
+
 
     def __init__(self, claim, get_url=None):
         self.claim = claim
@@ -91,6 +113,8 @@ class DataProvider:
                         10,10,30,10,50,5,
                         0,0,0,0,7,0]],
             self.wallet_age : ['ADDRESS_COUNT', 'MIN_DATE'],
-            self.hourly_new_users: ['TIME','NEW_USERS'],
+            self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
+                                    ['2021-09-21T08:00:00Z',600],
+                                    ['2021-09-21T09:00:00Z',200]],
             self.users_balance: ['SENDER','BALANCE  '],
     }

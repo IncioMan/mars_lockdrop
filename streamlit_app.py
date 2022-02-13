@@ -60,13 +60,23 @@ with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.time_duration_chart(data_provider.time_duration_df), use_container_width=True)
-    
 
 col1, col2, col3 = st.columns([1.2,4,4])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
+    st.altair_chart(chart_provider.txs_over_time_chart(data_provider.hourly_stats_df), use_container_width=True)
+with col3:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.users_over_time_chart(data_provider.hourly_new_users_df), use_container_width=True)
+  
+
+col1, col2, col3 = st.columns([1.2,4,4])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.pie_ust_chart(data_provider.last_duration_amount), use_container_width=True)
 with col3:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
