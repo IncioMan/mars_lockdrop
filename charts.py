@@ -8,20 +8,29 @@ class ChartProvider:
         pass
     
     def time_duration_chart(self, time_duration_df):
+        max_date = self.get_max_domain_date(time_duration_df,'hr',10)
         time_duration_chart = alt.Chart(time_duration_df.rename(columns={'hr':'Time'})).mark_line(point = True).encode(
-            x='Time:T',
-            y='UST deposited:Q',
+            x=alt.X('Time:T',scale=alt.Scale(domain=(time_duration_df.hr.min(),max_date))),
+            y=alt.X('UST deposited:Q',scale=alt.Scale(domain=(0,time_duration_df['UST deposited'].max()+30))),
             color=alt.Color('Lockup period:N', 
                         sort=['3 months','6 months',
                               '9 months','12 months',
                               '15 months','18 months'],
-                        scale=alt.Scale(scheme='lightorange')),
+                        scale=alt.Scale(scheme='lightorange'),
+                        legend=alt.Legend(
+                                    orient='none',
+                                    padding=5,
+                                    legendY=0,
+                                    direction='horizontal')),
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
         ).properties(height=400)
         return time_duration_chart
 
     def n_duration_wallet_chart(self,count_durations_users):
-        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_line(point = True, color='#f8d0b1').encode(
+        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_line(point={
+            "filled": True,
+            "fill": "#fa9f75"
+            }, color='#fa9f75').encode(
             y=alt.Y('Number of users:Q', sort="ascending"),
             x="Number of lockup durations:O",
             tooltip=['Number of users:Q',"Number of lockup durations:Q"]
@@ -30,9 +39,11 @@ class ChartProvider:
 
     def txs_over_time_chart(self,hourly_stats_df):
         df = hourly_stats_df.rename(columns={'hr':'Time','tot_txs':'Number of transactions'})
+        max_date = self.get_max_domain_date(df,'Time',10)
         txs_over_time_chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('Time:T', \
-                    axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
+                    axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center'),
+                    scale=alt.Scale(domain=(df.Time.min(),max_date))),
             y="Number of transactions:Q",
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),"Number of transactions:Q"]
         ).configure_mark(
@@ -40,15 +51,25 @@ class ChartProvider:
         ).configure_view(strokeOpacity=0)
         return txs_over_time_chart
     
+    def get_max_domain_date(self, df, time_field, n_hours):
+        if((pd.Timestamp(df[time_field].max()) - 
+                    pd.Timestamp(df[time_field].min())).total_seconds()/3600 < n_hours):
+            max_date = (pd.Timestamp(df[time_field].min()) + pd.to_timedelta(n_hours, unit='h')).strftime("%Y-%m-%dT%H:%M:%SZ")
+        else:
+            max_date = df[time_field].max()
+        return max_date
+    
     def users_over_time_chart(self, hourly_new_users_df):
         df = hourly_new_users_df.rename(columns={'time':'Time','cumsum_new_users':'Number of total users'})
+        max_date = self.get_max_domain_date(df,'Time',10)
         users_over_time_chart = alt.Chart(df).mark_bar().encode(
             x=alt.X('Time:T',\
-                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
+                axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center'),
+                    scale=alt.Scale(domain=(hourly_new_users_df.time.min(), max_date))),
             y="Number of total users:Q",
-            tooltip=['Time', "Number of total users:Q"]
+            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'), "Number of total users:Q"]
             ).configure_mark(
-                color='#fa9f75'
+                color='#e1565b'
             ).configure_view(strokeOpacity=0)
         return users_over_time_chart
     
@@ -62,9 +83,34 @@ class ChartProvider:
                                     scale=alt.Scale(scheme='lightorange'),
                                     legend=alt.Legend(
                                     orient='none',
-                                    padding=5,
-                                    legendY=-20,
+                                    legendY=0,
                                     direction='vertical')),
                                 tooltip=["UST deposited","Lockup period"]
                             ).configure_view(strokeOpacity=0)
         return pie_ust_chart
+
+    def wallet_age_chart(self, wallet_age_df, dates_to_mark):
+        dates_to_mark.height = wallet_age_df.address_count.max() - 30
+        wallet_age_df = wallet_age_df.rename(columns={'min_date':'Date of wallet creation',
+                                                     'address_count':'Number of wallets'})
+        c = alt.Chart(wallet_age_df).mark_bar(color='#ffde85').encode(
+            x=alt.X("Date of wallet creation:T", axis=alt.Axis(tickCount=10, labelAngle=0, title='Date of wallet creation')),
+            y="Number of wallets:Q",
+            tooltip=["Date of wallet creation:T","Number of wallets:Q"]
+        )
+
+        c2 = alt.Chart(dates_to_mark).mark_rule(color='#fab0ba').encode(
+            x=alt.X('date'+':T',axis=alt.Axis(labels=False,title=''))
+        )
+
+        c3 = alt.Chart(dates_to_mark).mark_text(
+            color='#fab0ba',
+            angle=270
+        ).encode(
+            x=alt.X('text_date'+':T',axis=alt.Axis(labels=False,title='')),
+            y='height',
+            text='text'
+        )
+
+        wallet_age_chart = (c + c2 + c3).configure_view(strokeOpacity=0).properties(width=600)
+        return wallet_age_chart

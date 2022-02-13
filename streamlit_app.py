@@ -55,13 +55,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-col1, col2 = st.columns([1.2,8])
+col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.time_duration_chart(data_provider.time_duration_df), use_container_width=True)
 
-col1, col2, col3 = st.columns([1.2,4,4])
+col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
@@ -72,7 +72,7 @@ with col3:
     st.altair_chart(chart_provider.users_over_time_chart(data_provider.hourly_new_users_df), use_container_width=True)
   
 
-col1, col2, col3 = st.columns([1.2,4,4])
+col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
@@ -82,6 +82,12 @@ with col3:
     st.markdown("""How many users have withdrawn in a percentage range?""")
     st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
     
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
+    st.subheader('Percentage withdrawn')
+    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df,data_provider.dates_to_mark), use_container_width=True)
+
 
 ###
 #st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
@@ -89,14 +95,14 @@ st.markdown("""
 <style>
     @media (min-width:640px) {
         .block-container {
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: 7rem;
+            padding-right: 7rem;
         }
     }
     @media (min-width:800px) {
         .block-container {
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: 7rem;
+            padding-right: 7rem;
         }
     }
     .block-container

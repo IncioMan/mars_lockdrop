@@ -61,6 +61,16 @@ class DataProvider:
         self.last_duration_amount = self.last_duration_amount.T.reset_index()
         self.last_duration_amount.columns = ['Lockup period','UST deposited']
 
+        #Wallet age
+        self.wallet_age_df = self.claim(self.wallet_age,self.cols_claim,self.data_claim)
+        self.wallet_age_df.columns = [c.lower() for c in self.wallet_age_df.columns]
+        self.dates_to_mark = pd.DataFrame([
+            ['2021-03-04', '2021-03-11',80,'Anchor launch'],
+            ['2021-09-24', '2021-10-01',80,'Columbus 5'],
+            ['2021-12-12', '2021-12-19',80,'Astroport launch'], 
+            ['2022-01-24', '2022-02-01',80,'Prism launch']], 
+            columns=['text_date','date','height','text']
+        )
 
     def __init__(self, claim, get_url=None):
         self.claim = claim
@@ -81,7 +91,7 @@ class DataProvider:
                                 'DEP_AMOUNT_3', 'DEP_AMOUNT_6', 'DEP_AMOUNT_9','DEP_AMOUNT_12', 'DEP_AMOUNT_15', 'DEP_AMOUNT_18',
                                 'WITH_AMOUNT_3', 'WITH_AMOUNT_6', 'WITH_AMOUNT_9','WITH_AMOUNT_12', 'WITH_AMOUNT_15', 'WITH_AMOUNT_18',
             ],
-            self.wallet_age : ['ADDRESS_COUNT', 'MIN_DATE'],
+            self.wallet_age : ['MIN_DATE','ADDRESS_COUNT'],
             self.hourly_new_users: ['TIME','NEW_USERS'],
             self.users_balance: ['SENDER','BALANCE  '],
         }
@@ -112,7 +122,13 @@ class DataProvider:
                         200,1,1,
                         10,10,30,10,50,5,
                         0,0,0,0,7,0]],
-            self.wallet_age : ['ADDRESS_COUNT', 'MIN_DATE'],
+            self.wallet_age : [
+                ['2021-09-21T09:00:00Z',30],
+                ['2021-11-21T09:00:00Z',40],
+                ['2021-15-21T09:00:00Z',20],
+                ['2021-13-21T09:00:00Z',40],
+                ['2021-10-21T09:00:00Z',120]
+            ],
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],
                                     ['2021-09-21T09:00:00Z',200]],
