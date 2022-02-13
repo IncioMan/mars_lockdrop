@@ -15,13 +15,13 @@ class ChartProvider:
                         sort=['3 months','6 months',
                               '9 months','12 months',
                               '15 months','18 months'],
-                        scale=alt.Scale(scheme='pastel1')),
+                        scale=alt.Scale(scheme='lightorange')),
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
         ).properties(height=400)
         return time_duration_chart
 
     def n_duration_wallet_chart(self,count_durations_users):
-        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_line(point = True, color='#7DDBD3').encode(
+        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_line(point = True, color='#f8d0b1').encode(
             y=alt.Y('Number of users:Q', sort="ascending"),
             x="Number of lockup durations:O",
             tooltip=['Number of users:Q',"Number of lockup durations:Q"]
@@ -36,7 +36,7 @@ class ChartProvider:
             y="Number of transactions:Q",
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),"Number of transactions:Q"]
         ).configure_mark(
-            color='#ffde85'
+            color='#fa9f75'
         ).configure_view(strokeOpacity=0)
         return txs_over_time_chart
     
@@ -48,7 +48,7 @@ class ChartProvider:
             y="Number of total users:Q",
             tooltip=['Time', "Number of total users:Q"]
             ).configure_mark(
-                color='#fab0ba'
+                color='#fa9f75'
             ).configure_view(strokeOpacity=0)
         return users_over_time_chart
     
@@ -59,10 +59,10 @@ class ChartProvider:
                                     sort=['3 months','6 months',
                                           '9 months','12 months',
                                           '15 months','18 months'],
-                                    scale=alt.Scale(scheme='pastel1'),
+                                    scale=alt.Scale(scheme='lightorange'),
                                     legend=alt.Legend(
                                     orient='none',
-                                    padding=10,
+                                    padding=5,
                                     legendY=-20,
                                     direction='vertical')),
                                 tooltip=["UST deposited","Lockup period"]
