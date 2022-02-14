@@ -127,8 +127,8 @@ class ChartProvider:
         else:
             df = users_balance_df
         dep_dist_balance_chart =alt.Chart(df).mark_point(opacity=1, filled=True).encode(
-                                    y=alt.Y("Total UST deposited:Q",scale=alt.Scale(domain=(0, 200))),
-                                    x=alt.X("Address balance ($):Q",scale=alt.Scale(domain=(0, 200))),
+                                    y=alt.Y("Total UST deposited:Q",scale=alt.Scale(domain=(0, 100000))),
+                                    x=alt.X("Address balance ($):Q",scale=alt.Scale(domain=(0, 100000))),
                                     href='url:N',
                                     color=alt.Color('Weighted average lockup period',
                                         scale=alt.Scale(scheme='lightorange'),

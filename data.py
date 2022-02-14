@@ -106,9 +106,7 @@ class DataProvider:
             self.hourly_new_users: ['TIME','NEW_USERS'],
             self.users_balance: ['SENDER','BALANCE'],
         }
-
-        self.data_claim = {
-            self.user_stats : [['user1_1',3,10],
+        users_stats = [['user1_1',3,10],
                     ['user1_2',3,3],
                     ['user1_3',3,4],
                     ['user1_4',3,67],
@@ -120,7 +118,21 @@ class DataProvider:
                     ['user2',18,13],
                     ['user2',3,10],
                     ['user3',6,120],
-                    ['user3',18,13]],
+                    ['user3',18,13]]
+        for i in range(0,100):
+             users_stats.append([f'user{i}',random.choice([3,6,9,12,15,18]),random.randint(0,100000)])
+        users_balance = [['user1',100],
+                            ['user1_2',20],
+                            ['user1_3',50],
+                            ['user1_4',70],
+                            ['user1_5',80],
+                            ['user2',70],
+                            ['user3',80]]
+        for i in range(0,100):
+            users_balance.append([f'user{i}',random.randint(0,100000)])
+
+        self.data_claim = {
+            self.user_stats : users_stats,
             self.hourly_stats : [['2021-09-21T07:00:00Z',1000,4,3,
                         100,1,1,
                         10,20,30,40,50,60,
@@ -142,12 +154,6 @@ class DataProvider:
             ],
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],
-                                    ['2021-09-21T09:00:00Z',200]],
-            self.users_balance: [['user1',100],
-                            ['user1_2',20],
-                            ['user1_3',50],
-                            ['user1_4',70],
-                            ['user1_5',80],
-                            ['user2',70],
-                            ['user3',80]]
+                                    ['2021-09-21T09:00:00Z',200]],                  
+            self.users_balance: users_balance
     }
