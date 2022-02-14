@@ -50,11 +50,14 @@ st.markdown("""
     <div style=\"border-top: 3px solid #ffffff;width: 100px;margin-top: 15px;padding-bottom: 20px;\"></div>
     <div style=\"width: 100px; margin-left: 10px;\">
         <a href="https://flipsidecrypto.xyz"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/fc.png" width=\"30px\"></a>
-        <a href="https://twitter.com/mars_protocol"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/twitter.png" width=\"50px\"></a>
+        <a href="https://twitter.com/IncioMan"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/twitter.png" width=\"50px\"></a>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+st.text("")
+st.text("")
+st.text("")
 st.text("")
 st.text("")
 col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
