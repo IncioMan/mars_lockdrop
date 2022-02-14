@@ -73,21 +73,22 @@ class ChartProvider:
             ).configure_view(strokeOpacity=0)
         return users_over_time_chart
     
-    def pie_ust_chart(self, last_duration_amount):
-        pie_ust_chart = alt.Chart(last_duration_amount).mark_arc(innerRadius=60).encode(
-                            theta=alt.Theta(field="UST deposited", type="quantitative"),
+    def ust_duration_chart(self, last_duration_amount):
+        ust_duration_chart = alt.Chart(last_duration_amount).mark_bar().encode(
+                            y=alt.Y(field="UST deposited", type="quantitative"),
+                            x=alt.X(field="Lockup period", type="nominal", axis=alt.Axis(labelAngle=0),
+                                    sort=['3 months','6 months',
+                                          '9 months','12 months',
+                                          '15 months','18 months']),
                             color=alt.Color(field="Lockup period", type="nominal",
                                     sort=['3 months','6 months',
                                           '9 months','12 months',
                                           '15 months','18 months'],
                                     scale=alt.Scale(scheme='lightorange'),
-                                    legend=alt.Legend(
-                                    orient='none',
-                                    legendY=0,
-                                    direction='vertical')),
+                                    legend=None),
                                 tooltip=["UST deposited","Lockup period"]
-                            ).configure_view(strokeOpacity=0)
-        return pie_ust_chart
+                            ).configure_view(strokeOpacity=0).properties(height=400)
+        return ust_duration_chart
 
     def wallet_age_chart(self, wallet_age_df, dates_to_mark):
         dates_to_mark.height = wallet_age_df.address_count.max() - 30
@@ -121,7 +122,6 @@ class ChartProvider:
                                                             'weighted_avg_dur':'Weighted average lockup period',
                                                             'sender':'User address'})
         users_balance_df['url'] = 'https://finder.extraterrestrial.money/mainnet/address/'+users_balance_df['User address']
-        print(users_balance_df.columns)
         if(len(users_balance_df)>5000):
             df = users_balance_df.sample(n=5000, random_state=1)
         else:

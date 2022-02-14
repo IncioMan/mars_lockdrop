@@ -60,16 +60,11 @@ st.text("")
 st.text("")
 st.text("")
 st.text("")
-col1, col2, col3, col4,col5 = st.columns([2,4.5,1.5,1.5,1.5])
+col1, col2,col3, col4,col5 = st.columns([2,5.5,0.5,1.5,1.5])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.pie_ust_chart(data_provider.last_duration_amount), use_container_width=True)
-with col3:
-    st.metric(label="Total UST deposited",\
-            value=f"${round((15000000/1000000.0),2)}M")
-    st.metric(label="UST Withdrawn %", value=f"{round(100,2)}%")
-    st.metric(label="% Withdrawing Users", value=f"{round(145,2)}%")
+    st.altair_chart(chart_provider.ust_duration_chart(data_provider.last_duration_amount), use_container_width=True)
 with col4:
     st.metric(label="Total UST deposited",\
             value=f"${round((15000000/1000000.0),2)}M")
@@ -97,7 +92,7 @@ col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
-    st.altair_chart(chart_provider.pie_ust_chart(data_provider.last_duration_amount), use_container_width=True)
+    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
 with col3:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
@@ -189,7 +184,7 @@ st.markdown("""
 
     @media (min-width:800px) {
         .css-yksnv9 {
-            margin-top: 72px;
+            margin-top: 140px;
         }
     }
     </style>
