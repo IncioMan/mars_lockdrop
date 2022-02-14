@@ -57,10 +57,7 @@ st.markdown("""
 
 st.text("")
 st.text("")
-st.text("")
-st.text("")
-st.text("")
-col1, col2,col3, col4,col5 = st.columns([2,5.5,0.5,1.5,1.5])
+col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
 with col2:
     st.subheader('Percentage withdrawn')
     st.markdown("""How many users have withdrawn in a percentage range?""")
@@ -130,7 +127,7 @@ st.markdown("""
     .block-container
     {
         padding-bottom: 1rem;
-        padding-top: 7rem;
+        padding-top: 5rem;
     }
 </style>
 """, unsafe_allow_html=True)
