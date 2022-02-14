@@ -27,13 +27,14 @@ class ChartProvider:
         return time_duration_chart
 
     def n_duration_wallet_chart(self,count_durations_users):
-        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_line(point={
-            "filled": True,
-            "fill": "#fa9f75"
-            }, color='#fa9f75').encode(
+        n_duration_wallet_chart = alt.Chart(count_durations_users).mark_bar().encode(
             y=alt.Y('Number of users:Q', sort="ascending"),
-            x="Number of lockup durations:O",
-            tooltip=['Number of users:Q',"Number of lockup durations:Q"]
+            x=alt.X("Number of lockup durations:O",scale=alt.Scale(domain=[1,2,3,4,5,6])),
+            tooltip=['Number of users:Q',"Number of lockup durations:Q"],
+            color=alt.Color('Number of lockup durations:O', 
+                        sort=[1,2,3,4,5,6],
+                        scale=alt.Scale(scheme='lightorange'),
+                        legend=None),
         ).properties(height=300).configure_view(strokeOpacity=0)
         return n_duration_wallet_chart
 
