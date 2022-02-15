@@ -56,58 +56,57 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.text("")
-st.text("")
-st.text("")
-st.text("")
-st.text("")
 col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Amount of UST locked')
+    st.markdown("""Distribution of UST locked for different durations.""")
+    st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
     st.altair_chart(chart_provider.ust_duration_chart(data_provider.last_duration_amount), use_container_width=True)
 with col4:
-    st.metric(label="Total UST deposited",\
+    st.metric(label="Total UST locked",\
             value=f"${round((15000000/1000000.0),2)}M")
-    st.metric(label="UST Withdrawn %", value=f"{round(100,2)}%")
-    st.metric(label="% Withdrawing Users", value=f"{round(145,2)}%")
+    st.metric(label="Number of users", value=f"{round(100,2)}%")
+    st.metric(label="Number of transactions", value=f"{round(145,2)}")
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Amount of UST locked over time')
+    st.markdown("""The trend of UST locked for each duration over the course of the lockdrop event.""")
+    st.markdown("""What is the fastest growing duration in terms of locked UST? Are there spikes or is the growth linear?""")
     st.altair_chart(chart_provider.time_duration_chart(data_provider.time_duration_df), use_container_width=True)
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Number of transactions over time')
+    st.markdown("""The number of hourly transactions""")
     st.altair_chart(chart_provider.txs_over_time_chart(data_provider.hourly_stats_df), use_container_width=True)
 with col3:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Number of unique users over time')
+    st.markdown("""The cumulative number of unique users locking UST""")
     st.altair_chart(chart_provider.users_over_time_chart(data_provider.hourly_new_users_df), use_container_width=True)
   
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Users vs Number of lockup periods')
+    st.markdown("""How many different durations have users locked their UST for?""")
     st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
 with col3:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Users vs Number of lockup periods')
+    st.markdown("""How many different durations have users locked their UST for?""")
     st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
     
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Participants\' wallet age')
+    st.markdown("""Are the participants mainly Terra OGs? This graph shows the number of wallets participating in the Mars Lockdrop based on the date their wallets are created.""")
     st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df,data_provider.dates_to_mark), use_container_width=True)
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Percentage withdrawn')
-    st.markdown("""How many users have withdrawn in a percentage range?""")
+    st.subheader('Deposit distribution per balance')
+    st.markdown("""This graph depicts the distribution of UST deposited against the average balance of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
+    st.markdown("""You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers or click on one of the dots to open its [ET Finder](https://finder.extraterrestrial.money/) page.""")
     st.altair_chart(chart_provider.wallet_balance(data_provider.users_balance_df), use_container_width=True)
 
 
