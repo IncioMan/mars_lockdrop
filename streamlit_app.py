@@ -98,7 +98,8 @@ with col3:
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Participants\' wallet age')
-    st.markdown("""Are the participants mainly Terra OGs? This graph shows the number of wallets participating in the Mars Lockdrop based on the date their wallets are created.""")
+    st.markdown("""This graph shows the number of wallets participating in the Mars Lockdrop based on the date their wallets are created.""")
+    st.markdown("""Are the participants mainly Terra OGs?""")
     st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df,data_provider.dates_to_mark), use_container_width=True)
 
 col1, col2, col3 = st.columns([2,8,1])
@@ -184,8 +185,8 @@ st.markdown("""
         .css-yksnv9 {
             margin-top: 140px;
         }
-        .css-1r9v5md {
-            padding-bottom: 40px;
+        [data-testid="metric-container"]{
+            padding-bottom: 20px;
         }
         .banner {
             position: fixed;
