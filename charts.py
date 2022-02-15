@@ -141,3 +141,18 @@ class ChartProvider:
                                     tooltip=['User address', 'Total UST deposited','Address balance ($)','Weighted average lockup period']
                                     ).configure_view(strokeOpacity=0).interactive()
         return dep_dist_balance_chart
+    
+    def boxplot_lockup(self,user_stats_df):
+        chart = alt.Chart(user_stats_df.rename(columns={'duration':'Lockup period (months)','amount':'Amount UST deposited'})).mark_boxplot(extent='min-max').encode(
+            x=alt.X(field="Lockup period (months)", type="nominal", axis=alt.Axis(labelAngle=0),
+                                            sort=[3,6,9,12,15,18]),
+            y='Amount UST deposited:Q',
+            color=alt.Color(field="Lockup period (months)", type="nominal",
+                                            sort=['3 months','6 months',
+                                                '9 months','12 months',
+                                                '15 months','18 months'],
+                                            scale=alt.Scale(scheme='lightorange'),
+                                            legend=None),
+            tooltip=['Lockup period (months):N','Amount UST deposited']
+        ).configure_view(strokeOpacity=0)
+        return chart

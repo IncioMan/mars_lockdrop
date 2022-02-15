@@ -87,11 +87,13 @@ with col3:
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('Users vs Number of lockup periods')
-    st.markdown("""How many different durations have users locked their UST for?""")
-    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
+    st.subheader('User deposits over lockup periods')
+    st.markdown("By plotting the distribution of the amount deposited by each user in each lockup period, we can identify outliers and isolate the behavior of whales from the ones of retails/majority of users.")
+    st.markdown("""What is the median deposit for each lockup period?""")
+    st.altair_chart(chart_provider.boxplot_lockup(data_provider.user_stats_df), use_container_width=True)
 with col3:
     st.subheader('Users vs Number of lockup periods')
+    st.markdown("By plotting the number of different lockup periods in which users have deposited, we can identify behavioral patterns. We can investigate if users have chosen multiple periods or a single one.")
     st.markdown("""How many different durations have users locked their UST for?""")
     st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
     
