@@ -64,7 +64,7 @@ with col2:
 with col4:
     st.metric(label="Total UST locked",\
             value=f"${round((15000000/1000000.0),2)}M")
-    st.metric(label="Number of users", value=f"{round(100,2)}%")
+    st.metric(label="Number of users", value=f"{round(100,2)}")
     st.metric(label="Number of transactions", value=f"{round(145,2)}")
 
 col1, col2, col3 = st.columns([2,8,1])
