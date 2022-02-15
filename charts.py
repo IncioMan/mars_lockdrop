@@ -92,12 +92,12 @@ class ChartProvider:
         return ust_duration_chart
 
     def wallet_age_chart(self, wallet_age_df, dates_to_mark):
-        dates_to_mark.height = wallet_age_df.address_count.max() - 30
+        dates_to_mark.height = max(30,int(wallet_age_df.address_count.max()/3*2))
         wallet_age_df = wallet_age_df.rename(columns={'min_date':'Date of wallet creation',
                                                      'address_count':'Number of wallets'})
         c = alt.Chart(wallet_age_df).mark_bar(color='#fab98d').encode(
             x=alt.X("Date of wallet creation:T", axis=alt.Axis(tickCount=10, labelAngle=0, title='Date of wallet creation')),
-            y=alt.Y('Number of wallets:Q',axis=alt.Axis(labels=False,title='Number of wallets')),
+            y=alt.Y('Number of wallets:Q',scale=alt.Scale(domain=(0, max(50,int(wallet_age_df['Number of wallets'].max())))),axis=alt.Axis(labels=False,title='Number of wallets')),
             tooltip=["Date of wallet creation:T","Number of wallets:Q"]
         )
 
