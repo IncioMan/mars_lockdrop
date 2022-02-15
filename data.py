@@ -130,7 +130,20 @@ class DataProvider:
                             ['user3',80]]
         for i in range(0,100):
             users_balance.append([f'user{i}',random.randint(0,100000)])
+        
+        wallet_age = []
+        for i in range(1,31):
+            wallet_age.append([f'2021-09-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
+        for i in range(1,32):
+            wallet_age.append([f'2021-10-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
+        for i in range(1,31):
+            wallet_age.append([f'2021-11-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
+        for i in range(1,32):
+            wallet_age.append([f'2021-12-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
+        for i in range(1,32):
+            wallet_age.append([f'2022-01-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
 
+        print(wallet_age)
         self.data_claim = {
             self.user_stats : users_stats,
             self.hourly_stats : [['2021-09-21T07:00:00Z',1000,4,3,
@@ -156,12 +169,7 @@ class DataProvider:
                         200,1,1,
                         10,10,30,10,50,5,
                         0,0,0,0,7,0]],
-            self.wallet_age : [
-                ['2021-09-22T09:00:00Z',5],['2021-09-21T09:00:00Z',6],['2021-09-20T09:00:00Z',5],
-                ['2021-09-23T09:00:00Z',5],['2021-09-24T09:00:00Z',4],['2021-09-25T09:00:00Z',3],
-                ['2021-09-26T09:00:00Z',5],['2021-09-27T09:00:00Z',6],['2021-09-28T09:00:00Z',5],
-                ['2021-09-29T09:00:00Z',5],['2021-09-30:00:00Z',4],['2021-10-01T09:00:00Z',3]
-            ],
+            self.wallet_age : wallet_age,
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],
                                     ['2021-09-21T09:00:00Z',200],
