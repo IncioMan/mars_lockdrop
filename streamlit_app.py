@@ -55,7 +55,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.text("")
 col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
 with col2:
     st.subheader('Amount of UST locked')
