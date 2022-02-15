@@ -38,7 +38,7 @@ chart_provider = ChartProvider()
 ###
 ###
 st.markdown("""
-<div style=\"max-width: 50px;position: fixed;float: left;z-index: 1\">
+<div class="banner" style=\"max-width: 50px;float: left;z-index: 1\">
     <a href="https://marsprotocol.io/">
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/mars_logo_hd.png" style=\"margin-left: 5px;\" width=\"100px\">
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/M.png" width=\"100px\">
@@ -183,6 +183,12 @@ st.markdown("""
     @media (min-width:800px) {
         .css-yksnv9 {
             margin-top: 140px;
+        }
+        .css-1r9v5md {
+            padding-bottom: 40px;
+        }
+        .banner {
+            position: fixed;
         }
     }
     </style>
