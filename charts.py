@@ -91,6 +91,33 @@ class ChartProvider:
                             ).configure_view(strokeOpacity=0).properties(height=400)
         return ust_duration_chart
 
+    def simulation_apr_chart(self, last_duration_amount):
+        ust_duration_chart = alt.Chart(last_duration_amount).mark_bar().encode(
+                            y=alt.Y(field="UST deposited", type="quantitative"),
+                            x=alt.X(field="Lockup period", type="nominal", axis=alt.Axis(labelAngle=0),
+                                    sort=['3 months','6 months',
+                                          '9 months','12 months',
+                                          '15 months','18 months']),
+                            color=alt.Color(field="Lockup period", type="nominal",
+                                    sort=['3 months','6 months',
+                                          '9 months','12 months',
+                                          '15 months','18 months'],
+                                    scale=alt.Scale(scheme='lightorange'),
+                                    legend=None),
+                                tooltip=["UST deposited","Lockup period"]
+                            )
+        text = ust_duration_chart.mark_text(
+                align='center',
+                baseline='middle',
+                dy=-15,  # Nudges text to right so it doesn't appear on top of the bar
+                fontSize=25
+            ).encode(
+                text='UST deposited:Q'
+            )
+
+        return (ust_duration_chart + text).properties(height=400).configure_view(strokeOpacity=0)
+         
+
     def wallet_age_chart(self, wallet_age_df, dates_to_mark):
         dates_to_mark.height = max(30,int(wallet_age_df.address_count.max()/3*2))
         wallet_age_df = wallet_age_df.rename(columns={'min_date':'Date of wallet creation',

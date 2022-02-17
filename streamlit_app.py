@@ -67,7 +67,7 @@ with col2:
 
 col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
 with col2:
-    st.altair_chart(chart_provider.ust_duration_chart(data_provider.last_duration_amount), use_container_width=True)
+    st.altair_chart(chart_provider.simulation_apr_chart(data_provider.last_duration_amount), use_container_width=True)
 with col4:
     number = st.number_input('UST deposited', step=1, min_value=0)
     option = st.selectbox('Lockup duration',('3 months', '6 months', '9 months', '12 months', '15 months','18 months'))
