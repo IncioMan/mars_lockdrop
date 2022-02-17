@@ -143,7 +143,6 @@ class DataProvider:
         for i in range(1,32):
             wallet_age.append([f'2022-01-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
 
-        print(wallet_age)
         self.data_claim = {
             self.user_stats : users_stats,
             self.hourly_stats : [['2021-09-21T07:00:00Z',1000,4,3,
