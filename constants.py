@@ -1,3 +1,4 @@
+mars_tokens = 50000000
 cols_dict = {
     "ust_left":"UST left deposited",
     "DEPOSIT_AMOUNT":"Amount deposited",

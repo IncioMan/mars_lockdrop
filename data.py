@@ -1,5 +1,5 @@
 import pandas as pd
-from constants import cols_dict
+from constants import cols_dict, mars_tokens
 import requests
 import random
 
@@ -81,6 +81,13 @@ class DataProvider:
                                               amnt_sum=('amount', 'sum'))
         df['weighted_avg_dur'] = df.dur_sum/df.amnt_sum
         self.users_balance_df = df.reset_index().merge(self.users_balance_df, on='sender')
+
+        #MARS ROI
+        df_value = self.last_duration_amount.set_index('Lockup period').T
+        df_value=df_value.append(pd.DataFrame([3,6,9,12,15,18],columns=['n_months'],index=['3 months','6 months','9 months','12 months','15 months','18 months']).T)
+        df_value=df_value.append(pd.DataFrame([1,2.8,
+                                            5.2,8,11.2,14.7],columns=['boost'],index=['3 months','6 months','9 months','12 months','15 months','18 months']).T)
+        self.mars_roi_df = df_value
 
 
     def __init__(self, claim, get_url=None):
@@ -177,3 +184,19 @@ class DataProvider:
                                     ['2021-09-21T12:00:00Z',140]],                  
             self.users_balance: users_balance
     }
+
+    def get_mars_tokens_aprs(self, amount, lockup, mars_price):
+        df_value = self.mars_roi_df
+        df_value[lockup]['UST deposited'] += amount
+        df_value = df_value.append((df_value.T['UST deposited']*df_value.T.boost).rename('weighted_deposit'))
+        df_value = df_value.append((df_value.T['weighted_deposit']/df_value.T['weighted_deposit'].sum()*mars_tokens).rename('mars_tokens'))
+        df_value = df_value.append((df_value.T['mars_tokens']/df_value.T['UST deposited']).rename('mars_tokens_per_ust'))
+        df_value = df_value.append((df_value.T['mars_tokens_per_ust']*mars_price).rename('roi_ust_per_ust'))
+        df_value = df_value.append((df_value.T['roi_ust_per_ust']*100)\
+                                             .apply(lambda x: round(x,2))\
+                                             .rename('roi_perc'))
+        df_value = df_value.append((df_value.T['roi_perc'])\
+                                        .apply(lambda x: str(x)+'%')\
+                                        .rename('roi_perc_label'))
+        #return rois updated and the n of mars tokens obtained by the deposit
+        return df_value, df_value.loc['mars_tokens_per_ust'][lockup]*amount

@@ -91,9 +91,12 @@ class ChartProvider:
                             ).configure_view(strokeOpacity=0).properties(height=400)
         return ust_duration_chart
 
-    def simulation_apr_chart(self, last_duration_amount):
-        ust_duration_chart = alt.Chart(last_duration_amount).mark_bar().encode(
-                            y=alt.Y(field="UST deposited", type="quantitative"),
+    def simulation_apr_chart(self, df):
+        df = df.T.reset_index().rename(columns={'roi_perc':'ROI','index':'Lockup period',
+                                                'roi_perc_label':'% ROI'})
+        print(df)
+        ust_duration_chart = alt.Chart(df).mark_bar().encode(
+                            y=alt.Y(field="ROI", type="quantitative"),
                             x=alt.X(field="Lockup period", type="nominal", axis=alt.Axis(labelAngle=0),
                                     sort=['3 months','6 months',
                                           '9 months','12 months',
@@ -104,7 +107,7 @@ class ChartProvider:
                                           '15 months','18 months'],
                                     scale=alt.Scale(scheme='lightorange'),
                                     legend=None),
-                                tooltip=["UST deposited","Lockup period"]
+                                tooltip=["% ROI","Lockup period"]
                             )
         text = ust_duration_chart.mark_text(
                 align='center',
@@ -112,7 +115,7 @@ class ChartProvider:
                 dy=-15,  # Nudges text to right so it doesn't appear on top of the bar
                 fontSize=25
             ).encode(
-                text='UST deposited:Q'
+                text='% ROI:N'
             )
 
         return (ust_duration_chart + text).properties(height=400).configure_view(strokeOpacity=0)
