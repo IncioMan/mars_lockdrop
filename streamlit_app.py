@@ -58,7 +58,7 @@ st.markdown("""
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Return on Investment')
-    st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, the higher the boost you obtain.""")
+    st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, [the higher the boost you obtain](https://mars-protocol.medium.com/mars-distribution-plan-the-mars-token-launch-lockdrop-and-more-9f6d2dc0995c).""")
     st.markdown("""Therefore, according to the current deposits in each lockup period and the one you plan to perform
                    - by selecting what we believe the MARS token's price will be - we can simulate the expected ROI on each UST locked in each bucket.
                 """)
