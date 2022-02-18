@@ -94,7 +94,6 @@ class ChartProvider:
     def simulation_apr_chart(self, df):
         df = df.T.reset_index().rename(columns={'roi_perc':'ROI','index':'Lockup period',
                                                 'roi_perc_label':'% ROI'})
-        print(df)
         ust_duration_chart = alt.Chart(df).mark_bar().encode(
                             y=alt.Y(field="ROI", type="quantitative"),
                             x=alt.X(field="Lockup period", type="nominal", axis=alt.Axis(labelAngle=0),

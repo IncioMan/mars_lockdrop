@@ -70,9 +70,9 @@ with col4:
     st.text("")
     st.text("")
     st.text("")
-    input_deposit = st.number_input('UST deposited', step=1, min_value=0)
+    input_deposit = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     input_duration = st.selectbox('Lockup duration',('3 months', '6 months', '9 months', '12 months', '15 months','18 months'))
-    input_mars_price = st.number_input('$MARS price', step=0.01, min_value=0.01)
+    input_mars_price = st.number_input('$MARS price', step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
     #st.text(f'Hai vinto {mars_roi_on_deposit}')
 with col2:
     df, mars_roi_on_deposit = data_provider.get_mars_tokens_aprs(input_deposit, input_duration, input_mars_price)    
@@ -159,6 +159,15 @@ st.markdown("""
     {
         padding-bottom: 1rem;
         padding-top: 5rem;
+    }
+    .st-bu{
+        background-color: transparent;
+    }
+    .st-bv{
+        background-color: transparent;
+    }
+    .css-k7dvn8{
+        background-color: transparent;
     }
 </style>
 """, unsafe_allow_html=True)
