@@ -57,7 +57,7 @@ st.markdown("""
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Return on Investment Simulation')
+    st.subheader('Return on Investment')
     st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, the higher the boost you obtain.""")
     st.markdown("""Therefore, according to the current deposits in each lockup period and the one you plan to perform
                    - by selecting what we believe the MARS token's price will be - we can simulate the expected ROI on each UST locked in each bucket.
@@ -65,17 +65,17 @@ with col2:
     #st.markdown("""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []""")
     
 
-col1, col2,col3, col4,col5 = st.columns([2,6,0.2,1.8,1])
+col1, col2, col4,col5 = st.columns([2,6,2,1])
 with col4:
-    st.text("")
     st.text("")
     st.text("")
     input_deposit = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     input_duration = st.selectbox('Lockup duration',('3 months', '6 months', '9 months', '12 months', '15 months','18 months'))
     input_mars_price = st.number_input('$MARS price', step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
-    #st.text(f'Hai vinto {mars_roi_on_deposit}')
-with col2:
     df, mars_roi_on_deposit = data_provider.get_mars_tokens_aprs(input_deposit, input_duration, input_mars_price)    
+    st.text(f'Rewards: {round(mars_roi_on_deposit,0)} MARS')
+    #df.loc['roi_perc_label'][input_duration]
+with col2:
     st.altair_chart(chart_provider.simulation_apr_chart(df), use_container_width=True)
 
 
@@ -160,10 +160,10 @@ st.markdown("""
         padding-bottom: 1rem;
         padding-top: 5rem;
     }
-    .st-bu{
+    .st-bx{
         background-color: transparent;
     }
-    .st-bv{
+    .st-bu{
         background-color: transparent;
     }
     .css-k7dvn8{
