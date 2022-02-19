@@ -23,7 +23,36 @@ class DataProvider:
         self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.new_users.cumsum()
 
         ##Hourly stats
-        self.hourly_stats_df = self.claim(self.hourly_stats,self.cols_claim,self.data_claim)
+        hourly_stats_df = self.claim(self.hourly_stats,self.cols_claim,self.data_claim)
+        hourly_stats_df.columns = [c.lower() for c in hourly_stats_df.columns]
+        ###
+        dep_amount = hourly_stats_df[hourly_stats_df.type_action=='deposit'].groupby('hr').amount.sum().rename('DEP_AMOUNT')
+        dep_txs = hourly_stats_df[hourly_stats_df.type_action=='deposit'].groupby('hr').n_txs.sum().rename('DEPOSIT_TX')
+        dep_users = hourly_stats_df[hourly_stats_df.type_action=='deposit'].groupby('hr').n_users.sum().rename('DEP_USERS')
+
+        with_amount = hourly_stats_df[hourly_stats_df.type_action=='withdraw'].groupby('hr').amount.sum().rename('WITH_AMOUNT')
+        with_txs = hourly_stats_df[hourly_stats_df.type_action=='withdraw'].groupby('hr').n_txs.sum().rename('WITH_TX')
+        with_users = hourly_stats_df[hourly_stats_df.type_action=='withdraw'].groupby('hr').n_users.sum().rename('WITH_USERS')
+
+        dep_amount_3 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==3)].groupby('hr').amount.sum().rename('DEP_AMOUNT_3')
+        dep_amount_6 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==6)].groupby('hr').amount.sum().rename('DEP_AMOUNT_6')
+        dep_amount_9 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==9)].groupby('hr').amount.sum().rename('DEP_AMOUNT_9')
+        dep_amount_12 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==12)].groupby('hr').amount.sum().rename('DEP_AMOUNT_12')
+        dep_amount_15 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==15)].groupby('hr').amount.sum().rename('DEP_AMOUNT_15')
+        dep_amount_18 = hourly_stats_df[(hourly_stats_df.type_action=='deposit')&(hourly_stats_df.duration==18)].groupby('hr').amount.sum().rename('DEP_AMOUNT_18')
+
+        with_amount_3 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==3)].groupby('hr').amount.sum().rename('WITH_AMOUNT_3')
+        with_amount_6 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==6)].groupby('hr').amount.sum().rename('WITH_AMOUNT_6')
+        with_amount_9 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==9)].groupby('hr').amount.sum().rename('WITH_AMOUNT_9')
+        with_amount_12 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==12)].groupby('hr').amount.sum().rename('WITH_AMOUNT_12')
+        with_amount_15 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==15)].groupby('hr').amount.sum().rename('WITH_AMOUNT_15')
+        with_amount_18 = hourly_stats_df[(hourly_stats_df.type_action=='withdraw')&(hourly_stats_df.duration==18)].groupby('hr').amount.sum().rename('WITH_AMOUNT_18')
+
+        df = pd.DataFrame([dep_amount, dep_txs, dep_users, with_amount, with_txs, with_users,
+                    dep_amount_3,dep_amount_6,dep_amount_9,dep_amount_12,dep_amount_15,dep_amount_18,
+                    with_amount_3,with_amount_6,with_amount_9,with_amount_12,with_amount_15,with_amount_18]).fillna(0).T
+        ###
+        self.hourly_stats_df = df.reset_index().rename(columns={'index':'HR'})
         self.hourly_stats_df.columns = [c.lower() for c in self.hourly_stats_df.columns]
         self.hourly_stats_df = self.hourly_stats_df.sort_values(by='hr',ascending=True)
         self.hourly_stats_df['net_deposit_3'] = (self.hourly_stats_df.dep_amount_3-self.hourly_stats_df.with_amount_3).cumsum()
@@ -98,17 +127,12 @@ class DataProvider:
         self.user_stats = '1'
         self.hourly_new_users = '2'
         self.wallet_age = '3'
-        self.hourly_stats = '4'
+        self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
         self.users_balance = '5'
         ###
         self.cols_claim = {
             self.user_stats : ['SENDER', 'DURATION', 'AMOUNT'],
-            self.hourly_stats : ['HR', 
-                                'DEP_AMOUNT', 'DEPOSIT_TX', 'DEP_USERS',
-                                'WITH_AMOUNT', 'WITH_TX', 'WITH_USERS',
-                                'DEP_AMOUNT_3', 'DEP_AMOUNT_6', 'DEP_AMOUNT_9','DEP_AMOUNT_12', 'DEP_AMOUNT_15', 'DEP_AMOUNT_18',
-                                'WITH_AMOUNT_3', 'WITH_AMOUNT_6', 'WITH_AMOUNT_9','WITH_AMOUNT_12', 'WITH_AMOUNT_15', 'WITH_AMOUNT_18',
-            ],
+            self.hourly_stats : ['HR', 'DURATION','TYPE_ACTION','AMOUNT','N_USERS','N_TXS'],
             self.wallet_age : ['MIN_DATE','ADDRESS_COUNT'],
             self.hourly_new_users: ['TIME','NEW_USERS'],
             self.users_balance: ['SENDER','BALANCE'],
@@ -152,29 +176,14 @@ class DataProvider:
 
         self.data_claim = {
             self.user_stats : users_stats,
-            self.hourly_stats : [['2021-09-21T07:00:00Z',1000,4,3,
-                        100,1,1,
-                        100000,20,30,40,50,60,
-                        0,0,10,0,0,0],
-                    ['2021-09-21T08:00:00Z',1000,4,3,
-                        200,1,1,
-                        100000,100000,300000,100000,500000,5,
-                        0,0,0,0,7,0],
-                    ['2021-09-21T09:00:00Z',1000,4,3,
-                        200,1,1,
-                        100000,10,30,10,50,5,
-                        0,0,0,0,7,0],['2021-09-21T10:00:00Z',1000,4,3,
-                        100,1,1,
-                        100000,200000,300000,400000,500000,600000,
-                        0,0,10,0,0,0],
-                    ['2021-09-21T11:00:00Z',1000,4,3,
-                        200,1,1,
-                        10,10,30,100000,500000,5,
-                        0,0,0,0,7,0],
-                    ['2021-09-21T12:00:00Z',1000,4,3,
-                        200,1,1,
-                        100000,10,300000,10,500000,5,
-                        0,0,0,0,7,0]],
+            self.hourly_stats : [['2021-09-21T07:00:00Z',3,'deposit',3000,11,30],
+                    ['2021-09-21T07:00:00Z',6,'deposit',2000,11,30],
+                    ['2021-09-21T07:00:00Z',9,'deposit',200,11,30],
+                    ['2021-09-21T07:00:00Z',12,'deposit',500,11,30],
+                    ['2021-09-21T07:00:00Z',15,'deposit',506,11,30],
+                    ['2021-09-21T07:00:00Z',18,'deposit',12,11,30],
+                    ['2021-09-21T07:00:00Z',3,'withdraw',323,11,30],
+                    ['2021-09-21T08:00:00Z',3,'deposit',1001,11,30]],
             self.wallet_age : wallet_age,
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],
