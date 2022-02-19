@@ -59,9 +59,12 @@ col1, col2,col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Return on Investment')
     st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, [the higher the boost you obtain](https://mars-protocol.medium.com/mars-distribution-plan-the-mars-token-launch-lockdrop-and-more-9f6d2dc0995c).""")
-    st.markdown("""Therefore, according to the current deposits in each lockup period and the one you plan to perform
-                   - by selecting what we believe the MARS token's price will be - we can simulate the expected ROI on each UST locked in each bucket.
-                """)
+    st.markdown("""Therefore, we can simulate the expected ROI on each UST locked in each bucket. You simply have to:
+                    <ul> 
+                        <li> Insert what you expect the MARS token price to be </li>
+                        <li> Insert your deposit and lockup period (optional) </li>
+                    </ul>
+                """,unsafe_allow_html=True)
     #st.markdown("""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []""")
     
 
@@ -81,18 +84,24 @@ with col2:
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
+    st.subheader('Lockdrop Metrics')
+col1, col2,col3, col4,col5 = st.columns([2,2,2,2,1])
+with col2:
+    st.metric(label="Total UST locked",\
+            value=f"${round((15000000/1000000.0),2)}M")
+with col3:
+    st.metric(label="Number of users", value=f"{round(100,2)}")
+with col4:
+    st.metric(label="Number of transactions", value=f"{round(145,2)}")
+
+col1, col2,col3 = st.columns([2,8,1])
+with col2:
     st.subheader('Amount of UST locked')
     st.markdown("""Distribution of UST locked for different durations.""")
     st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
-    
-col1, col2,col3, col4,col5 = st.columns([2,6,0.5,1.5,1])
-with col2:
     st.altair_chart(chart_provider.ust_duration_chart(data_provider.last_duration_amount), use_container_width=True)
-with col4:
-    st.metric(label="Total UST locked",\
-            value=f"${round((15000000/1000000.0),2)}M")
-    st.metric(label="Number of users", value=f"{round(100,2)}")
-    st.metric(label="Number of transactions", value=f"{round(145,2)}")
+
+
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
