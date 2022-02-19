@@ -1,11 +1,16 @@
 import pandas as pd
-from constants import cols_dict, mars_tokens
+from constants import cols_dict, mars_tokens, aust_price,bluna_price
 import requests
 import random
 
 class DataProvider:
     
     def load_data(self):
+        self.aust_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/aUST.csv', index_col=1).drop(columns=['Unnamed: 0'])
+        self.bluna_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/bLuna.csv', index_col=1).drop(columns=['Unnamed: 0'])
+        
+        self.aust_balance =  self.aust_balance /1000000 * aust_price
+        self.bluna_balance =  self.bluna_balance /1000000 * bluna_price
         ##Users stats
         self.user_stats_df = self.claim(self.user_stats,self.cols_claim,self.data_claim)
         self.user_stats_df.columns = [c.lower() for c in self.user_stats_df.columns]
@@ -104,6 +109,14 @@ class DataProvider:
         ##Balance
         self.users_balance_df = self.claim(self.users_balance,self.cols_claim,self.data_claim)
         self.users_balance_df.columns = [c.lower() for c in self.users_balance_df.columns]
+
+        self.users_balance_df = self.users_balance_df\
+                            .join(self.bluna_balance, on='sender', how='left')\
+                            .join(self.aust_balance, on='sender', how='left').fillna(0)
+        self.users_balance_df.balance = self.users_balance_df.balance + \
+                                                self.users_balance_df.bLuna_balance + \
+                                                self.users_balance_df.aUST_balance
+
         self.user_stats_df['dur_amount']=self.user_stats_df.duration * self.user_stats_df.amount
         df = self.user_stats_df.groupby('sender').agg(mean_duration=('duration', 'mean'),
                                               dur_sum=('dur_amount', 'sum'),
@@ -124,11 +137,11 @@ class DataProvider:
         self.get_url = get_url
 
 
-        self.user_stats = '1'
-        self.hourly_new_users = '2'
-        self.wallet_age = '3'
+        self.user_stats = '334d8aa0-f9a3-4a9f-a138-3e35583f9477'
+        self.hourly_new_users = 'bb19634c-10e2-4498-8427-76a7b6e401ac'
+        self.wallet_age = 'f297f742-95a1-442e-84fb-babc5b1bb6e4'
         self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
-        self.users_balance = '5'
+        self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
         ###
         self.cols_claim = {
             self.user_stats : ['SENDER', 'DURATION', 'AMOUNT'],
@@ -176,14 +189,23 @@ class DataProvider:
 
         self.data_claim = {
             self.user_stats : users_stats,
-            self.hourly_stats : [['2021-09-21T07:00:00Z',3,'deposit',3000,11,30],
+            self.hourly_stats : [
+                    ['2021-09-21T07:00:00Z',3,'deposit',3000,11,30],
+                    ['2021-09-21T07:00:00Z',3,'withdraw',323,11,30],
                     ['2021-09-21T07:00:00Z',6,'deposit',2000,11,30],
-                    ['2021-09-21T07:00:00Z',9,'deposit',200,11,30],
+                    ['2021-09-21T07:00:00Z',9,'deposit',200000,11,30],
                     ['2021-09-21T07:00:00Z',12,'deposit',500,11,30],
                     ['2021-09-21T07:00:00Z',15,'deposit',506,11,30],
                     ['2021-09-21T07:00:00Z',18,'deposit',12,11,30],
-                    ['2021-09-21T07:00:00Z',3,'withdraw',323,11,30],
-                    ['2021-09-21T08:00:00Z',3,'deposit',1001,11,30]],
+                    ['2021-09-21T08:00:00Z',3,'deposit',3000000,11,30],
+                    ['2021-09-21T08:00:00Z',3,'withdraw',1001,11,30],
+                    ['2021-09-21T08:00:00Z',6,'deposit',2000,11,30],
+                    ['2021-09-21T08:00:00Z',9,'deposit',200,11,30],
+                    ['2021-09-21T08:00:00Z',12,'deposit',5000,11,30],
+                    ['2021-09-21T08:00:00Z',12,'withdraw',1001,11,30],
+                    ['2021-09-21T08:00:00Z',15,'deposit',50006,11,30],
+                    ['2021-09-21T08:00:00Z',18,'deposit',12,11,30]
+            ],
             self.wallet_age : wallet_age,
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
                                     ['2021-09-21T08:00:00Z',600],

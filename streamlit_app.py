@@ -27,8 +27,8 @@ def claim(claim_hash, cols_claim, data_claim):
     return df_claim
 
 @st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
-def get_url(url):
-    return pd.read_csv(url, index_col=0)
+def get_url(url, index_col):
+    return pd.read_csv(url, index_col=index_col)
     
 
 data_provider = DataProvider(claim, get_url)
@@ -143,7 +143,7 @@ with col2:
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Deposit distribution per balance')
-    st.markdown("""This graph depicts the distribution of UST deposited against the average balance of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
+    st.markdown("""This graph depicts the distribution of UST deposited against the average balance (UST, aUST and bLuna) of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
     st.markdown("""You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers or click on one of the dots to open its [ET Finder](https://finder.extraterrestrial.money/) page.""")
     st.altair_chart(chart_provider.wallet_balance(data_provider.users_balance_df), use_container_width=True)
 
@@ -237,6 +237,7 @@ st.markdown("""
         }
         .banner {
             position: fixed;
+            padding-top: 20px;
         }
     }
     </style>
