@@ -8,15 +8,17 @@ class ChartProvider:
         pass
     
     def time_duration_chart(self, time_duration_df):
+        domain = ['3 months','6 months',
+                    '9 months','12 months',
+                    '15 months','18 months']
+        range_ = ['#ffffff','#f9bf94','#fa9f75','#f58766','#ec6f5e','#a72327']
         max_date = self.get_max_domain_date(time_duration_df,'hr',10)
         time_duration_chart = alt.Chart(time_duration_df.rename(columns={'hr':'Time'})).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(time_duration_df.hr.min(),max_date))),
             y=alt.X('UST deposited:Q',scale=alt.Scale(domain=(0,time_duration_df['UST deposited'].max()+30))),
             color=alt.Color('Lockup period:N', 
-                        sort=['3 months','6 months',
-                              '9 months','12 months',
-                              '15 months','18 months'],
-                        scale=alt.Scale(scheme='lightorange'),
+                        sort=domain,
+                        scale=alt.Scale(domain=domain, range=range_),
                         legend=alt.Legend(
                                     orient='none',
                                     padding=5,

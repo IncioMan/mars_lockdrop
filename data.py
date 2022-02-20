@@ -30,6 +30,7 @@ class DataProvider:
         ##Hourly stats
         hourly_stats_df = self.claim(self.hourly_stats,self.cols_claim,self.data_claim)
         hourly_stats_df.columns = [c.lower() for c in hourly_stats_df.columns]
+        self.last_udpate = pd.to_datetime(hourly_stats_df.hr).max().strftime("%d-%m-%Y %H:%M")
         ###
         dep_amount = hourly_stats_df[hourly_stats_df.type_action=='deposit'].groupby('hr').amount.sum().rename('DEP_AMOUNT')
         dep_txs = hourly_stats_df[hourly_stats_df.type_action=='deposit'].groupby('hr').n_txs.sum().rename('DEPOSIT_TX')
@@ -204,7 +205,22 @@ class DataProvider:
                     ['2021-09-21T08:00:00Z',12,'deposit',5000,11,30],
                     ['2021-09-21T08:00:00Z',12,'withdraw',1001,11,30],
                     ['2021-09-21T08:00:00Z',15,'deposit',50006,11,30],
-                    ['2021-09-21T08:00:00Z',18,'deposit',12,11,30]
+                    ['2021-09-21T08:00:00Z',18,'deposit',12,11,30],
+                    ['2021-09-21T09:00:00Z',3,'deposit',3000,11,30],
+                    ['2021-09-21T09:00:00Z',3,'withdraw',323,11,30],
+                    ['2021-09-21T09:00:00Z',6,'deposit',2000,11,30],
+                    ['2021-09-21T09:00:00Z',9,'deposit',200000,11,30],
+                    ['2021-09-21T09:00:00Z',12,'deposit',500,11,30],
+                    ['2021-09-21T09:00:00Z',15,'deposit',506,11,30],
+                    ['2021-09-21T09:00:00Z',18,'deposit',12,11,30],
+                    ['2021-09-21T10:00:00Z',3,'deposit',3000000,11,30],
+                    ['2021-09-21T10:00:00Z',3,'withdraw',1001,11,30],
+                    ['2021-09-21T10:00:00Z',6,'deposit',2000,11,30],
+                    ['2021-09-21T10:00:00Z',9,'deposit',200,11,30],
+                    ['2021-09-21T10:00:00Z',12,'deposit',5000,11,30],
+                    ['2021-09-21T10:00:00Z',12,'withdraw',1001,11,30],
+                    ['2021-09-21T10:00:00Z',15,'deposit',50006,11,30],
+                    ['2021-09-21T10:00:00Z',18,'deposit',12,11,30]
             ],
             self.wallet_age : wallet_age,
             self.hourly_new_users: [['2021-09-21T07:00:00Z',1000],
