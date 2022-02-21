@@ -176,6 +176,9 @@ st.markdown("""
     .st-bu{
         background-color: transparent;
     }
+    .st-bv{
+        background-color: transparent;
+    }
     .css-k7dvn8{
         background-color: transparent;
     }
