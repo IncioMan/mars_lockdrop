@@ -26,7 +26,7 @@ class DataProvider:
         self.hourly_new_users_df.columns = [c.lower() for c in self.hourly_new_users_df.columns]
         self.hourly_new_users_df=self.hourly_new_users_df.sort_values(by='time',ascending=True)
         self.hourly_new_users_df['cumsum_new_users'] = self.hourly_new_users_df.new_users.cumsum()
-
+        self.n_users = self.hourly_new_users_df.cumsum_new_users.max()
         ##Hourly stats
         hourly_stats_df = self.claim(self.hourly_stats,self.cols_claim,self.data_claim)
         hourly_stats_df.columns = [c.lower() for c in hourly_stats_df.columns]
@@ -68,7 +68,14 @@ class DataProvider:
         self.hourly_stats_df['net_deposit_15'] = (self.hourly_stats_df.dep_amount_15-self.hourly_stats_df.with_amount_15).cumsum()
         self.hourly_stats_df['net_deposit_18'] = (self.hourly_stats_df.dep_amount_18-self.hourly_stats_df.with_amount_18).cumsum()
         self.hourly_stats_df['tot_txs'] = self.hourly_stats_df.with_tx + self.hourly_stats_df.deposit_tx
-
+        self.tot_ust = self.hourly_stats_df.net_deposit_3.max() + \
+                       self.hourly_stats_df.net_deposit_6.max() + \
+                       self.hourly_stats_df.net_deposit_9.max() + \
+                       self.hourly_stats_df.net_deposit_12.max() + \
+                       self.hourly_stats_df.net_deposit_15.max() + \
+                       self.hourly_stats_df.net_deposit_18.max()
+        self.n_txs = self.hourly_stats_df.deposit_tx.sum() + self.hourly_stats_df.with_tx.sum()
+        ###
         self.time_duration_df = self.hourly_stats_df[['hr','net_deposit_3','net_deposit_6','net_deposit_9','net_deposit_12','net_deposit_15','net_deposit_18']]
         self.time_duration_df = self.time_duration_df.rename(columns={
             'net_deposit_3':'3 months',

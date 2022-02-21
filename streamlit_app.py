@@ -89,11 +89,11 @@ with col2:
 col1, col2,col3, col4,col5 = st.columns([3,2,2,2,1])
 with col2:
     st.metric(label="Total UST locked",\
-            value=f"${round((15000000/1000000.0),2)}M")
+            value=f"${round((data_provider.tot_ust/1000000),2)}M")
 with col3:
-    st.metric(label="Number of users", value=f"{round(100,2)}")
+    st.metric(label="Number of users", value=f"{data_provider.n_users}")
 with col4:
-    st.metric(label="Number of transactions", value=f"{round(145,2)}")
+    st.metric(label="Number of transactions", value=f"{int(data_provider.n_txs)}")
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
