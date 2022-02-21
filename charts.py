@@ -15,7 +15,7 @@ class ChartProvider:
         max_date = self.get_max_domain_date(time_duration_df,'hr',10)
         time_duration_chart = alt.Chart(time_duration_df.rename(columns={'hr':'Time'})).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(time_duration_df.hr.min(),max_date))),
-            y=alt.X('UST deposited:Q',scale=alt.Scale(domain=(0,time_duration_df['UST deposited'].max()+30))),
+            y=alt.X('UST deposited:Q',scale=alt.Scale(domain=(0,time_duration_df['UST deposited'].max()+1000000))),
             color=alt.Color('Lockup period:N', 
                         sort=domain,
                         scale=alt.Scale(domain=domain, range=range_),
