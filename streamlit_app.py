@@ -75,7 +75,7 @@ with col4:
     st.text("")
     input_deposit = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     input_duration = st.selectbox('Lockup duration',('3 months', '6 months', '9 months', '12 months', '15 months','18 months'))
-    input_mars_price = st.number_input('$MARS price', value=0.1, step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
+    input_mars_price = st.number_input('$MARS price', value=1, step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
     df, mars_roi_on_deposit = data_provider.get_mars_tokens_aprs(input_deposit, input_duration, input_mars_price)    
     st.text(f'Rewards: {round(mars_roi_on_deposit,0)} MARS')
     #df.loc['roi_perc_label'][input_duration]
