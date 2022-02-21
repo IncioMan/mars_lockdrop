@@ -241,7 +241,6 @@ st.markdown("""
         }
         .banner {
             position: fixed;
-            padding-top: 20px;
         }
     }
     </style>
