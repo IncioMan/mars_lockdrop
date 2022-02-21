@@ -143,6 +143,12 @@ with col2:
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
+    st.subheader('Top depositors')
+    st.markdown("""Let's now see the top 5 addresses which have deposited the most UST. If you are curious, you can 
+    look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
+    st.table(data_provider.top_depositors)
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
     st.subheader('Deposit distribution per balance')
     st.markdown("""This graph depicts the distribution of UST deposited against the average balance (UST, aUST and bLuna) of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
     st.markdown("""You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers or click on one of the dots to open its [ET Finder](https://finder.extraterrestrial.money/) page.""")

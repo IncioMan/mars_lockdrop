@@ -21,6 +21,8 @@ class DataProvider:
                  .rename(columns={
                             'duration':'Number of lockup durations',
                             'sender':'Number of users'})
+        self.top_depositors = self.user_stats_df.sort_values(by='amount', ascending=False).head(5)[['sender','amount','duration']]\
+                                                .set_index('sender').rename(columns={'amount':'Amount locked (UST)','duration':'Lockup duration'})
         ##Hourly new users
         self.hourly_new_users_df = self.claim(self.hourly_new_users,self.cols_claim,self.data_claim)
         self.hourly_new_users_df.columns = [c.lower() for c in self.hourly_new_users_df.columns]
