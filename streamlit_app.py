@@ -60,7 +60,7 @@ col1, col2,col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Return on Investment')
     st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, [the higher the boost you obtain](https://mars-protocol.medium.com/mars-distribution-plan-the-mars-token-launch-lockdrop-and-more-9f6d2dc0995c).""")
-    st.markdown("""Therefore, we can simulate the expected ROI on each UST locked in each bucket. You simply have to:
+    st.markdown("""Therefore, we can simulate the expected ROI (only rewards from the lockdrop) on each UST locked in each bucket. You simply have to:
                     <ul> 
                         <li> Insert what you expect the MARS token price to be </li>
                         <li> Insert your deposit and lockup period (optional) </li>
@@ -124,10 +124,10 @@ with col3:
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('User deposits over lockup periods')
-    st.markdown("By plotting the distribution of the amount deposited by each user in each lockup period, we can identify outliers and isolate the behavior of whales from the ones of retails/majority of users.")
-    st.markdown("""What is the median deposit for each lockup period?""")
-    st.altair_chart(chart_provider.boxplot_lockup(data_provider.user_stats_df), use_container_width=True)
+    st.subheader('N° of users depositing in each period')
+    st.markdown("The most popular lockup period in terms of number of users depositing may differ from the one with the most UST locked - due to whales activity. Let's therefore look at the number of users.")
+    st.markdown("""Which lockup duration has attracted the most users?""")
+    st.altair_chart(chart_provider.n_duration_users_chart(data_provider.user_stats_df), use_container_width=True)
 with col3:
     st.subheader('Users vs Number of lockup periods')
     st.markdown("By plotting the number of different lockup periods in which users have deposited, we can identify behavioral patterns. We can investigate if users have chosen multiple periods or a single one.")

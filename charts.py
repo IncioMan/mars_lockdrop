@@ -40,6 +40,28 @@ class ChartProvider:
         ).properties(height=300).configure_view(strokeOpacity=0)
         return n_duration_wallet_chart
 
+    def n_duration_users_chart(self,count_durations_users):
+        df = count_durations_users.groupby('duration').sender.count()\
+                    .reset_index().rename(columns={'sender':'Number of users','duration':'Lockup period'})
+        d = {3:'3 months',6:'6 months',
+                    9:'9 months',12:'12 months',
+                    15:'15 months',18:'18 months'}
+        df['Lockup period'] = df['Lockup period'].map(d)
+        domain = ['3 months','6 months',
+                    '9 months','12 months',
+                    '15 months','18 months']
+        n_duration_wallet_chart = alt.Chart(df).mark_bar().encode(
+            y=alt.Y('Number of users:Q', sort="ascending"),
+            x=alt.X("Lockup period:O",scale=alt.Scale(domain=domain),
+                        axis=alt.Axis(tickCount=10, labelAngle=0, tickBand = 'center')),
+            tooltip=['Number of users:Q',"Lockup period:O"],
+            color=alt.Color('Lockup period:O', 
+                        sort=domain,
+                        scale=alt.Scale(scheme='lightorange'),
+                        legend=None),
+        ).properties(height=300).configure_view(strokeOpacity=0)
+        return n_duration_wallet_chart
+
     def txs_over_time_chart(self,hourly_stats_df):
         df = hourly_stats_df.rename(columns={'hr':'Time','tot_txs':'Number of transactions'})
         max_date = self.get_max_domain_date(df,'Time',10)
