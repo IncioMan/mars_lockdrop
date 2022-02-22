@@ -4,3 +4,6 @@ backgroundColor="#282e53"
 secondaryBackgroundColor="#4E527A"
 textColor="#FFFFFF"
 font="sans serif"
+[server]
+headless = true
+port = 8501
