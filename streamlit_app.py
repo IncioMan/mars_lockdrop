@@ -13,7 +13,7 @@ st.set_page_config(page_title="Mars Lockdrop - Analytics",\
 
 ###
 
-@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=10000, show_spinner=False, allow_output_mutation=True)
 def claim(claim_hash, cols_claim, data_claim):
     try:
         df_claim = pd.read_json(
@@ -26,7 +26,7 @@ def claim(claim_hash, cols_claim, data_claim):
         return pd.DataFrame(data_claim[claim_hash],columns=cols_claim[claim_hash])
     return df_claim
 
-@st.cache(ttl=3000, show_spinner=False, allow_output_mutation=True)
+@st.cache(ttl=10000, show_spinner=False, allow_output_mutation=True)
 def get_url(url, index_col):
     return pd.read_csv(url, index_col=index_col)
     
