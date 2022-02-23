@@ -149,7 +149,7 @@ class DataProvider:
 
         self.user_stats = '334d8aa0-f9a3-4a9f-a138-3e35583f9477'
         self.hourly_new_users = 'bb19634c-10e2-4498-8427-76a7b6e401ac'
-        self.wallet_age = 'f297f742-95a1-442e-84fb-babc5b1bb6e4'
+        self.wallet_age = 'fd8f6d89-8d24-467f-9fe3-15a757e22eea'
         self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
         self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
         ###
