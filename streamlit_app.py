@@ -124,7 +124,7 @@ with col3:
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('N° of users depositing in each period')
+    st.subheader('N° of users depositing')
     st.markdown("The most popular lockup period in terms of number of users depositing may differ from the one with the most UST locked - due to whales activity. Let's therefore look at the number of users.")
     st.markdown("""Which lockup duration has attracted the most users?""")
     st.altair_chart(chart_provider.n_duration_users_chart(data_provider.user_stats_df), use_container_width=True)
