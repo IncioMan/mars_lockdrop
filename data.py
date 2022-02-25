@@ -56,8 +56,7 @@ class DataProvider:
         mars_total = 60000000
         mars = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
         self.act_mars_lba = mars[mars.hour == mars.hour.max()]["cumsum"].values[0]
-        perc_mars_in_lba = self.act_mars_lba/mars_total
-        perc_mars_in_lba
+        self.perc_mars_in_lba = self.act_mars_lba/mars_total
         #
         usts = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
         self.act_usts_lba = usts[usts.hour == mars.hour.max()]["cumsum"].values[0]
@@ -65,8 +64,7 @@ class DataProvider:
         #
         users_p1 = len(user_stats_df.sender.unique())
         users_p1_lba = len(set(user_stats_df.sender.unique()).intersection(set(lba_deposits_df.sender.unique())))
-        perc_p1_lba = users_p1_lba/users_p1
-        perc_p1_lba
+        self.perc_p1_lba = users_p1_lba/users_p1
         ## P1 MARS rewards
         boost = pd.DataFrame([1,2.8,5.2,8,11.2,14.7],columns=['boost'],index=[3,6,9,12,15,18])
         boost = user_stats_df.groupby('duration').sum().join(boost)

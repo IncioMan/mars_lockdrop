@@ -241,7 +241,7 @@ class ChartProvider:
             y="count()",
             tooltip=['Percentage of MARS deposited from Phase 1','count()'],
             color=alt.Color(scale=alt.Scale(scheme='redpurple'),legend=None),
-        ).configure_mark(color='#f58766').properties(height=300).configure_view(strokeOpacity=0)
+        ).configure_mark(color='#f885ac').properties(height=300).configure_view(strokeOpacity=0)
         return user_p1_perc_mars_chart
 
     def user_dep_type_chart(self, user_dep_type):
@@ -262,7 +262,7 @@ class ChartProvider:
 
     def lba_deposits_hourly_df_chart(self, lba_deposits_hourly_df):
         domain = ['MARS','UST']
-        range_ = ['#f9bf94','#a72327']
+        range_ = ['#f885ac','#cc1a8e']
         lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Amount']
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
