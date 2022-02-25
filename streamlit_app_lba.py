@@ -70,30 +70,16 @@ with col2:
     #st.markdown("""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []""")
     
 
-col1, col2, col4,col5 = st.columns([2,6,2,1])
-with col4:
+col1, col2, col4,col5 = st.columns([2,3,5,1])
+with col2:
     amount_ust_input = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     amount_mars_input = st.number_input('MARS deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     input_mars_price = st.number_input('$MARS price', value=1.0, step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
     ust_rwrd, mars_rwrd, roi_phase_2 = data_provider.get_lba_rewards(amount_ust_input,amount_mars_input,input_mars_price)
-    st.text(f'Estimated rewards:')
-    st.text(f'UST deposit: {round(ust_rwrd,0)} MARS')
-    st.text(f'MARS deposit: {round(mars_rwrd,0)} MARS')
-with col2:
-    st.altair_chart(chart_provider.roi_phase_2_chart(roi_phase_2), use_container_width=True)
-
-
-col1, col2,col3 = st.columns([2,8,1])
-with col2:
-    st.subheader('Lockdrop Metrics')
-col1, col2,col3, col4,col5 = st.columns([3,2,2,2,1])
-with col2:
-    st.metric(label="Total UST locked",\
-            value=f"${round((data_provider.tot_ust/1000000),2)}M")
-with col3:
-    st.metric(label="Number of users", value=f"{data_provider.n_users}")
+    st.text(f'Rewards from UST deposit: {round(ust_rwrd,0)} MARS')
+    st.text(f'Rewards from MARS deposit: {round(mars_rwrd,0)} MARS')
 with col4:
-    st.metric(label="Number of transactions", value=f"{int(data_provider.n_txs)}")
+    st.altair_chart(chart_provider.roi_phase_2_chart(roi_phase_2), use_container_width=True)
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
@@ -101,15 +87,24 @@ with col2:
     st.markdown("""Distribution of UST locked for different durations.""")
     st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
     st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
-  
 
 
-col1, col2, col3 = st.columns([2,8,1])
+col1, col2,col_,col3,col4,col5 = st.columns([2,4,0.7,1.5,1.5,1.8])
 with col2:
-    st.subheader('Amount of UST locked over time')
-    st.markdown("""The trend of UST locked for each duration over the course of the lockdrop event.""")
-    st.markdown("""What is the fastest growing duration in terms of locked UST? Are there spikes or is the growth linear?""")
-    st.altair_chart(chart_provider.user_p1_perc_mars_chart(data_provider.user_p1_perc_mars), use_container_width=True)
+    st.subheader('Amount of UST locked')
+    st.markdown("""Distribution of UST locked for different durations.""")
+    st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
+    st.altair_chart(chart_provider.mars_source_chart(data_provider.mars_source), use_container_width=True)
+with col3:
+    st.metric(label="Total UST locked",\
+            value=f"${round((data_provider.tot_ust/1000000),2)}M")
+    st.metric(label="Number of users", value=f"{data_provider.n_users}")
+    st.metric(label="Number of transactions", value=f"{int(data_provider.n_txs)}")
+with col4:
+    st.metric(label="Total UST locked",\
+            value=f"${round((data_provider.tot_ust/1000000),2)}M")
+    st.metric(label="Number of users", value=f"{data_provider.n_users}")
+    st.metric(label="Number of transactions", value=f"{int(data_provider.n_txs)}")
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
@@ -119,40 +114,14 @@ with col2:
 with col3:
     st.subheader('Number of unique users over time')
     st.markdown("""The cumulative number of unique users locking UST""")
-    st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
-  
-
-col1, col2, col3, col4 = st.columns([2,4,4,1])
-with col2:
-    st.subheader('N° of users depositing')
-    st.markdown("The most popular lockup period in terms of number of users depositing may differ from the one with the most UST locked - due to whales activity. Let's therefore look at the number of users.")
-    st.markdown("""Which lockup duration has attracted the most users?""")
-    st.altair_chart(chart_provider.mars_source_chart(data_provider.mars_source), use_container_width=True)
-with col3:
-    st.subheader('Users vs Number of lockup periods')
-    st.markdown("By plotting the number of different lockup periods in which users have deposited, we can identify behavioral patterns. We can investigate if users have chosen multiple periods or a single one.")
-    st.markdown("""How many different durations have users locked their UST for?""")
-    st.altair_chart(chart_provider.n_duration_wallet_chart(data_provider.count_durations_users), use_container_width=True)
-    
-col1, col2, col3 = st.columns([2,8,1])
-with col2:
-    st.subheader('Participants\' wallet age')
-    st.markdown("""This graph shows the number of wallets participating in the Mars Lockdrop based on the date their wallets are created.""")
-    st.markdown("""Are the participants mainly Terra OGs?""")
-    st.altair_chart(chart_provider.wallet_age_chart(data_provider.wallet_age_df,data_provider.dates_to_mark), use_container_width=True)
-
+    st.altair_chart(chart_provider.user_p1_perc_mars_chart(data_provider.user_p1_perc_mars), use_container_width=True)
+   
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Top depositors')
     st.markdown("""Let's now see the top 5 addresses which have deposited the most UST. If you are curious, you can 
     look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
     st.table(data_provider.top_depositors)
-col1, col2, col3 = st.columns([2,8,1])
-with col2:
-    st.subheader('Deposit distribution per balance')
-    st.markdown("""This graph depicts the distribution of UST deposited against the average balance (UST, aUST and bLuna) of the respective wallets. Essentially we are asking the question - are wallets with high average balances depositing more UST or vice versa?""")
-    st.markdown("""You can interact with the graph by zooming in and out to explore specific ranges. Zoom all the way out to see outliers or click on one of the dots to open its [ET Finder](https://finder.extraterrestrial.money/) page.""")
-    st.altair_chart(chart_provider.wallet_balance(data_provider.users_balance_df), use_container_width=True)
 
 
 ###
@@ -174,7 +143,7 @@ st.markdown("""
     .block-container
     {
         padding-bottom: 1rem;
-        padding-top: 3.6rem;
+        padding-top: 4rem;
     }
     .st-bx{
         background-color: transparent;
@@ -243,15 +212,15 @@ st.markdown("""
     }
 
     @media (min-width:800px) {
-        .css-yksnv9 {
-            margin-top: 30px;
+        .css-la5jjn {
+            margin-top: 80px;
         }
         [data-testid="metric-container"]{
             padding-bottom: 20px;
         }
         .banner {
             position: fixed;
-            padding-top: 45px;
+            padding-top: 10px;
         }
         .date-banner{
             right: 115px;

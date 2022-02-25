@@ -231,15 +231,16 @@ class ChartProvider:
                         text='% ROI:N'
                     )
 
-        return (roi_phase_2_chart + text).properties(height=440).configure_view(strokeOpacity=0)
+        return (roi_phase_2_chart + text).properties(height=400).configure_view(strokeOpacity=0)
          
     def user_p1_perc_mars_chart(self, user_p1_perc_mars):
+        print(user_p1_perc_mars.columns)
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
         user_p1_perc_mars_chart = alt.Chart((user_p1_perc_mars)).mark_bar().encode(
             x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True),
             y="count()",
             tooltip=['Percentage of MARS deposited from Phase 1','count()'],
-            color=alt.Color(scale=alt.Scale(scheme='redpurple'),legend=None),
+            color=alt.Color(scale=alt.Scale(scheme='lightorange'),legend=None),
         ).configure_mark(color='#f58766').properties(height=300).configure_view(strokeOpacity=0)
         return user_p1_perc_mars_chart
 
@@ -276,7 +277,7 @@ class ChartProvider:
                                     legendY=0,
                                     direction='horizontal')),
             tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
-        ).properties(height=400).configure_view(strokeOpacity=0)
+        ).properties(height=300).configure_view(strokeOpacity=0)
         return lba_deposits_hourly_df_chart
 
     def mars_source_chart(self, mars_source):
