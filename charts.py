@@ -115,7 +115,7 @@ class ChartProvider:
                             ).configure_view(strokeOpacity=0).properties(height=400)
         return ust_duration_chart
 
-    def simulation_apr_chart(self, df):
+    def simulation_apr_chart(self, df, color='lightorange'):
         df = df.T.reset_index().rename(columns={'roi_perc':'ROI','index':'Lockup period',
                                                 'roi_perc_label':'% ROI'})
         ust_duration_chart = alt.Chart(df).mark_bar().encode(
@@ -128,7 +128,7 @@ class ChartProvider:
                                     sort=['3 months','6 months',
                                           '9 months','12 months',
                                           '15 months','18 months'],
-                                    scale=alt.Scale(scheme='lightorange'),
+                                    scale=alt.Scale(scheme=color),
                                     legend=None),
                                 tooltip=["% ROI","Lockup period"]
                             )
@@ -219,7 +219,7 @@ class ChartProvider:
             x=alt.X('Token', sort="ascending",axis=alt.Axis(labelAngle=0)),
             tooltip=['Token',"% ROI"],
             color=alt.Color('Token:O',
-                        scale=alt.Scale(scheme='lightorange'),
+                        scale=alt.Scale(scheme='redpurple'),
                         legend=None),
         )
         text = roi_phase_2_chart.mark_text(
@@ -234,14 +234,13 @@ class ChartProvider:
         return (roi_phase_2_chart + text).properties(height=400).configure_view(strokeOpacity=0)
          
     def user_p1_perc_mars_chart(self, user_p1_perc_mars):
-        print(user_p1_perc_mars.columns)
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
         user_p1_perc_mars_chart = alt.Chart((user_p1_perc_mars)).mark_bar().encode(
             x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True,
                 scale=alt.Scale(domain=[0,100])),
             y="count()",
             tooltip=['Percentage of MARS deposited from Phase 1','count()'],
-            color=alt.Color(scale=alt.Scale(scheme='lightorange'),legend=None),
+            color=alt.Color(scale=alt.Scale(scheme='redpurple'),legend=None),
         ).configure_mark(color='#f58766').properties(height=300).configure_view(strokeOpacity=0)
         return user_p1_perc_mars_chart
 
@@ -251,7 +250,7 @@ class ChartProvider:
             theta=alt.Theta(field="Number of Users", type="quantitative"),
             color=alt.Color(field="What users have deposited", type="nominal",
                     sort=['MARS & UST','MARS','UST'],
-                    scale=alt.Scale(scheme='lightorange'),
+                    scale=alt.Scale(scheme='redpurple'),
                     legend=alt.Legend(
                     orient='none',
                     padding=10,
@@ -287,7 +286,7 @@ class ChartProvider:
             theta=alt.Theta(field="Amount of MARS locked in Phase 2", type="quantitative"),
             color=alt.Color(field="User Participation", type="nominal",
                     sort=['Airdrop/Phase1','Phase1','Airdrop'],
-                    scale=alt.Scale(scheme='lightorange'),
+                    scale=alt.Scale(scheme='redpurple'),
                     legend=alt.Legend(
                     orient='none',
                     padding=10,

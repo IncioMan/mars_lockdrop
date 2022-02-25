@@ -94,6 +94,13 @@ class DataProvider:
         user_dep_type = df3.groupby(['dep_type']).sender.count().reset_index()
         self.user_dep_type = user_dep_type
 
+        ### MARS ROI Phase 1
+        mars_roi_df = self.claim(self.mars_roi_p1,self.cols_claim,self.data_claim)
+        mars_roi_df.columns = [c.lower() for c in mars_roi_df.columns]
+        mars_roi_df.index = ['UST deposited','n_months','boost']
+        self.mars_roi_p1 = mars_roi_df
+        self.p1_roi_curr_price,_ = self.get_mars_tokens_aprs(0,'3 months',self.act_price)
+
     def load_data(self):
         self.aust_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/aUST.csv', index_col=1).drop(columns=['Unnamed: 0'])
         self.bluna_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/bLuna.csv', index_col=1).drop(columns=['Unnamed: 0'])
@@ -243,8 +250,10 @@ class DataProvider:
         self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
         self.airdrop_claims = '2'
         self.lba_deposits = '3'
+        self.mars_roi_p1 = '4'
         ###
         self.cols_claim = {
+            self.mars_roi_p1 : ['3 months','6 months','9 months','12 months','15 months','18 months'],
             self.user_stats : ['SENDER', 'DURATION', 'AMOUNT'],
             self.hourly_stats : ['HR', 'DURATION','TYPE_ACTION','AMOUNT','N_USERS','N_TXS'],
             self.wallet_age : ['MIN_DATE','ADDRESS_COUNT'],
@@ -253,6 +262,11 @@ class DataProvider:
             self.airdrop_claims : ['SENDER','AMOUNT','TIME'],
             self.lba_deposits : ['SENDER','AMOUNT','DENOM','ACTION','TIME']
         }
+        mars_roi_p1 = [
+          [1.695441e+07, 1.329435e+07,  4.737131e+06,  3.118435e+06,  1.032555e+06,  4.229810e+07],
+          [3.000000e+00,  6.000000e+00,  9.000000e+00,  1.200000e+01,  1.500000e+01,  1.800000e+01],
+          [1.000000e+00,  2.800000e+00,  5.200000e+00,  8.000000e+00, 1.120000e+01,  1.470000e+01]
+        ]
         users_stats = [['user1_1',3,10],
                     ['user1_2',3,3],
                     ['user1_3',3,4],
@@ -291,6 +305,7 @@ class DataProvider:
             wallet_age.append([f'2022-01-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
 
         self.data_claim = {
+            self.mars_roi_p1 : mars_roi_p1,
             self.user_stats : [['user1_1',3,10],
                   ['user1_2',3,3],
                   ['user1_3',3,4],

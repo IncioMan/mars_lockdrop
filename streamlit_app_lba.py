@@ -64,7 +64,7 @@ with col2:
     st.markdown("""Therefore, we can simulate the expected ROI (in terms of MARS tokens) from the deposit in each side of the pool. You simply have to:
                     <ul> 
                         <li> Insert what you expect the MARS token price to be. This is needed to allow the estimate of the ROI</li>
-                        <li> Insert your deposit of \$MARS and/or UST. This will provide you with the estimate of how many $MARS tokens you might receive</li>
+                        <li> Insert your deposit of MARS and/or UST. This will provide you with the estimate of how many MARS tokens you might receive</li>
                     </ul>
                 """,unsafe_allow_html=True)
     #st.markdown("""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []""")
@@ -119,7 +119,7 @@ with col3:
     st.markdown("""We know how many MARS each user participating in Phase 1 has obtained as rewards.
     We can therefore calculate what percentage of those MARS have users deposited in the LBA.""")
     st.altair_chart(chart_provider.user_p1_perc_mars_chart(data_provider.user_p1_perc_mars), use_container_width=True)
-   
+
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Top depositors')
@@ -127,6 +127,19 @@ with col2:
     look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
     st.table(data_provider.top_depositors)
 
+col1, col2, col3 = st.columns([2,8,1])
+with col2:   
+    st.subheader('ROI from Phase 1')
+    st.markdown("""We know the current price of the MARS token, which is determined by the ratio of MARS and UST tokens in the LBA.""")
+    st.markdown("""According to that price we can estimate what the ROI would be - for each dollar deposited in Phase 1 - if the LBA were to end now.""")
+    st.altair_chart(chart_provider.simulation_apr_chart(data_provider.p1_roi_curr_price, color='redpurple'), use_container_width=True)
+
+with col2:
+    st.markdown(f"""
+<div>
+Analytics from the previous phase of the Lockdrop can be found <a href="https://marslockdrop.herokuapp.com/">here</a>.
+</div>
+""", unsafe_allow_html=True)
 
 ###
 #st.markdown("""This dashboard was built with love for the 🌖 community by [IncioMan](https://twitter.com/IncioMan) and [sem1d5](https://twitter.com/sem1d5)""")
