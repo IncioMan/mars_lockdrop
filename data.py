@@ -5,6 +5,112 @@ import random
 
 class DataProvider:
     
+    def load_data_lba(self):
+        ### Users stats
+        user_stats_df = self.claim(self.user_stats,self.cols_claim,self.data_claim)
+        user_stats_df.columns = [c.lower() for c in user_stats_df.columns]
+        
+        ##Airdrops
+        airdrop_claims_df = self.claim(self.airdrop_claims,self.cols_claim,self.data_claim)
+        airdrop_claims_df.columns = [c.lower() for c in airdrop_claims_df.columns]
+        
+        ### LBA Deposits
+        lba_deposits_df = self.claim(self.lba_deposits,self.cols_claim,self.data_claim)
+        lba_deposits_df.columns = [c.lower() for c in lba_deposits_df.columns]
+        lba_deposits_df['time'] = pd.to_datetime(lba_deposits_df.time)
+        lba_deposits_df['amount'] = lba_deposits_df.apply(lambda row: -row.amount if row.action=='withdraw' else row.amount, axis=1)
+        
+        ## Hourly Airdrops
+        lba_deposits_df['hour'] = lba_deposits_df.time.dt.strftime("%Y-%m-%d %H:00")
+        mars = lba_deposits_df[lba_deposits_df.denom=='MARS']
+        ust = lba_deposits_df[lba_deposits_df.denom=='UST']
+        df_mars = mars.groupby(['denom','hour']).amount.sum().reset_index().sort_values(by='hour')
+        df_mars['cumsum'] = df_mars.amount.cumsum()
+        df_ust = ust.groupby(['denom','hour']).amount.sum().reset_index().sort_values(by='hour')
+        df_ust['cumsum'] = df_ust.amount.cumsum()
+        lba_deposits_hourly_df = df_ust.append(df_mars)
+        self.lba_deposits_hourly_df=lba_deposits_hourly_df
+
+        ## Users Partecipation
+        aidrop_users = airdrop_claims_df.sender.unique()
+        aidrop_users_df = pd.DataFrame(aidrop_users, columns=['sender'])
+        aidrop_users_df['type'] = 'Airdrop'
+        p1_users = user_stats_df.sender.unique()
+        p1_users_df = pd.DataFrame(p1_users, columns=['sender'])
+        p1_users_df['type'] = 'Phase1'
+        users_type = aidrop_users_df.append(p1_users_df)
+        users_type = users_type.merge(users_type.groupby('sender').type.count().rename('n_types').reset_index(), on=['sender'], how='left')
+        users_type['new_type'] = users_type.apply(lambda row: row.type if row.n_types==1 else 'Airdrop/Phase1', axis=1)
+        users_type = users_type[["sender","new_type"]].drop_duplicates()
+        print(users_type)
+
+        ## LBA Mars origin
+        mars_source = users_type.merge(lba_deposits_df[lba_deposits_df.denom=='MARS'], on='sender').groupby('new_type').amount.sum()
+        mars_source = mars_source.reset_index()
+        self.mars_source=mars_source
+
+        ## Metrics
+        users_aidrop_eligible = 66103
+        perc_airdrop_eligible = len(airdrop_claims_df.sender.unique())/users_aidrop_eligible
+        perc_airdrop_eligible
+        #Phase 1 + airdrop
+        mars_total = 60000000
+        mars = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
+        act_mars_lba = mars[mars.hour == mars.hour.max()]["cumsum"].values[0]
+        perc_mars_in_lba = act_mars_lba/mars_total
+        perc_mars_in_lba
+        #
+        usts = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
+        act_usts_lba = usts[usts.hour == mars.hour.max()]["cumsum"].values[0]
+        act_price = act_mars_lba/act_usts_lba
+        act_price
+        #
+        users_p1 = len(user_stats_df.sender.unique())
+        users_p1_lba = len(set(user_stats_df.sender.unique()).intersection(set(lba_deposits_df.sender.unique())))
+        perc_p1_lba = users_p1_lba/users_p1
+        perc_p1_lba
+        ## P1 MARS rewards
+        boost = pd.DataFrame([1,2.8,5.2,8,11.2,14.7],columns=['boost'],index=[3,6,9,12,15,18])
+        boost = user_stats_df.groupby('duration').sum().join(boost)
+        boost['amount_boosted'] = boost.amount * boost.boost    
+        boost['amount_boosted_mars'] = (boost['amount_boosted']/boost['amount_boosted'].sum())*50000000
+        boost['amount_per_ust'] = boost['amount_boosted_mars']/boost.amount
+        boost
+
+        ## % il LBA from P1 for each user
+        user_stats_df = user_stats_df.merge(boost.reset_index()[['duration','amount_per_ust']], on=['duration'])
+        user_stats_df['mars'] = user_stats_df.amount * user_stats_df.amount_per_ust
+        user_p1_mars = user_stats_df.groupby('sender').mars.sum()
+        user_p1_perc_mars = lba_deposits_df[lba_deposits_df.denom=='MARS'].groupby('sender').sum().join(user_p1_mars).fillna(0)
+        user_p1_perc_mars['perc_p1_mars_lba'] = user_p1_perc_mars.apply(lambda row: 0 if ((row.mars == 0) or (row.amount==0)) else row.amount / row.mars,axis=1)
+        self.user_p1_perc_mars = user_p1_perc_mars
+
+        ## APR P2
+        tot_mars_rewards = 5000000
+        tot_ust_rewards = 5000000
+        price = 0.2
+        amount_ust_input = 10
+        amount_mars_input = 10
+        ust_apr = tot_ust_rewards*price/act_usts_lba
+        ust_apr 
+        mars_apr = tot_mars_rewards/act_mars_lba
+        mars_apr
+        df = pd.DataFrame([[mars_apr,ust_apr],['MARS','UST']]).T
+        df.columns = ['ROI','Token']
+        self.roi_phase_2 = df
+        ust_rewards_input = tot_ust_rewards/(act_usts_lba+amount_ust_input)*amount_ust_input
+        ust_rewards_input
+        mars_rewards_input = tot_mars_rewards/(act_mars_lba+amount_mars_input)*amount_mars_input
+        mars_rewards_input
+
+        ## What have users deposited
+        df = lba_deposits_df.groupby(['sender','denom']).amount.sum().reset_index() 
+        df2 = df[df.amount>0].groupby('sender').denom.count().rename('n_denom')
+        df3 = df.merge(df2.reset_index(), on='sender')
+        df3['dep_type'] = df3.apply(lambda row: row.denom if row.n_denom==1 else 'MARS & UST', axis=1)
+        user_dep_type = df3.groupby(['dep_type']).sender.count().reset_index()
+        self.user_dep_type = user_dep_type
+
     def load_data(self):
         self.aust_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/aUST.csv', index_col=1).drop(columns=['Unnamed: 0'])
         self.bluna_balance = self.get_url('https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/data/balances/bLuna.csv', index_col=1).drop(columns=['Unnamed: 0'])
@@ -152,6 +258,8 @@ class DataProvider:
         self.wallet_age = 'f297f742-95a1-442e-84fb-babc5b1bb6e4'
         self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
         self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
+        self.airdrop_claims = '2'
+        self.lba_deposits = '3'
         ###
         self.cols_claim = {
             self.user_stats : ['SENDER', 'DURATION', 'AMOUNT'],
@@ -159,6 +267,8 @@ class DataProvider:
             self.wallet_age : ['MIN_DATE','ADDRESS_COUNT'],
             self.hourly_new_users: ['TIME','NEW_USERS'],
             self.users_balance: ['SENDER','BALANCE'],
+            self.airdrop_claims : ['SENDER','AMOUNT','TIME'],
+            self.lba_deposits : ['SENDER','AMOUNT','DENOM','ACTION','TIME']
         }
         users_stats = [['user1_1',3,10],
                     ['user1_2',3,3],
@@ -198,7 +308,35 @@ class DataProvider:
             wallet_age.append([f'2022-01-{"{:02d}".format(i)}T09:00:00Z',random.randint(0,10)])
 
         self.data_claim = {
-            self.user_stats : users_stats,
+            self.user_stats : [['user1_1',3,10],
+                  ['user1_2',3,3],
+                  ['user1_3',3,4],
+                  ['user1_4',3,67],
+                  ['user1_5',3,33],
+                 ['user1',9,20],
+                 ['user1',18,15],
+                 ['user2',3,10],
+                 ['user2',6,120],
+                 ['user2',18,13],
+                 ['user2',3,10],
+                 ['user3',6,120],
+                 ['user3',18,13]],
+            self.airdrop_claims :
+                [
+                    ['user1',300,'2021-09-21T07:00:00Z'],
+                    ['user2',70,'2021-09-21T07:00:00Z'],
+                    ['user3',34,'2021-09-21T07:00:00Z'],
+                    ['user1_1',132,'2021-09-21T07:00:00Z'],
+                    ['user4',132,'2021-09-21T07:00:00Z']
+                ],
+            self.lba_deposits : [['user1_1',20,'MARS','deposit','2021-09-21T08:00:00Z'],
+                            ['user1_1',50,'UST','deposit','2021-09-21T08:00:00Z'],
+                            ['user2',70,'MARS','deposit','2021-09-21T08:00:00Z'],
+                            ['user2',80,'UST','deposit','2021-09-21T08:00:00Z'],
+                            ['user2',10,'UST','withdraw','2021-09-21T09:00:00Z'],
+                            ['user1',70,'MARS','deposit','2021-09-21T08:00:00Z'],
+                            ['user4',132,'MARS','deposit','2021-09-21T09:00:00Z'],
+                            ['user1_5',132,'MARS','deposit','2021-09-21T09:00:00Z']],
             self.hourly_stats : [
                     ['2021-09-21T07:00:00Z',3,'deposit',3000,11,30],
                     ['2021-09-21T07:00:00Z',3,'withdraw',323,11,30],

@@ -210,3 +210,88 @@ class ChartProvider:
                         tooltip=['Lockup period (months):N','Amount UST deposited']
                     ).configure_view(strokeOpacity=0)
         return chart
+
+    ##LBA
+    def roi_phase_2_chart(self,roi_phase_2):
+        roi_phase_2['% ROI'] = roi_phase_2.ROI.apply(lambda x: str(round(x,2)) + '%')
+        roi_phase_2_chart = alt.Chart(roi_phase_2).mark_bar().encode(
+            y=alt.Y("ROI"),
+            x=alt.X('Token', sort="ascending",axis=alt.Axis(labelAngle=0)),
+            tooltip=['Token',"% ROI"],
+            color=alt.Color('Token:O',
+                        scale=alt.Scale(scheme='lightorange'),
+                        legend=None),
+        )
+        text = roi_phase_2_chart.mark_text(
+                        align='center',
+                        baseline='middle',
+                        dy=-15,  # Nudges text to right so it doesn't appear on top of the bar
+                        fontSize=25
+                    ).encode(
+                        text='% ROI:N'
+                    )
+
+        return (roi_phase_2_chart + text).properties(width=300).configure_view(strokeOpacity=0)
+         
+    def user_p1_perc_mars_chart(self, user_p1_perc_mars):
+        user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
+        user_p1_perc_mars_chart = alt.Chart((user_p1_perc_mars)).mark_bar().encode(
+            x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True),
+            y="count()",
+            tooltip=['Percentage of MARS deposited from Phase 1','count()'],
+            color=alt.Color(scale=alt.Scale(scheme='redpurple'),legend=None),
+        ).configure_mark(color='#f58766').properties(height=300).configure_view(strokeOpacity=0)
+        return user_p1_perc_mars_chart
+
+    def user_dep_type_chart(self, user_dep_type):
+        user_dep_type.columns = ['What users have deposited','Number of Users']
+        user_dep_type_chart = alt.Chart(user_dep_type).mark_arc(innerRadius=60).encode(
+            theta=alt.Theta(field="Number of Users", type="quantitative"),
+            color=alt.Color(field="What users have deposited", type="nominal",
+                    sort=['MARS & UST','MARS','UST'],
+                    scale=alt.Scale(scheme='lightorange'),
+                    legend=alt.Legend(
+                    orient='none',
+                    padding=10,
+                    legendY=-10,
+                    direction='vertical')),
+            tooltip=['What users have deposited','Number of Users']
+        ).configure_view(strokeOpacity=0)
+        return user_dep_type_chart
+
+    def lba_deposits_hourly_df_chart(self, lba_deposits_hourly_df):
+        domain = ['MARS','UST']
+        range_ = ['#f9bf94','#a72327']
+        lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Amount']
+        max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
+        lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
+            x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
+            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+10))),
+            color=alt.Color('Token:N', 
+                        sort=domain,
+                        scale=alt.Scale(domain=domain, range=range_),
+                        legend=alt.Legend(
+                                    orient='none',
+                                    padding=5,
+                                    legendY=0,
+                                    direction='horizontal')),
+            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
+        ).properties(height=400).configure_view(strokeOpacity=0)
+        return lba_deposits_hourly_df_chart
+
+    def mars_source_chart(self, mars_source):
+        print(mars_source)
+        mars_source.columns = ['User Participation','Amount of MARS locked in Phase 2']
+        mars_source_chart = alt.Chart(mars_source).mark_arc(innerRadius=60).encode(
+            theta=alt.Theta(field="Amount of MARS locked in Phase 2", type="quantitative"),
+            color=alt.Color(field="User Participation", type="nominal",
+                    sort=['Airdrop/Phase1','Phase1','Airdrop'],
+                    scale=alt.Scale(scheme='lightorange'),
+                    legend=alt.Legend(
+                    orient='none',
+                    padding=10,
+                    legendY=-10,
+                    direction='vertical')),
+            tooltip=['User Participation','Amount of MARS locked in Phase 2']
+        ).configure_view(strokeOpacity=0)
+        return mars_source_chart
