@@ -266,7 +266,7 @@ class ChartProvider:
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
-            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+10))),
+            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100))),
             color=alt.Color('Token:N', 
                         sort=domain,
                         scale=alt.Scale(domain=domain, range=range_),

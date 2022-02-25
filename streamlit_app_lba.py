@@ -100,8 +100,8 @@ with col2:
     st.subheader('Amount of UST locked')
     st.markdown("""Distribution of UST locked for different durations.""")
     st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
-    st.altair_chart(chart_provider.roi_phase_2_chart(data_provider.roi_phase_2), use_container_width=True)
-
+    st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
+  
 
 
 col1, col2, col3 = st.columns([2,8,1])
