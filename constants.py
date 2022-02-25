@@ -1,6 +1,8 @@
 mars_tokens = 50000000
 aust_price = 1.19
 bluna_price = 54
+tot_mars_rewards = 5000000
+tot_ust_rewards = 5000000        
 cols_dict = {
     "ust_left":"UST left deposited",
     "DEPOSIT_AMOUNT":"Amount deposited",

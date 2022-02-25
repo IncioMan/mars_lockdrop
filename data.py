@@ -1,5 +1,5 @@
 import pandas as pd
-from constants import cols_dict, mars_tokens, aust_price,bluna_price
+from constants import tot_ust_rewards, tot_mars_rewards, cols_dict, mars_tokens, aust_price,bluna_price
 import requests
 import random
 
@@ -56,14 +56,13 @@ class DataProvider:
         #Phase 1 + airdrop
         mars_total = 60000000
         mars = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
-        act_mars_lba = mars[mars.hour == mars.hour.max()]["cumsum"].values[0]
-        perc_mars_in_lba = act_mars_lba/mars_total
+        self.act_mars_lba = mars[mars.hour == mars.hour.max()]["cumsum"].values[0]
+        perc_mars_in_lba = self.act_mars_lba/mars_total
         perc_mars_in_lba
         #
         usts = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
-        act_usts_lba = usts[usts.hour == mars.hour.max()]["cumsum"].values[0]
-        act_price = act_mars_lba/act_usts_lba
-        act_price
+        self.act_usts_lba = usts[usts.hour == mars.hour.max()]["cumsum"].values[0]
+        self.act_price = self.act_mars_lba/self.act_usts_lba
         #
         users_p1 = len(user_stats_df.sender.unique())
         users_p1_lba = len(set(user_stats_df.sender.unique()).intersection(set(lba_deposits_df.sender.unique())))
@@ -86,22 +85,7 @@ class DataProvider:
         self.user_p1_perc_mars = user_p1_perc_mars
 
         ## APR P2
-        tot_mars_rewards = 5000000
-        tot_ust_rewards = 5000000
-        price = 0.2
-        amount_ust_input = 10
-        amount_mars_input = 10
-        ust_apr = tot_ust_rewards*price/act_usts_lba
-        ust_apr 
-        mars_apr = tot_mars_rewards/act_mars_lba
-        mars_apr
-        df = pd.DataFrame([[mars_apr,ust_apr],['MARS','UST']]).T
-        df.columns = ['ROI','Token']
-        self.roi_phase_2 = df
-        ust_rewards_input = tot_ust_rewards/(act_usts_lba+amount_ust_input)*amount_ust_input
-        ust_rewards_input
-        mars_rewards_input = tot_mars_rewards/(act_mars_lba+amount_mars_input)*amount_mars_input
-        mars_rewards_input
+        x,y, self.roi_phase_2 = self.get_lba_rewards(0,0,1)
 
         ## What have users deposited
         df = lba_deposits_df.groupby(['sender','denom']).amount.sum().reset_index() 
@@ -255,7 +239,7 @@ class DataProvider:
 
         self.user_stats = '334d8aa0-f9a3-4a9f-a138-3e35583f9477'
         self.hourly_new_users = 'bb19634c-10e2-4498-8427-76a7b6e401ac'
-        self.wallet_age = 'fd8f6d89-8d24-467f-9fe3-15a757e22eea'
+        self.wallet_age = 'f297f742-95a1-442e-84fb-babc5b1bb6e4'
         self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
         self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
         self.airdrop_claims = '2'
@@ -394,3 +378,15 @@ class DataProvider:
                                         .rename('roi_perc_label'))
         #return rois updated and the n of mars tokens obtained by the deposit
         return df_value, df_value.loc['mars_tokens_per_ust'][lockup]*amount
+
+    def get_lba_rewards(self, amount_ust, amount_mars, price):
+        ust_rewards_input = tot_ust_rewards/(self.act_usts_lba+amount_ust)*amount_ust
+        mars_rewards_input = tot_mars_rewards/(self.act_mars_lba+amount_mars)*amount_mars
+        ust_apr = tot_ust_rewards*price/self.act_usts_lba
+        ust_apr 
+        mars_apr = tot_mars_rewards/self.act_mars_lba
+        mars_apr
+        df = pd.DataFrame([[mars_apr,ust_apr],['MARS','UST']]).T
+        df.columns = ['ROI','Token']
+        return ust_rewards_input, mars_rewards_input, df
+        
