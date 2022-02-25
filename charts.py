@@ -237,7 +237,8 @@ class ChartProvider:
         print(user_p1_perc_mars.columns)
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
         user_p1_perc_mars_chart = alt.Chart((user_p1_perc_mars)).mark_bar().encode(
-            x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True),
+            x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True,
+                scale=alt.Scale(domain=[0,100])),
             y="count()",
             tooltip=['Percentage of MARS deposited from Phase 1','count()'],
             color=alt.Color(scale=alt.Scale(scheme='lightorange'),legend=None),

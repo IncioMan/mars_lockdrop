@@ -59,12 +59,12 @@ st.markdown(f"""
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Return on Investment')
-    st.markdown("""50M $MARS tokens will be distributed among depositors. The longer you lock your deposit, [the higher the boost you obtain](https://mars-protocol.medium.com/mars-distribution-plan-the-mars-token-launch-lockdrop-and-more-9f6d2dc0995c).""")
-    st.markdown("""Therefore, we can simulate the expected ROI (only rewards from the lockdrop) on each UST locked in each bucket. You simply have to:
+    st.subheader('Return on Investment - LBA')
+    st.markdown("""10M $MARS tokens will be distributed to the MARS depositors and 10M to the UST depositors of this LBA phase.""")
+    st.markdown("""Therefore, we can simulate the expected ROI (in terms of MARS tokens) from the deposit in each side of the pool. You simply have to:
                     <ul> 
-                        <li> Insert what you expect the MARS token price to be </li>
-                        <li> Insert your deposit and lockup period (optional) </li>
+                        <li> Insert what you expect the MARS token price to be. This is needed to allow the estimate of the ROI</li>
+                        <li> Insert your deposit of \$MARS and/or UST. This will provide you with the estimate of how many $MARS tokens you might receive</li>
                     </ul>
                 """,unsafe_allow_html=True)
     #st.markdown("""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []""")
@@ -83,17 +83,19 @@ with col4:
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Amount of UST locked')
-    st.markdown("""Distribution of UST locked for different durations.""")
-    st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
+    st.subheader('Amount of MARS and UST locked over time')
+    st.markdown("""Let's observe how the amount in each side of the MARS/UST pool has evolved over the course thes LBA.""")
+    st.markdown("""Have the two sides followed similar trends? Has one overtaken the other in terms of amount deposited?""")
     st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
 
 
-col1, col2,col_,col3,col4,col5 = st.columns([2,4,0.7,1.5,1.5,1.8])
+col1, col3,col4,col_,col2,col5 = st.columns([2.6,1.5,1.5,0.9,4,1])
 with col2:
-    st.subheader('Amount of UST locked')
-    st.markdown("""Distribution of UST locked for different durations.""")
-    st.markdown("""Have users preferred shorter or longer durations? Has one duration the largest share?""")
+    st.subheader('MARS origin')
+    st.markdown("""MARS tokens could be obtained in two ways: via airdrop or from the partecipation
+    in Phase 1 of the lockdrop. In this chart we plot the amount of MARS contributed in the LBA and
+    their source""")
+    st.markdown("""Have most of the tokens deposited in the LBA been obtained via the airdrop? Or in Phase 1?""")
     st.altair_chart(chart_provider.mars_source_chart(data_provider.mars_source), use_container_width=True)
 with col3:
     st.metric(label="Total UST locked",\
@@ -108,18 +110,20 @@ with col4:
 
 col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
-    st.subheader('Number of transactions over time')
-    st.markdown("""The number of hourly transactions""")
+    st.subheader('Tokens deposited')
+    st.markdown("""Let's look at what users - who participate in the LBA - have deposited. Users are 
+    free to deposit either MARS, UST or both tokens. What have the majority of users decided to deposit?""")
     st.altair_chart(chart_provider.user_dep_type_chart(data_provider.user_dep_type), use_container_width=True)
 with col3:
-    st.subheader('Number of unique users over time')
-    st.markdown("""The cumulative number of unique users locking UST""")
+    st.subheader('Percentage of MARS deposited')
+    st.markdown("""We know how many MARS each user participating in Phase 1 has obtained as rewards.
+    We can therefore calculate what percentage of those MARS have users deposited in the LBA.""")
     st.altair_chart(chart_provider.user_p1_perc_mars_chart(data_provider.user_p1_perc_mars), use_container_width=True)
    
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Top depositors')
-    st.markdown("""Let's now see the top 5 addresses which have deposited the most UST. If you are curious, you can 
+    st.markdown("""Let's now see the top 5 addresses which have deposited the most MARS or UST. If you are curious, you can 
     look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
     st.table(data_provider.top_depositors)
 
@@ -216,11 +220,11 @@ st.markdown("""
             margin-top: 80px;
         }
         [data-testid="metric-container"]{
-            padding-bottom: 20px;
+            padding-bottom: 50px;
         }
         .banner {
             position: fixed;
-            padding-top: 10px;
+            padding-top: 15px;
         }
         .date-banner{
             right: 115px;
