@@ -42,7 +42,6 @@ class DataProvider:
         users_type = users_type.merge(users_type.groupby('sender').type.count().rename('n_types').reset_index(), on=['sender'], how='left')
         users_type['new_type'] = users_type.apply(lambda row: row.type if row.n_types==1 else 'Airdrop/Phase1', axis=1)
         users_type = users_type[["sender","new_type"]].drop_duplicates()
-        print(users_type)
 
         ## LBA Mars origin
         mars_source = users_type.merge(lba_deposits_df[lba_deposits_df.denom=='MARS'], on='sender').groupby('new_type').amount.sum()

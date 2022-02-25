@@ -231,7 +231,7 @@ class ChartProvider:
                         text='% ROI:N'
                     )
 
-        return (roi_phase_2_chart + text).properties(width=300).configure_view(strokeOpacity=0)
+        return (roi_phase_2_chart + text).properties(height=440).configure_view(strokeOpacity=0)
          
     def user_p1_perc_mars_chart(self, user_p1_perc_mars):
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
@@ -280,7 +280,6 @@ class ChartProvider:
         return lba_deposits_hourly_df_chart
 
     def mars_source_chart(self, mars_source):
-        print(mars_source)
         mars_source.columns = ['User Participation','Amount of MARS locked in Phase 2']
         mars_source_chart = alt.Chart(mars_source).mark_arc(innerRadius=60).encode(
             theta=alt.Theta(field="Amount of MARS locked in Phase 2", type="quantitative"),

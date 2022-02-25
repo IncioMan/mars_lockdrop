@@ -72,16 +72,15 @@ with col2:
 
 col1, col2, col4,col5 = st.columns([2,6,2,1])
 with col4:
-    st.text("")
-    st.text("")
-    input_deposit = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
-    input_duration = st.selectbox('Lockup duration',('3 months', '6 months', '9 months', '12 months', '15 months','18 months'))
+    amount_ust_input = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
+    amount_mars_input = st.number_input('MARS deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI on the different lockup periods')
     input_mars_price = st.number_input('$MARS price', value=1.0, step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each UST deposited in each lockup period')
-    df, mars_roi_on_deposit = data_provider.get_mars_tokens_aprs(input_deposit, input_duration, input_mars_price)    
-    st.text(f'Rewards: {round(mars_roi_on_deposit,0)} MARS')
-    #df.loc['roi_perc_label'][input_duration]
+    ust_rwrd, mars_rwrd, roi_phase_2 = data_provider.get_lba_rewards(amount_ust_input,amount_mars_input,input_mars_price)
+    st.text(f'Estimated rewards:')
+    st.text(f'UST deposit: {round(ust_rwrd,0)} MARS')
+    st.text(f'MARS deposit: {round(mars_rwrd,0)} MARS')
 with col2:
-    st.altair_chart(chart_provider.simulation_apr_chart(df), use_container_width=True)
+    st.altair_chart(chart_provider.roi_phase_2_chart(roi_phase_2), use_container_width=True)
 
 
 col1, col2,col3 = st.columns([2,8,1])
@@ -175,7 +174,7 @@ st.markdown("""
     .block-container
     {
         padding-bottom: 1rem;
-        padding-top: 5rem;
+        padding-top: 3.6rem;
     }
     .st-bx{
         background-color: transparent;
@@ -252,6 +251,7 @@ st.markdown("""
         }
         .banner {
             position: fixed;
+            padding-top: 45px;
         }
         .date-banner{
             right: 115px;
