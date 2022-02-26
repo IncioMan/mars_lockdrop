@@ -171,6 +171,7 @@ class ChartProvider:
         return wallet_age_chart
 
     def wallet_balance(self, users_balance_df):
+        users_balance_df = users_balance_df[users_balance_df.weighted_avg_dur>0]
         users_balance_df = users_balance_df.rename(columns={'amnt_sum':'Total UST deposited',
                                                             'balance':'Address balance ($)',
                                                             'weighted_avg_dur':'Weighted average lockup period',
@@ -213,13 +214,15 @@ class ChartProvider:
 
     ##LBA
     def roi_phase_2_chart(self,roi_phase_2):
+        domain = ['MARS','UST']
+        range_ = ['#f885ac','#ec539d']
         roi_phase_2['% ROI'] = roi_phase_2.ROI.apply(lambda x: str(round(x,2)) + '%')
         roi_phase_2_chart = alt.Chart(roi_phase_2).mark_bar().encode(
             y=alt.Y("ROI"),
             x=alt.X('Token', sort="ascending",axis=alt.Axis(labelAngle=0)),
             tooltip=['Token',"% ROI"],
             color=alt.Color('Token:O',
-                        scale=alt.Scale(scheme='redpurple'),
+                        scale=alt.Scale(domain=domain, range=range_),
                         legend=None),
         )
         text = roi_phase_2_chart.mark_text(
@@ -262,7 +265,7 @@ class ChartProvider:
 
     def lba_deposits_hourly_df_chart(self, lba_deposits_hourly_df):
         domain = ['MARS','UST']
-        range_ = ['#f885ac','#cc1a8e']
+        range_ = ['#f885ac','#ec539d']
         lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Amount']
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(

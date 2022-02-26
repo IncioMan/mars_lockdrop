@@ -60,7 +60,7 @@ st.markdown(f"""
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
     st.subheader('Return on Investment - LBA')
-    st.markdown("""10M $MARS tokens will be distributed to the MARS depositors and 10M to the UST depositors of this LBA phase.""")
+    st.markdown("""5M $MARS tokens will be distributed to the MARS depositors and 5M to the UST depositors of this LBA phase.""")
     st.markdown("""Therefore, we can simulate the expected ROI (in terms of MARS tokens) from the deposit in each side of the pool. You simply have to:
                     <ul> 
                         <li> Insert what you expect the MARS token price to be. This is needed to allow the estimate of the ROI</li>
@@ -89,7 +89,7 @@ with col2:
     st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
 
 
-col1, col3,col4,col_,col2,col5 = st.columns([2.6,1.5,1.5,0.9,4,1])
+col1, col3,col4,col_,col2,col5 = st.columns([2.6,1.8,1.8,0.3,4,1])
 with col2:
     st.subheader('MARS origin')
     st.markdown("""MARS tokens could be obtained in two ways: via airdrop or from the partecipation
@@ -104,7 +104,7 @@ with col3:
     st.metric(label="Current MARS price", value=f"${round(data_provider.act_price,2)}")
 with col4:
     st.metric(label="MARS in LBA",\
-            value=f"{round((data_provider.act_mars_lba),2)} MARS")
+            value=f"{round((data_provider.act_mars_lba/1000),2)}k")
     st.metric(label="% of MARS in LBA",\
             value=f"{round((data_provider.perc_mars_in_lba*100),2)}%")
     st.metric(label="Number of users", value=f"{data_provider.n_users}")
@@ -138,7 +138,7 @@ with col2:
 with col2:
     st.markdown(f"""
 <div>
-Analytics from the previous phase of the Lockdrop can be found <a href="https://marslockdrop.herokuapp.com/">here</a>.
+Analytics from the previous phase of the Lockdrop can be found <a href="https://share.streamlit.io/incioman/mars_lockdrop">here</a>.
 </div>
 """, unsafe_allow_html=True)
 
@@ -230,7 +230,10 @@ st.markdown("""
     }
 
     @media (min-width:800px) {
-        .css-la5jjn {
+        .css-1jiq91t {
+            margin-top: 80px;
+        }
+        .css-1lz0lf6 {
             margin-top: 80px;
         }
         [data-testid="metric-container"]{
