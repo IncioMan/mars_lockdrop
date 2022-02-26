@@ -123,10 +123,16 @@ with col3:
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
-    st.subheader('Top depositors')
-    st.markdown("""Let's now see the top 5 addresses which have deposited the most MARS or UST. If you are curious, you can 
-    look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
-    st.table(data_provider.top_depositors)
+    st.subheader('Top depositors - by Total Amount Deposited')
+    st.markdown("""Let's now see the top 5 addresses which have deposited the most cumulative amount of MARS and/or UST.""")
+    st.markdown("""If you are curious, you can look these addresses up on [ET Finder](https://finder.extraterrestrial.money/).""")
+    st.table(data_provider.top_dep_by_total.drop(columns=['Total']))
+
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
+    st.subheader('Top depositors - by Estimated MARS Price')
+    st.markdown("""Let's now see the top 5 addresses which have deposited the highest ratio of UST and MARS.""")
+    st.table(data_provider.top_dep_by_mars_price.drop(columns=['Total']))
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:   

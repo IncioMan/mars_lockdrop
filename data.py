@@ -31,6 +31,19 @@ class DataProvider:
         lba_deposits_hourly_df = df_ust.append(df_mars)
         self.lba_deposits_hourly_df=lba_deposits_hourly_df
 
+        ## Users deposits
+        user_mars = mars.groupby('sender').amount.sum().rename('mars').reset_index().set_index('sender')
+        user_ust = ust.groupby('sender').amount.sum().rename('ust').reset_index().set_index('sender')
+        users_deposits = user_mars.join(user_ust, how='outer').fillna(0)
+        users_deposits['total'] = users_deposits.mars+users_deposits.ust
+        users_deposits['mars_price'] = users_deposits.ust/users_deposits.mars
+        top_dep_by_total = users_deposits.sort_values(by='total', ascending=False).head(5)
+        self.top_dep_by_total = top_dep_by_total
+        self.top_dep_by_total.columns=['Amount of MARS','Amount of UST','Total','MARS price']
+        top_dep_by_mars_price = users_deposits.sort_values(by='mars_price', ascending=False).head(5)
+        self.top_dep_by_mars_price = top_dep_by_mars_price
+        self.top_dep_by_mars_price.columns=['Amount of MARS','Amount of UST','Total','MARS price']
+
         ## Users Partecipation
         aidrop_users = airdrop_claims_df.sender.unique()
         aidrop_users_df = pd.DataFrame(aidrop_users, columns=['sender'])

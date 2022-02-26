@@ -215,7 +215,7 @@ class ChartProvider:
     ##LBA
     def roi_phase_2_chart(self,roi_phase_2):
         domain = ['MARS','UST']
-        range_ = ['#f885ac','#ec539d']
+        range_ = ['#fcbec0','#ec539d']
         roi_phase_2['% ROI'] = roi_phase_2.ROI.apply(lambda x: str(round(x,2)) + '%')
         roi_phase_2_chart = alt.Chart(roi_phase_2).mark_bar().encode(
             y=alt.Y("ROI"),
@@ -265,7 +265,7 @@ class ChartProvider:
 
     def lba_deposits_hourly_df_chart(self, lba_deposits_hourly_df):
         domain = ['MARS','UST']
-        range_ = ['#f885ac','#ec539d']
+        range_ = ['#fcbec0','#ec539d']
         lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Amount']
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
