@@ -20,8 +20,9 @@ class DataProvider:
         lba_deposits_df['time'] = pd.to_datetime(lba_deposits_df.time)
         lba_deposits_df['amount'] = lba_deposits_df.apply(lambda row: -row.amount if row.action=='withdraw' else row.amount, axis=1)
         
-        ## Hourly Airdrops
+        ## Hourly Metrics
         lba_deposits_df['hour'] = lba_deposits_df.time.dt.strftime("%Y-%m-%d %H:00")
+        self.last_udpate_lba = pd.to_datetime(lba_deposits_df.hour).max().strftime("%d-%m-%Y %H:%M")
         mars = lba_deposits_df[lba_deposits_df.denom=='MARS']
         ust = lba_deposits_df[lba_deposits_df.denom=='UST']
         df_mars = mars.groupby(['denom','hour']).amount.sum().reset_index().sort_values(by='hour')
@@ -259,8 +260,8 @@ class DataProvider:
         self.wallet_age = 'f297f742-95a1-442e-84fb-babc5b1bb6e4'
         self.hourly_stats = '06d2ec31-cc77-4dd8-a781-91858c188b00'
         self.users_balance = '1d097568-a090-4cd8-b2db-495c9878f059'
-        self.airdrop_claims = '2'
-        self.lba_deposits = '3'
+        self.airdrop_claims = 'e6cabd22-1a53-4e7e-80ff-daab555ceac0'
+        self.lba_deposits = '3fe6f76e-f7a3-4459-b3f8-af18dcf34a58'
         self.mars_roi_p1 = '4'
         ###
         self.cols_claim = {
@@ -271,7 +272,7 @@ class DataProvider:
             self.hourly_new_users: ['TIME','NEW_USERS'],
             self.users_balance: ['SENDER','BALANCE'],
             self.airdrop_claims : ['SENDER','AMOUNT','TIME'],
-            self.lba_deposits : ['SENDER','AMOUNT','DENOM','ACTION','TIME']
+            self.lba_deposits : ['SENDER','AMOUNT','DENOM','ACTION','TIME','AIRDROP']
         }
         mars_roi_p1 = [
           [1.695441e+07, 1.329435e+07,  4.737131e+06,  3.118435e+06,  1.032555e+06,  4.229810e+07],
@@ -338,14 +339,14 @@ class DataProvider:
                     ['user1_1',132,'2021-09-21T07:00:00Z'],
                     ['user4',132,'2021-09-21T07:00:00Z']
                 ],
-            self.lba_deposits : [['user1_1',20,'MARS','deposit','2021-09-21T08:00:00Z'],
-                            ['user1_1',50,'UST','deposit','2021-09-21T08:00:00Z'],
-                            ['user2',70,'MARS','deposit','2021-09-21T08:00:00Z'],
-                            ['user2',80,'UST','deposit','2021-09-21T08:00:00Z'],
-                            ['user2',10,'UST','withdraw','2021-09-21T09:00:00Z'],
-                            ['user1',70,'MARS','deposit','2021-09-21T08:00:00Z'],
-                            ['user4',132,'MARS','deposit','2021-09-21T09:00:00Z'],
-                            ['user1_5',132,'MARS','deposit','2021-09-21T09:00:00Z']],
+            self.lba_deposits : [['user1_1',20,'MARS','deposit','2021-09-21T08:00:00Z',True],
+                            ['user1_1',50,'UST','deposit','2021-09-21T08:00:00Z',None],
+                            ['user2',70,'MARS','deposit','2021-09-21T08:00:00Z',None],
+                            ['user2',80,'UST','deposit','2021-09-21T08:00:00Z',None],
+                            ['user2',10,'UST','withdraw','2021-09-21T09:00:00Z',None],
+                            ['user1',70,'MARS','deposit','2021-09-21T08:00:00Z',None],
+                            ['user4',132,'MARS','deposit','2021-09-21T09:00:00Z',None],
+                            ['user1_5',132,'MARS','deposit','2021-09-21T09:00:00Z',None]],
             self.hourly_stats : [
                     ['2021-09-21T07:00:00Z',3,'deposit',3000,11,30],
                     ['2021-09-21T07:00:00Z',3,'withdraw',323,11,30],

@@ -39,7 +39,7 @@ chart_provider = ChartProvider()
 ###
 ###
 st.markdown(f"""
-<div class="date-banner" style=\"font-size: 13px; width: 165px; position: absolute; top: 10px;\">Last update: {data_provider.last_udpate}</div>
+<div class="date-banner" style=\"font-size: 13px; width: 165px; position: absolute; top: 10px;\">Last update: {data_provider.last_udpate_lba}</div>
 <div class="banner" style=\"max-width: 50px;float: left;z-index: 1\">
     <a href="https://marsprotocol.io/">
         <img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master/images/mars_logo_hd.png" style=\"margin-left: 5px;\" width=\"100px\">
