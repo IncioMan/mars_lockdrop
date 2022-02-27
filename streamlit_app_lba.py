@@ -91,7 +91,7 @@ with col2:
 
 col1, col3,col4,col_,col2,col5 = st.columns([2.6,1.8,1.8,0.3,4,1])
 with col2:
-    st.subheader('MARS origin')
+    st.subheader('MARS source')
     st.markdown("""MARS tokens could be obtained in two ways: via airdrop or from the partecipation
     in Phase 1 of the lockdrop. In this chart we plot the amount of MARS contributed in the LBA and
     their source""")

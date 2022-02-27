@@ -284,10 +284,10 @@ class ChartProvider:
         return lba_deposits_hourly_df_chart
 
     def mars_source_chart(self, mars_source):
-        mars_source.columns = ['User Participation','Amount of MARS locked in Phase 2']
+        mars_source.columns = ['Source','Amount of MARS locked in Phase 2']
         mars_source_chart = alt.Chart(mars_source).mark_arc(innerRadius=60).encode(
             theta=alt.Theta(field="Amount of MARS locked in Phase 2", type="quantitative"),
-            color=alt.Color(field="User Participation", type="nominal",
+            color=alt.Color(field="Source", type="nominal",
                     sort=['Airdrop/Phase1','Phase1','Airdrop'],
                     scale=alt.Scale(scheme='redpurple'),
                     legend=alt.Legend(
@@ -295,6 +295,6 @@ class ChartProvider:
                     padding=10,
                     legendY=-10,
                     direction='vertical')),
-            tooltip=['User Participation','Amount of MARS locked in Phase 2']
+            tooltip=['Source','Amount of MARS locked in Phase 2']
         ).configure_view(strokeOpacity=0)
         return mars_source_chart
