@@ -179,12 +179,14 @@ class DataProvider:
         self.hourly_stats_df['net_deposit_15'] = (self.hourly_stats_df.dep_amount_15-self.hourly_stats_df.with_amount_15).cumsum()
         self.hourly_stats_df['net_deposit_18'] = (self.hourly_stats_df.dep_amount_18-self.hourly_stats_df.with_amount_18).cumsum()
         self.hourly_stats_df['tot_txs'] = self.hourly_stats_df.with_tx + self.hourly_stats_df.deposit_tx
-        self.tot_ust = self.hourly_stats_df.net_deposit_3.max() + \
-                       self.hourly_stats_df.net_deposit_6.max() + \
-                       self.hourly_stats_df.net_deposit_9.max() + \
-                       self.hourly_stats_df.net_deposit_12.max() + \
-                       self.hourly_stats_df.net_deposit_15.max() + \
-                       self.hourly_stats_df.net_deposit_18.max()
+        max_hr = self.hourly_stats_df.hr.max()
+        last_ = self.hourly_stats_df[self.hourly_stats_df.hr==max_hr]
+        self.tot_ust = last_.net_deposit_3.max() + \
+                       last_.net_deposit_6.max() + \
+                       last_.net_deposit_9.max() + \
+                       last_.net_deposit_12.max() + \
+                       last_.net_deposit_15.max() + \
+                       last_.net_deposit_18.max()
         self.n_txs = self.hourly_stats_df.deposit_tx.sum() + self.hourly_stats_df.with_tx.sum()
         ###
         self.time_duration_df = self.hourly_stats_df[['hr','net_deposit_3','net_deposit_6','net_deposit_9','net_deposit_12','net_deposit_15','net_deposit_18']]
