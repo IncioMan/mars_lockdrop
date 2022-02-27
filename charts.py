@@ -235,8 +235,17 @@ class ChartProvider:
                     )
 
         return (roi_phase_2_chart + text).properties(height=400).configure_view(strokeOpacity=0)
-         
+
     def user_p1_perc_mars_chart(self, user_p1_perc_mars):
+        user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
+        user_p1_perc_mars['fake'] = 'Phase1 & Phase 2 participants'
+        print(user_p1_perc_mars['Percentage of MARS deposited from Phase 1'])
+        return alt.Chart(user_p1_perc_mars).mark_boxplot(extent='min-max').encode(
+                        y=alt.X(field="fake", axis=alt.Axis(labelAngle=-90, title='')),
+                        x='Percentage of MARS deposited from Phase 1:Q'
+        ).configure_view(strokeOpacity=0).properties(height=400)
+
+    def user_p1_perc_mars_chart_(self, user_p1_perc_mars):
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
         user_p1_perc_mars_chart = alt.Chart((user_p1_perc_mars)).mark_bar().encode(
             x=alt.X('Percentage of MARS deposited from Phase 1', sort="ascending", bin=True,
