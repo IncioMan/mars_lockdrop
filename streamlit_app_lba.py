@@ -242,6 +242,9 @@ st.markdown("""
         .css-1lz0lf6 {
             margin-top: 80px;
         }
+        .css-1frxb3m{
+            margin-top: 80px;
+        }
         [data-testid="metric-container"]{
             padding-bottom: 50px;
         }
