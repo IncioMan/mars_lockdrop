@@ -73,6 +73,9 @@ class DataProvider:
         print(lba_deposits_df.origin.value_counts())
 
         ## Metrics
+        deposited_airdrop = lba_deposits_df[(lba_deposits_df.airdrop.notna())&(lba_deposits_df.action=='deposit')]
+        self.deposited_airdrop_tot = deposited_airdrop.amount.sum()
+
         users_aidrop_eligible = 66103
         perc_airdrop_eligible = len(airdrop_claims_df.sender.unique())/users_aidrop_eligible
         perc_airdrop_eligible
@@ -101,7 +104,7 @@ class DataProvider:
         user_stats_df = user_stats_df.merge(boost.reset_index()[['duration','amount_per_ust']], on=['duration'])
         user_stats_df['mars'] = user_stats_df.amount * user_stats_df.amount_per_ust
         user_p1_mars = user_stats_df.groupby('sender').mars.sum()
-        user_p1_perc_mars = lba_deposits_df[lba_deposits_df.denom=='MARS'].groupby('sender').sum().join(user_p1_mars).fillna(0)
+        user_p1_perc_mars = lba_deposits_df[(lba_deposits_df.denom=='MARS')&(lba_deposits_df.airdrop==False)].groupby('sender').sum().join(user_p1_mars).fillna(0)
         user_p1_perc_mars['perc_p1_mars_lba'] = user_p1_perc_mars.apply(lambda row: 0 if ((row.mars == 0) or (row.amount==0)) else row.amount / row.mars,axis=1)
         self.user_p1_perc_mars = user_p1_perc_mars
 

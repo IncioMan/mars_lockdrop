@@ -89,7 +89,27 @@ with col2:
     st.altair_chart(chart_provider.lba_deposits_hourly_df_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
 
 
-col1, col3,col4,col_,col2,col5 = st.columns([2.6,1.8,1.8,0.3,4,1])
+col1,col2,col3,col4 = st.columns([2,4,4,1])
+with col2:
+    st.metric(label="UST in LBA",\
+            value=f"${round((data_provider.act_usts_lba/1000000),2)}M")
+    st.metric(label="% of all phase 1 users who also participate in LBA", value=f"{round((data_provider.perc_p1_lba*100),2)}%")
+    st.metric(label="Current MARS price", value=f"${round(data_provider.act_price,2)}")
+with col3:
+    st.metric(label="MARS in LBA",\
+            value=f"{round((data_provider.act_mars_lba/1000000),2)}M")
+    st.metric(label="% of All Available MARS (60M) locked in LBA",\
+            value=f"{round((data_provider.perc_mars_in_lba*100),2)}%")
+    st.metric(label="% Total Airdropped MARS (10M) locked in LBA", value=f"{round(data_provider.deposited_airdrop_tot/10000000,2)}%")
+
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
+    st.subheader('MARS price over time')
+    st.markdown("""We know how many MARS and UST users have deposited in the LBA over time.
+    We can therefore calculate what price MARS tokens have had over the course of this Phase 2 of the MARS Lockdrop. Has the price increased or decreased?""")
+    st.altair_chart(chart_provider.mars_price_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
+
+col1, col2, col3, col4 = st.columns([2,4,4,1])
 with col2:
     st.subheader('MARS source')
     st.markdown("""MARS tokens could be obtained in two ways: via airdrop or from the partecipation
@@ -98,28 +118,12 @@ with col2:
     st.markdown("""Have most of the tokens deposited in the LBA been obtained via the airdrop? Or in Phase 1?""")
     st.altair_chart(chart_provider.mars_source_chart(data_provider.mars_source), use_container_width=True)
 with col3:
-    st.metric(label="UST in LBA",\
-            value=f"${round((data_provider.act_usts_lba/1000),2)}k")
-    st.metric(label="% of Phase 1 users", value=f"{round((data_provider.perc_p1_lba*100),2)}%")
-    st.metric(label="Current MARS price", value=f"${round(data_provider.act_price,2)}")
-with col4:
-    st.metric(label="MARS in LBA",\
-            value=f"{round((data_provider.act_mars_lba/1000),2)}k")
-    st.metric(label="% of MARS in LBA",\
-            value=f"{round((data_provider.perc_mars_in_lba*100),2)}%")
-    st.metric(label="Number of users", value=f"{data_provider.n_users}")
-
-col1, col2, col3, col4 = st.columns([2,4,4,1])
-with col2:
     st.subheader('Tokens deposited')
     st.markdown("""Let's look at what users - who participate in the LBA - have deposited. Users are 
-    free to deposit either MARS, UST or both tokens. What have the majority of users decided to deposit?""")
+    free to deposit either MARS, UST or both tokens. We can observe patters adopted by users.""")
+    st.markdown("""What have the majority of users decided to deposit? Have they deposited both tokens?""")
     st.altair_chart(chart_provider.user_dep_type_chart(data_provider.user_dep_type), use_container_width=True)
-with col3:
-    st.subheader('MARS price over time')
-    st.markdown("""We know how many MARS and UST users have deposited in the LBA over time.
-    We can therefore calculate what price MARS tokens have had over the course of this Phase 2 of the MARS Lockdrop. Has the price increased or decreased?""")
-    st.altair_chart(chart_provider.mars_price_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
+
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
