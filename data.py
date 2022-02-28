@@ -48,7 +48,7 @@ class DataProvider:
         top_dep_by_total = users_deposits.sort_values(by='total', ascending=False).head(5)
         self.top_dep_by_total = top_dep_by_total
         self.top_dep_by_total.columns=['Amount of MARS','Amount of UST','Total','MARS price']
-        top_dep_by_mars_price = users_deposits.sort_values(by='mars_price', ascending=False).head(5)
+        top_dep_by_mars_price = users_deposits[users_deposits.mars>0].sort_values(by='mars_price', ascending=False).head(5)
         self.top_dep_by_mars_price = top_dep_by_mars_price
         self.top_dep_by_mars_price.columns=['Amount of MARS','Amount of UST','Total','MARS price']
 
