@@ -93,14 +93,14 @@ col1,col2,col3,col4 = st.columns([2,4,4,1])
 with col2:
     st.metric(label="UST in LBA",\
             value=f"${round((data_provider.act_usts_lba/1000000),2)}M")
-    st.metric(label="% of all phase 1 users who also participate in LBA", value=f"{round((data_provider.perc_p1_lba*100),2)}%")
+    st.metric(label="% of Phase 1 users who also participated in LBA", value=f"{round((data_provider.perc_p1_lba*100),2)}%")
     st.metric(label="Current MARS price", value=f"${round(data_provider.act_price,2)}")
 with col3:
     st.metric(label="MARS in LBA",\
             value=f"{round((data_provider.act_mars_lba/1000000),2)}M")
     st.metric(label="% of All Available MARS (60M) locked in LBA",\
             value=f"{round((data_provider.perc_mars_in_lba*100),2)}%")
-    st.metric(label="% Total Airdropped MARS (10M) locked in LBA", value=f"{round(data_provider.deposited_airdrop_tot/10000000,2)}%")
+    st.metric(label="% Total Airdropped MARS (10M) locked in LBA", value=f"{round(data_provider.deposited_airdrop_tot/10000000*100,2)}%")
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
@@ -120,7 +120,7 @@ with col2:
 with col3:
     st.subheader('Tokens deposited')
     st.markdown("""Let's look at what users - who participate in the LBA - have deposited. Users are 
-    free to deposit either MARS, UST or both tokens. We can observe patters adopted by users.""")
+    free to deposit either MARS, UST or both tokens. We can observe patters adopted by users in terms of tokens deposited.""")
     st.markdown("""What have the majority of users decided to deposit? Have they deposited both tokens?""")
     st.altair_chart(chart_provider.user_dep_type_chart(data_provider.user_dep_type), use_container_width=True)
 

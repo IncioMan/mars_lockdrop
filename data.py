@@ -75,6 +75,7 @@ class DataProvider:
         ## Metrics
         deposited_airdrop = lba_deposits_df[(lba_deposits_df.airdrop.notna())&(lba_deposits_df.action=='deposit')]
         self.deposited_airdrop_tot = deposited_airdrop.amount.sum()
+        print(self.deposited_airdrop_tot)
 
         users_aidrop_eligible = 66103
         perc_airdrop_eligible = len(airdrop_claims_df.sender.unique())/users_aidrop_eligible

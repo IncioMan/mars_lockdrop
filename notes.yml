@@ -21,3 +21,7 @@ st.subheader('Percentage of MARS deposited')
 st.markdown(\"""We know how many MARS each user participating in Phase 1 has obtained as rewards.
 We can therefore calculate what percentage of those MARS have users deposited in the LBA.\""")
 """ 
+
+- chart di sopra boxplot
+- % airdrop tokens claimed
+- % deposited di quelli claimed
