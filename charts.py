@@ -288,9 +288,30 @@ class ChartProvider:
                                     padding=5,
                                     legendY=0,
                                     direction='horizontal')),
-            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'UST deposited:Q','Lockup period:N']
+            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'Amount:Q']
         ).properties(height=300).configure_view(strokeOpacity=0)
         return lba_deposits_hourly_df_chart
+
+    def mars_price_chart(self, lba_deposits_hourly_df):
+        domain = ['MARS Price']
+        range_ = ['#ffffff']
+        lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Price']
+        lba_deposits_hourly_df = lba_deposits_hourly_df[lba_deposits_hourly_df.Token=='MARS Price']
+        max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
+        mars_price_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
+            x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
+            y=alt.X('Price:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Price'].max()+0.5))),
+            color=alt.Color('Token:N', 
+                        sort=domain,
+                        scale=alt.Scale(domain=domain, range=range_),
+                        legend=alt.Legend(
+                                    orient='none',
+                                    padding=5,
+                                    legendY=0,
+                                    direction='horizontal')),
+            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'Price:Q']
+        ).properties(height=300).configure_view(strokeOpacity=0)
+        return mars_price_chart
 
     def mars_source_chart(self, mars_source):
         mars_source.columns = ['Source','Amount of MARS locked in Phase 2']

@@ -30,6 +30,13 @@ class DataProvider:
         df_ust = ust.groupby(['denom','hour']).amount.sum().reset_index().sort_values(by='hour')
         df_ust['cumsum'] = df_ust.amount.cumsum()
         lba_deposits_hourly_df = df_ust.append(df_mars)
+        m = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
+        u = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
+        d = m.merge(u, on='hour',how='outer').fillna(0)
+        d['cumsum'] = d.cumsum_x / d.cumsum_y
+        d['denom'] = 'MARS Price'
+        d = d[['hour','cumsum','denom']]
+        lba_deposits_hourly_df = lba_deposits_hourly_df.append(d).fillna(0)
         self.lba_deposits_hourly_df=lba_deposits_hourly_df
 
         ## Users deposits

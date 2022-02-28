@@ -116,10 +116,10 @@ with col2:
     free to deposit either MARS, UST or both tokens. What have the majority of users decided to deposit?""")
     st.altair_chart(chart_provider.user_dep_type_chart(data_provider.user_dep_type), use_container_width=True)
 with col3:
-    st.subheader('Percentage of MARS deposited')
-    st.markdown("""We know how many MARS each user participating in Phase 1 has obtained as rewards.
-    We can therefore calculate what percentage of those MARS have users deposited in the LBA.""")
-    st.altair_chart(chart_provider.user_p1_perc_mars_chart(data_provider.user_p1_perc_mars), use_container_width=True)
+    st.subheader('MARS price over time')
+    st.markdown("""We know how many MARS and UST users have deposited in the LBA over time.
+    We can therefore calculate what price MARS tokens have had over the course of this Phase 2 of the MARS Lockdrop. Has the price increased or decreased?""")
+    st.altair_chart(chart_provider.mars_price_chart(data_provider.lba_deposits_hourly_df), use_container_width=True)
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:
@@ -236,12 +236,6 @@ st.markdown("""
     }
 
     @media (min-width:800px) {
-        .css-1jiq91t {
-            margin-top: 80px;
-        }
-        .css-1lz0lf6 {
-            margin-top: 80px;
-        }
         .css-1frxb3m{
             margin-top: 80px;
         }

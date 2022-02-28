@@ -15,3 +15,9 @@ Therefore, according to the current deposits in each lockup period, and the one 
 by selecting what we believe the MARS token's price will be, we can simulate the expected ROI on each UST locked in each bucket.
 
 Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []
+
+"""
+st.subheader('Percentage of MARS deposited')
+st.markdown(\"""We know how many MARS each user participating in Phase 1 has obtained as rewards.
+We can therefore calculate what percentage of those MARS have users deposited in the LBA.\""")
+""" 
