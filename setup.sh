@@ -5,9 +5,9 @@ headless = true\n\
 port = $PORT\n\
 enableCORS = false\n\
 [theme]\n\
-primaryColor=\"#282e53\"\n\
-backgroundColor=\"#282e53\"\n\
-secondaryBackgroundColor=\"#4E527A\"\n\
+primaryColor=\"#001a33\"\n\
+backgroundColor=\"#001a33\"\n\
+secondaryBackgroundColor=\"#122647\"\n\
 textColor=\"#FFFFFF\"\n\
 font=\"sans serif\"\n\
 \n\
