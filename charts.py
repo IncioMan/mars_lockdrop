@@ -215,7 +215,7 @@ class ChartProvider:
     ##LBA
     def roi_phase_2_chart(self,roi_phase_2):
         domain = ['MARS','UST']
-        range_ = ['#fcbec0','#ec539d']
+        range_ = ['#f9bf94','#ec6f5e']
         roi_phase_2['% ROI'] = roi_phase_2.ROI.apply(lambda x: str(round(x,2)) + '%')
         roi_phase_2_chart = alt.Chart(roi_phase_2).mark_bar().encode(
             y=alt.Y("ROI"),
@@ -252,7 +252,7 @@ class ChartProvider:
                 scale=alt.Scale(domain=[0,100])),
             y="count()",
             tooltip=['Percentage of MARS deposited from Phase 1','count()'],
-            color=alt.Color(scale=alt.Scale(scheme='redpurple'),legend=None),
+            color=alt.Color(scale=alt.Scale(scheme='lightorange'),legend=None),
         ).configure_mark(color='#f885ac').properties(height=300).configure_view(strokeOpacity=0)
         return user_p1_perc_mars_chart
 
@@ -262,7 +262,7 @@ class ChartProvider:
             theta=alt.Theta(field="Number of Users", type="quantitative"),
             color=alt.Color(field="What users have deposited", type="nominal",
                     sort=['MARS & UST','MARS','UST'],
-                    scale=alt.Scale(scheme='redpurple'),
+                    scale=alt.Scale(scheme='lightorange'),
                     legend=alt.Legend(
                     orient='none',
                     padding=10,
@@ -274,7 +274,7 @@ class ChartProvider:
 
     def lba_deposits_hourly_df_chart(self, lba_deposits_hourly_df):
         domain = ['MARS','UST']
-        range_ = ['#fcbec0','#ec539d']
+        range_ = ['#f9bf94','#ec6f5e']
         lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Amount']
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
@@ -319,7 +319,7 @@ class ChartProvider:
             theta=alt.Theta(field="Amount of MARS locked in Phase 2", type="quantitative"),
             color=alt.Color(field="Source", type="nominal",
                     sort=['Airdrop/Phase1','Phase1','Airdrop'],
-                    scale=alt.Scale(scheme='redpurple'),
+                    scale=alt.Scale(scheme='lightorange'),
                     legend=alt.Legend(
                     orient='none',
                     padding=10,

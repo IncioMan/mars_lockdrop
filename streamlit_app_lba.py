@@ -139,7 +139,7 @@ with col2:
     st.subheader('ROI from Phase 1')
     st.markdown("""We know the current price of the MARS token, which is determined by the ratio of MARS and UST tokens in the LBA.""")
     st.markdown("""According to that price we can estimate what the ROI would be - for each dollar deposited in Phase 1 - if the LBA were to end now.""")
-    st.altair_chart(chart_provider.simulation_apr_chart(data_provider.p1_roi_curr_price, color='redpurple'), use_container_width=True)
+    st.altair_chart(chart_provider.simulation_apr_chart(data_provider.p1_roi_curr_price), use_container_width=True)
 
 with col2:
     st.markdown(f"""
