@@ -279,7 +279,7 @@ class ChartProvider:
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
-            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100))),
+            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100000))),
             color=alt.Color('Token:N', 
                         sort=domain,
                         scale=alt.Scale(domain=domain, range=range_),
@@ -294,7 +294,7 @@ class ChartProvider:
 
     def mars_price_chart(self, lba_deposits_hourly_df):
         domain = ['MARS Price']
-        range_ = ['#ffffff']
+        range_ = ['#f8936d']
         lba_deposits_hourly_df.columns = ['Token','Time','Amount_','Price']
         lba_deposits_hourly_df = lba_deposits_hourly_df[lba_deposits_hourly_df.Token=='MARS Price']
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)

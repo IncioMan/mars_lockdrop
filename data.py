@@ -33,7 +33,7 @@ class DataProvider:
         m = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
         u = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
         d = m.merge(u, on='hour',how='outer').fillna(0)
-        d['cumsum'] = d.cumsum_x / d.cumsum_y
+        d['cumsum'] = d.cumsum_y / d.cumsum_x
         d['denom'] = 'MARS Price'
         d = d[['hour','cumsum','denom']]
         lba_deposits_hourly_df = lba_deposits_hourly_df.append(d).fillna(0)
@@ -65,10 +65,12 @@ class DataProvider:
         users_type = users_type[["sender","new_type"]].drop_duplicates()
 
         ## LBA Mars origin
+        lba_deposits_df.airdrop = lba_deposits_df.airdrop.fillna(False)
         lba_deposits_df['origin'] = lba_deposits_df.airdrop.apply(lambda x: 'Airdrop' if x else 'Phase 1')
         mars_source = lba_deposits_df[lba_deposits_df.denom=='MARS'].groupby('origin').amount.sum()
         mars_source = mars_source.reset_index()
         self.mars_source=mars_source
+        print(lba_deposits_df.origin.value_counts())
 
         ## Metrics
         users_aidrop_eligible = 66103
@@ -82,7 +84,7 @@ class DataProvider:
         #
         usts = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
         self.act_usts_lba = usts[usts.hour == mars.hour.max()]["cumsum"].values[0]
-        self.act_price = self.act_mars_lba/self.act_usts_lba
+        self.act_price = self.act_usts_lba/self.act_mars_lba
         #
         users_p1 = len(user_stats_df.sender.unique())
         users_p1_lba = len(set(user_stats_df.sender.unique()).intersection(set(lba_deposits_df.sender.unique())))
