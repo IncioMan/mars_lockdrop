@@ -73,7 +73,7 @@ class DataProvider:
         print(lba_deposits_df.origin.value_counts())
 
         ## Metrics
-        deposited_airdrop = lba_deposits_df[(lba_deposits_df.airdrop.notna())&(lba_deposits_df.action=='deposit')]
+        deposited_airdrop = lba_deposits_df[(lba_deposits_df.airdrop==1)&(lba_deposits_df.action=='deposit')]
         self.deposited_airdrop_tot = deposited_airdrop.amount.sum()
         print(self.deposited_airdrop_tot)
 
