@@ -424,9 +424,9 @@ class DataProvider:
     def get_lba_rewards(self, amount_ust, amount_mars, price):
         ust_rewards_input = tot_ust_rewards/(self.act_usts_lba+amount_ust)*amount_ust
         mars_rewards_input = tot_mars_rewards/(self.act_mars_lba+amount_mars)*amount_mars
-        ust_apr = tot_ust_rewards*price/self.act_usts_lba
+        ust_apr = tot_ust_rewards*price/self.act_usts_lba*100
         ust_apr 
-        mars_apr = tot_mars_rewards/self.act_mars_lba
+        mars_apr = tot_mars_rewards/self.act_mars_lba*100
         mars_apr
         df = pd.DataFrame([[mars_apr,ust_apr],['MARS','UST']]).T
         df.columns = ['ROI','Token']
