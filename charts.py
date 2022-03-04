@@ -280,16 +280,7 @@ class ChartProvider:
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
             y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100000))),
-            color=alt.Color('Token:N', 
-                        sort=domain,
-                        scale=alt.Scale(domain=domain, range=range_),
-                        legend=alt.Legend(
-                                    orient='none',
-                                    padding=5,
-                                    legendY=0,
-                                    direction='horizontal')),
-            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'Amount:Q']
-        ).properties(height=300).configure_view(strokeOpacity=0)
+        )
         return lba_deposits_hourly_df_chart
 
     def mars_price_chart(self, lba_deposits_hourly_df):
