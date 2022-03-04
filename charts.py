@@ -239,7 +239,6 @@ class ChartProvider:
     def user_p1_perc_mars_chart(self, user_p1_perc_mars):
         user_p1_perc_mars.columns = ['MARS locked in Phase 2','MARS obtained from Phase 1','Percentage of MARS deposited from Phase 1']
         user_p1_perc_mars['fake'] = 'Phase1 & Phase 2 participants'
-        print(user_p1_perc_mars['Percentage of MARS deposited from Phase 1'])
         return alt.Chart(user_p1_perc_mars).mark_boxplot(extent='min-max').encode(
                         y=alt.X(field="fake", axis=alt.Axis(labelAngle=-90, title='')),
                         x='Percentage of MARS deposited from Phase 1:Q'
@@ -279,8 +278,17 @@ class ChartProvider:
         max_date = self.get_max_domain_date(lba_deposits_hourly_df,'Time',10)
         lba_deposits_hourly_df_chart = alt.Chart(lba_deposits_hourly_df).mark_line(point = True).encode(
             x=alt.X('Time:T',scale=alt.Scale(domain=(lba_deposits_hourly_df.Time.min(),max_date))),
-            y=alt.X('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100000))),
-        )
+            y=alt.Y('Amount:Q',scale=alt.Scale(domain=(0,lba_deposits_hourly_df['Amount'].max()+100000))),
+            color=alt.Color('Token:N', 
+                        sort=domain,
+                        scale=alt.Scale(domain=domain, range=range_),
+                        legend=alt.Legend(
+                                    orient='none',
+                                    padding=5,
+                                    legendY=0,
+                                    direction='horizontal')),
+            tooltip=[alt.Tooltip('Time:T', format='%Y-%m-%d %H:%M'),'Amount:Q']
+        ).properties(height=300).configure_view(strokeOpacity=0)
         return lba_deposits_hourly_df_chart
 
     def mars_price_chart(self, lba_deposits_hourly_df):

@@ -29,6 +29,16 @@ class DataProvider:
         df_mars['cumsum'] = df_mars.amount.cumsum()
         df_ust = ust.groupby(['denom','hour']).amount.sum().reset_index().sort_values(by='hour')
         df_ust['cumsum'] = df_ust.amount.cumsum()
+        
+        self.act_mars_lba = df_mars[df_mars.hour == df_mars.hour.max()]["cumsum"].values[0]
+        missing_hrs = df_ust.merge(df_mars[['hour']], on='hour', how='left',indicator = True)
+        missing_hrs = missing_hrs[missing_hrs._merge=='left_only']
+        missing_hrs.denom = 'MARS'
+        missing_hrs['cumsum'] = self.act_mars_lba
+        print(self.act_mars_lba)
+        df_mars = df_mars.append(missing_hrs.drop(columns=['_merge']))
+        print(df_mars)
+
         lba_deposits_hourly_df = df_ust.append(df_mars)
         m = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
         u = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
@@ -38,6 +48,7 @@ class DataProvider:
         d = d[['hour','cumsum','denom']]
         lba_deposits_hourly_df = lba_deposits_hourly_df.append(d).fillna(0)
         self.lba_deposits_hourly_df=lba_deposits_hourly_df
+
 
         ## Users deposits
         user_mars = mars.groupby('sender').amount.sum().rename('mars').reset_index().set_index('sender')
@@ -70,12 +81,10 @@ class DataProvider:
         mars_source = lba_deposits_df[lba_deposits_df.denom=='MARS'].groupby('origin').amount.sum()
         mars_source = mars_source.reset_index()
         self.mars_source=mars_source
-        print(lba_deposits_df.origin.value_counts())
 
         ## Metrics
         deposited_airdrop = lba_deposits_df[(lba_deposits_df.airdrop==1)&(lba_deposits_df.action=='deposit')]
         self.deposited_airdrop_tot = deposited_airdrop.amount.sum()
-        print(self.deposited_airdrop_tot)
 
         users_aidrop_eligible = 66103
         perc_airdrop_eligible = len(airdrop_claims_df.sender.unique())/users_aidrop_eligible
@@ -83,7 +92,6 @@ class DataProvider:
         #Phase 1 + airdrop
         mars_total = 60000000
         mars = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
-        self.act_mars_lba = mars[mars.hour == mars.hour.max()]["cumsum"].values[0]
         self.perc_mars_in_lba = self.act_mars_lba/mars_total
         #
         usts = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='UST']
