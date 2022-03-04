@@ -139,6 +139,11 @@ with col3:
     st.markdown("""What have the majority of users decided to deposit? Have they deposited both tokens?""")
     st.altair_chart(chart_provider.user_dep_type_chart(dp_attr(data_provider,'user_dep_type')), use_container_width=True)
 
+col1, col2, col3 = st.columns([2,8,1])
+with col2:
+    st.subheader('Top depositors - by UST deposited')
+    st.markdown("""Let's now see the top 5 addresses which have deposited the highest amount of UST.""")
+    st.table(data_provider.top_dep_by_ust.drop(columns=['Total']))
 
 col1, col2, col3 = st.columns([2,8,1])
 with col2:

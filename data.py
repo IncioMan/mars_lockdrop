@@ -35,9 +35,7 @@ class DataProvider:
         missing_hrs = missing_hrs[missing_hrs._merge=='left_only']
         missing_hrs.denom = 'MARS'
         missing_hrs['cumsum'] = self.act_mars_lba
-        print(self.act_mars_lba)
         df_mars = df_mars.append(missing_hrs.drop(columns=['_merge']))
-        print(df_mars)
 
         lba_deposits_hourly_df = df_ust.append(df_mars)
         m = lba_deposits_hourly_df[lba_deposits_hourly_df.denom=='MARS']
@@ -56,6 +54,9 @@ class DataProvider:
         users_deposits = user_mars.join(user_ust, how='outer').fillna(0)
         users_deposits['total'] = users_deposits.mars+users_deposits.ust
         users_deposits['mars_price'] = users_deposits.ust/users_deposits.mars
+        top_dep_by_ust = users_deposits.sort_values(by='ust', ascending=False).head(5)
+        self.top_dep_by_ust = top_dep_by_ust
+        self.top_dep_by_ust.columns=['Amount of MARS','Amount of UST','Total','MARS price']
         top_dep_by_total = users_deposits.sort_values(by='total', ascending=False).head(5)
         self.top_dep_by_total = top_dep_by_total
         self.top_dep_by_total.columns=['Amount of MARS','Amount of UST','Total','MARS price']
@@ -438,5 +439,6 @@ class DataProvider:
         mars_apr
         df = pd.DataFrame([[mars_apr,ust_apr],['MARS','UST']]).T
         df.columns = ['ROI','Token']
+        print(ust_rewards_input, mars_rewards_input)
         return ust_rewards_input, mars_rewards_input, df
         
