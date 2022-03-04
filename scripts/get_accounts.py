@@ -28,5 +28,6 @@ while(last_address != prev_last_address):
     i+=1
     if(i%100==0):
         print(len(set(addresses)))
+    #test
         
 pd.DataFrame(addresses).to_csv('./data/bLuna_addresses.csv')
