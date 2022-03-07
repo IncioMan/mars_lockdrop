@@ -70,21 +70,7 @@ st.markdown(f"""
         <a href="https://twitter.com/IncioMan"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/twitter.png" width=\"50px\"></a>
     </div>
 </div>
-""", unsafe_allow_html=True)
-
-"""
-col1, col2,col3 = st.columns([2,8,1])
-with col2:
-    st.subheader('Return on Investment - LBA')
-    st.markdown(\"""5M $MARS tokens will be distributed to the MARS depositors and 5M to the UST depositors of this LBA phase.\""")
-    st.markdown(\"""Therefore, we can simulate the expected ROI (in terms of MARS tokens) from the deposit in each side of the pool. You simply have to:
-                    <ul> 
-                        <li> Insert what you expect the MARS token price to be. This is needed to allow the estimate of the ROI</li>
-                        <li> Insert your deposit of MARS and/or UST. This will provide you with the estimate of how many MARS tokens you might receive</li>
-                    </ul>
-                \""",unsafe_allow_html=True)
-    #st.markdown(\"""Expected ROI on single deposited UST if you deposited [] UST for [] and MARS tokens price was []\""")
-"""    
+""", unsafe_allow_html=True)   
 
 col1, col2, col4,col5 = st.columns([2,3,5,1])
 with col2:
