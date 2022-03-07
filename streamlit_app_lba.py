@@ -70,18 +70,7 @@ st.markdown(f"""
         <a href="https://twitter.com/IncioMan"><img src="https://raw.githubusercontent.com/IncioMan/mars_lockdrop/master//images/twitter.png" width=\"50px\"></a>
     </div>
 </div>
-""", unsafe_allow_html=True)   
-
-col1, col2, col4,col5 = st.columns([2,3,5,1])
-with col2:
-    amount_ust_input = st.number_input('UST deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI')
-    amount_mars_input = st.number_input('MARS deposit', step=1, min_value=0, help='Simulate a deposit of UST to see how this changes the ROI')
-    input_mars_price = st.number_input('$MARS price', value=dp_attr(data_provider,'act_price'), step=0.01, min_value=0.01, help='By inserting the expected price of the $MARS tokens we can simulate the ROI on each side of the pool')
-    ust_rwrd, mars_rwrd, roi_phase_2 = data_provider.get_lba_rewards(amount_ust_input,amount_mars_input,input_mars_price)
-    st.text(f'Rewards from UST deposit: {round(ust_rwrd,0)} MARS')
-    st.text(f'Rewards from MARS deposit: {round(mars_rwrd,0)} MARS')
-with col4:
-    st.altair_chart(chart_provider.roi_phase_2_chart(roi_phase_2), use_container_width=True)
+""", unsafe_allow_html=True)
 
 col1, col2,col3 = st.columns([2,8,1])
 with col2:
